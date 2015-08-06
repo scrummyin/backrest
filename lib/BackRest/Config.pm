@@ -15,6 +15,8 @@ use Getopt::Long qw(GetOptions);
 use lib dirname($0) . '/../lib';
 use BackRest::Exception;
 use BackRest::Ini;
+use BackRest::Protocol::Common;
+use BackRest::Protocol::RemoteMaster;
 use BackRest::Utility;
 
 ####################################################################################################################################
@@ -53,9 +55,7 @@ use constant CMD_BACKUP                                             => 'backup';
     push @EXPORT, qw(CMD_BACKUP);
 use constant CMD_INFO                                               => 'info';
     push @EXPORT, qw(CMD_INFO);
-use constant CMD_LOCAL                                            => 'local';
-    push @EXPORT, qw(CMD_LOCAL);
-use constant CMD_REMOTE                                           => 'remote';
+use constant CMD_REMOTE                                             => 'remote';
     push @EXPORT, qw(CMD_REMOTE);
 use constant CMD_RESTORE                                            => 'restore';
     push @EXPORT, qw(CMD_RESTORE);
@@ -157,7 +157,7 @@ use constant
     OPTION_COMPRESS                 => 'compress',
     OPTION_COMPRESS_LEVEL           => 'compress-level',
     OPTION_COMPRESS_LEVEL_NETWORK   => 'compress-level-network',
-    OPTION_PROCESS_MAX              => 'process-max',
+    OPTION_NEUTRAL_UMASK            => 'neutral-umask',
     OPTION_REPO_PATH                => 'repo-path',
     OPTION_REPO_REMOTE_PATH         => 'repo-remote-path',
     OPTION_THREAD_MAX               => 'thread-max',
@@ -179,8 +179,6 @@ use constant
 
     # COMMAND Section
     OPTION_COMMAND_REMOTE           => 'cmd-remote',
-    OPTION_COMMAND_PSQL             => 'cmd-psql',
-    OPTION_COMMAND_PSQL_OPTION      => 'cmd-psql-option',
 
     # LOG Section
     OPTION_LOG_LEVEL_CONSOLE        => 'log-level-console',
@@ -200,6 +198,8 @@ use constant
     # STANZA Section
     OPTION_DB_HOST                  => 'db-host',
     OPTION_DB_PATH                  => 'db-path',
+    OPTION_DB_PORT                  => 'db-port',
+    OPTION_DB_SOCKET_PATH           => 'db-socket-path',
     OPTION_DB_USER                  => 'db-user',
 
     # Command-line-only help/version options
@@ -218,13 +218,12 @@ push @EXPORT, qw(OPTION_CONFIG OPTION_DELTA OPTION_FORCE OPTION_NO_START_STOP OP
                  OPTION_DB_HOST OPTION_BACKUP_HOST OPTION_ARCHIVE_MAX_MB OPTION_BACKUP_ARCHIVE_CHECK OPTION_BACKUP_ARCHIVE_COPY
                  OPTION_ARCHIVE_ASYNC
                  OPTION_BUFFER_SIZE OPTION_COMPRESS OPTION_COMPRESS_LEVEL OPTION_COMPRESS_LEVEL_NETWORK OPTION_HARDLINK
-                 OPTION_MANIFEST_SAVE_THRESHOLD OPTION_RESUME OPTION_PATH_ARCHIVE OPTION_REPO_PATH OPTION_REPO_REMOTE_PATH
-                 OPTION_DB_PATH OPTION_OUTPUT
-                 OPTION_LOG_LEVEL_CONSOLE OPTION_LOG_LEVEL_FILE
+                 OPTION_MANIFEST_SAVE_THRESHOLD OPTION_RESUME OPTION_PATH_ARCHIVE OPTION_REPO_PATH OPTION_NEUTRAL_UMASK
+                 OPTION_REPO_REMOTE_PATH OPTION_DB_PATH OPTION_OUTPUT OPTION_LOG_LEVEL_CONSOLE OPTION_LOG_LEVEL_FILE
                  OPTION_RESTORE_RECOVERY_SETTING OPTION_RETENTION_ARCHIVE OPTION_RETENTION_ARCHIVE_TYPE OPTION_RETENTION_FULL
                  OPTION_RETENTION_DIFF OPTION_START_FAST OPTION_THREAD_MAX OPTION_THREAD_TIMEOUT
-                 OPTION_DB_USER OPTION_BACKUP_USER OPTION_COMMAND_PSQL OPTION_COMMAND_PSQL_OPTION OPTION_COMMAND_REMOTE
-                 OPTION_TABLESPACE OPTION_RESTORE_TABLESPACE_MAP OPTION_PROCESS_MAX
+                 OPTION_DB_USER OPTION_BACKUP_USER OPTION_COMMAND_REMOTE
+                 OPTION_TABLESPACE OPTION_RESTORE_TABLESPACE_MAP OPTION_DB_PORT OPTION_DB_SOCKET_PATH
 
                  OPTION_TEST OPTION_TEST_DELAY OPTION_TEST_NO_FORK);
 
@@ -252,7 +251,9 @@ use constant
 
     OPTION_DEFAULT_ARCHIVE_ASYNC                    => false,
 
-    OPTION_DEFAULT_COMMAND_PSQL                     => '/usr/bin/psql -X',
+    OPTION_DEFAULT_DB_PORT                          => 5432,
+    OPTION_DEFAULT_DB_USER                          => 'postgres',
+
     OPTION_DEFAULT_COMMAND_REMOTE                   => abs_path($0),
 
     OPTION_DEFAULT_BACKUP_ARCHIVE_CHECK             => true,
@@ -267,6 +268,7 @@ use constant
 
     OPTION_DEFAULT_INFO_OUTPUT                      => INFO_OUTPUT_TEXT,
 
+    OPTION_DEFAULT_NEUTRAL_UMASK                    => true,
     OPTION_DEFAULT_REPO_PATH                        => '/var/lib/backup',
 
     OPTION_DEFAULT_RESTORE_DELTA                    => false,
@@ -297,7 +299,8 @@ push @EXPORT, qw(OPTION_DEFAULT_BUFFER_SIZE OPTION_DEFAULT_COMPRESS OPTION_DEFAU
                  OPTION_DEFAULT_RESTORE_DELTA OPTION_DEFAULT_RESTORE_FORCE OPTION_DEFAULT_RESTORE_SET OPTION_DEFAULT_RESTORE_TYPE
                  OPTION_DEFAULT_RESTORE_TARGET_EXCLUSIVE OPTION_DEFAULT_RESTORE_TARGET_RESUME
 
-                 OPTION_DEFAULT_TEST OPTION_DEFAULT_TEST_DELAY OPTION_DEFAULT_TEST_NO_FORK);
+                 OPTION_DEFAULT_TEST OPTION_DEFAULT_TEST_DELAY OPTION_DEFAULT_TEST_NO_FORK OPTION_DEFAULT_DB_PORT
+                 OPTION_DEFAULT_DB_USER);
 
 ####################################################################################################################################
 # Option Rules
@@ -428,10 +431,6 @@ my %oOptionRule =
                 &OPTION_RULE_REQUIRED => true
             },
             &CMD_EXPIRE =>
-            {
-                &OPTION_RULE_REQUIRED => true
-            },
-            &CMD_LOCAL =>
             {
                 &OPTION_RULE_REQUIRED => true
             },
@@ -599,34 +598,6 @@ my %oOptionRule =
         }
     },
 
-    &OPTION_COMMAND_PSQL =>
-    {
-        &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
-        &OPTION_RULE_DEFAULT => OPTION_DEFAULT_COMMAND_PSQL,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_COMMAND,
-        &OPTION_RULE_COMMAND =>
-        {
-            &CMD_BACKUP => true,
-            &CMD_REMOTE => true
-        }
-    },
-
-    &OPTION_COMMAND_PSQL_OPTION =>
-    {
-        &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_COMMAND,
-        &OPTION_RULE_COMMAND =>
-        {
-            &CMD_BACKUP => true,
-            &CMD_REMOTE => true
-        },
-        &OPTION_RULE_REQUIRED => false,
-        &OPTION_RULE_DEPEND =>
-        {
-            &OPTION_RULE_DEPEND_OPTION => OPTION_COMMAND_PSQL
-        }
-    },
-
     &OPTION_ARCHIVE_ASYNC =>
     {
         &OPTION_RULE_TYPE => OPTION_TYPE_BOOLEAN,
@@ -649,9 +620,34 @@ my %oOptionRule =
         }
     },
 
+    &OPTION_DB_PORT =>
+    {
+        &OPTION_RULE_TYPE => OPTION_TYPE_INTEGER,
+        &OPTION_RULE_DEFAULT => OPTION_DEFAULT_DB_PORT,
+        &OPTION_RULE_SECTION => CONFIG_SECTION_STANZA,
+        &OPTION_RULE_COMMAND =>
+        {
+            &CMD_BACKUP => true,
+            &CMD_REMOTE => true
+        }
+    },
+
+    &OPTION_DB_SOCKET_PATH =>
+    {
+        &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
+        &OPTION_RULE_REQUIRED => false,
+        &OPTION_RULE_SECTION => CONFIG_SECTION_STANZA,
+        &OPTION_RULE_COMMAND =>
+        {
+            &CMD_BACKUP => true,
+            &CMD_REMOTE => true
+        }
+    },
+
     &OPTION_DB_USER =>
     {
         &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
+        &OPTION_RULE_DEFAULT => OPTION_DEFAULT_DB_USER,
         &OPTION_RULE_SECTION => CONFIG_SECTION_STANZA,
         &OPTION_RULE_COMMAND =>
         {
@@ -696,6 +692,13 @@ my %oOptionRule =
         }
     },
 
+    &OPTION_NEUTRAL_UMASK =>
+    {
+        &OPTION_RULE_TYPE => OPTION_TYPE_BOOLEAN,
+        &OPTION_RULE_DEFAULT => OPTION_DEFAULT_NEUTRAL_UMASK,
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GENERAL
+    },
+
     &OPTION_REPO_PATH =>
     {
         &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
@@ -707,7 +710,6 @@ my %oOptionRule =
             &CMD_ARCHIVE_PUSH => true,
             &CMD_BACKUP => true,
             &CMD_INFO => true,
-            &CMD_LOCAL => true,
             &CMD_RESTORE => true,
             &CMD_EXPIRE => true
         },
@@ -723,7 +725,6 @@ my %oOptionRule =
             &CMD_ARCHIVE_GET => true,
             &CMD_ARCHIVE_PUSH => true,
             &CMD_INFO => true,
-            &CMD_LOCAL => true,
             &CMD_REMOTE => true,
             &CMD_RESTORE => true
         },
@@ -832,7 +833,6 @@ my %oOptionRule =
             &CMD_ARCHIVE_PUSH => true,
             &CMD_BACKUP => true,
             &CMD_INFO => true,
-            &CMD_LOCAL => true,
             &CMD_REMOTE => true,
             &CMD_RESTORE => true
         }
@@ -851,7 +851,6 @@ my %oOptionRule =
             &CMD_ARCHIVE_PUSH => true,
             &CMD_BACKUP => true,
             &CMD_INFO => true,
-            &CMD_LOCAL => true,
             &CMD_REMOTE => true,
             &CMD_RESTORE => true
         }
@@ -1261,10 +1260,10 @@ sub configLoad
     # Validate and store options
     optionValid(\%oOptionTest);
 
-    # Replace command psql options if set
-    if (optionTest(OPTION_COMMAND_PSQL) && optionTest(OPTION_COMMAND_PSQL_OPTION))
+    # Neutralize the umask to make the repository file/path modes more consistent
+    if (optionGet(OPTION_NEUTRAL_UMASK))
     {
-        $oOption{&OPTION_COMMAND_PSQL}{value} =~ s/\%option\%/$oOption{&OPTION_COMMAND_PSQL_OPTION}{value}/g;
+        umask(0000);
     }
 
     # Set repo-remote-path to repo-path if it is not set
@@ -1317,7 +1316,6 @@ sub optionValid
         $strCommand ne CMD_ARCHIVE_PUSH &&
         $strCommand ne CMD_BACKUP &&
         $strCommand ne CMD_INFO &&
-        $strCommand ne CMD_LOCAL &&
         $strCommand ne CMD_REMOTE &&
         $strCommand ne CMD_RESTORE &&
         $strCommand ne CMD_EXPIRE)
@@ -1928,9 +1926,8 @@ sub protocolGet
     # If force local or remote = NONE then create a local remote and return it
     if ((defined($bForceLocal) && $bForceLocal) || optionRemoteTypeTest(NONE))
     {
-        return new BackRest::Protocol
+        return new BackRest::Protocol::Common
         (
-            undef, false, undef,
             optionGet(OPTION_BUFFER_SIZE),
             commandTest(CMD_EXPIRE) ? OPTION_DEFAULT_COMPRESS_LEVEL : optionGet(OPTION_COMPRESS_LEVEL),
             commandTest(CMD_EXPIRE) ? OPTION_DEFAULT_COMPRESS_LEVEL_NETWORK : optionGet(OPTION_COMPRESS_LEVEL_NETWORK)
@@ -1944,14 +1941,14 @@ sub protocolGet
     }
 
     # Return the remote when required
-    my $oProtocolTemp = new BackRest::Remote
+    my $oProtocolTemp = new BackRest::Protocol::RemoteMaster
     (
-        optionRemoteTypeTest(DB) ? optionGet(OPTION_DB_HOST) : optionGet(OPTION_BACKUP_HOST),
-        optionRemoteTypeTest(DB) ? optionGet(OPTION_DB_USER) : optionGet(OPTION_BACKUP_USER),
         commandWrite(CMD_REMOTE, true, optionGet(OPTION_COMMAND_REMOTE)),
         optionGet(OPTION_BUFFER_SIZE),
         commandTest(CMD_EXPIRE) ? OPTION_DEFAULT_COMPRESS_LEVEL : optionGet(OPTION_COMPRESS_LEVEL),
-        commandTest(CMD_EXPIRE) ? OPTION_DEFAULT_COMPRESS_LEVEL_NETWORK : optionGet(OPTION_COMPRESS_LEVEL_NETWORK)
+        commandTest(CMD_EXPIRE) ? OPTION_DEFAULT_COMPRESS_LEVEL_NETWORK : optionGet(OPTION_COMPRESS_LEVEL_NETWORK),
+        optionRemoteTypeTest(DB) ? optionGet(OPTION_DB_HOST) : optionGet(OPTION_BACKUP_HOST),
+        optionRemoteTypeTest(DB) ? optionGet(OPTION_DB_USER) : optionGet(OPTION_BACKUP_USER)
     );
 
     if (!defined($bStore) || $bStore)
