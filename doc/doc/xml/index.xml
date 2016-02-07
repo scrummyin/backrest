@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE doc SYSTEM "doc.dtd">
+<doc subtitle="Automated Documentation Made Simple" toc="n">
+    <variable-list>
+        <!-- Variables used by the rest of the script -->
+        <variable key="github-url-base">https://github.com/pgmasters/backrest</variable>
+        <variable key="github-url-master">{[github-url-base]}/blob/master</variable>
+        <variable key="github-url-issues">{[github-url-base]}/issues</variable>
+        <variable key="github-url-change-log">{[github-url-master]}/CHANGELOG.md</variable>
+        <variable key="github-url-license">{[github-url-master]}/LICENSE</variable>
+
+        <variable key="backrest-url-base">http://www.pgbackrest.org</variable>
+        <variable key="backrest-page-user-guide">user-guide.html</variable>
+        <variable key="backrest-page-configuration">configuration.html</variable>
+        <variable key="backrest-page-command">command.html</variable>
+    </variable-list>
+
+    <section id="introduction">
+        <title>Introduction</title>
+
+        <p>It's simple - <b>so</b> simple!</p>
+    </section>
+
+    <!-- SECTION => COOL -->
+    <section id="cool">
+        <title>Cool Stuff</title>
+
+        <section id="cool2">
+            <title>Cool Stuff 2</title>
+
+            <section id="cool3">
+                <title>Cool Stuff 3</title>
+            </section>
+        </section>
+    </section>
+</doc>

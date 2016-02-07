@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE doc SYSTEM "doc.dtd">
+<doc title="User Guide" subtitle="Here's how simple it is!">
+    <!-- SECTION => INTRODUCTION -->
+    <section id="introduction">
+        <title>Introduction</title>
+
+        <p>Simple, simple, simple!</p>
+
+        <code-block title="Just run this">
+            /backrest/doc/doc.pl --doc-path=/backrest/doc/doc --var=project-url-root=index.html
+        </code-block>
+    </section>
+</doc>
