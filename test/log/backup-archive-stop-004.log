@@ -65,7 +65,7 @@ DEBUG:     File->manifest(): oManifestHashRef = [hash], strPath = [TEST_PATH]/lo
 DEBUG:     File->manifestRecurse(): iDepth = 0, oManifestHashRef = [hash], strPathFileOp = [undef], strPathOp = [TEST_PATH]/local/archive/db/out, strPathType = db:absolute
 DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=archive-push --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = bogus, strUser = [USER-1]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no backrest@bogus '[BACKREST_BIN] --command=archive-push --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
-ERROR: [124]: remote process terminated: [REMOTE-PROCESS-TERMINATED-MESSAGE]
+ERROR: [124]: protocol version mismatch
 DEBUG:     Exit::exitSafe(): iExitCode = 124, strSignal = [undef]
  INFO: archive-push stop
 DEBUG:     Common:::Lock::lockRelease(): bFailOnNoLock = false
