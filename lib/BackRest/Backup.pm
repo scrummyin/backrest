@@ -189,92 +189,67 @@ sub fileNotInManifest
             next;
         }
 
-        # We'll always keep the base path
-        if ($strName eq MANIFEST_KEY_BASE)
+        # Create the section from the base path
+        my $strSection = MANIFEST_KEY_BASE;
+        my $strPath = $strName;
+
+        # Test to see if a tablespace exists in the new manifest
+        if ($strName =~ /^pg\_tblspc\//)
         {
-            next;
-        }
-        # Keep the tablespace path if some tablespaces exist in the new manfest
-        elsif ($strName eq MANIFEST_TABLESPACE)
-        {
-            my $bFound = false;
+            my $strTablespace = (split('/', $strName))[1];
+            my $iTablespaceLength = length($strTablespace) + 1 + length(PATH_PG_TBLSPC);
 
-            foreach my $strPath ($oManifest->keys(MANIFEST_SECTION_BACKUP_PATH))
+            if (length($strName) == $iTablespaceLength)
             {
-                if ($strPath =~ /^$strName\//)
-                {
-                    $bFound = true;
-                    last;
-                }
-            }
-
-            next if $bFound;
-        }
-        # If there is a / in the name then check further, otherwise it's a temp file or some other garbage and should be deleted
-        elsif (index($strName, '/') != -1)
-        {
-            my $strBasePath = (split('/', $strName))[0];
-            my $strPath = substr($strName, length($strBasePath) + 1);
-
-            # Create the section from the base path
-            my $strSection = $strBasePath;
-
-            # Test to see if a tablespace exists in the new manifest
-            if ($strSection eq 'tablespace')
-            {
-                my $strTablespace = (split('/', $strPath))[0];
-
-                $strSection = $strSection . '/' . $strTablespace;
-
-                if ($strTablespace eq $strPath)
-                {
-                    if ($oManifest->test("${strSection}:path"))
-                    {
-                        next;
-                    }
-                }
-
-                $strPath = substr($strPath, length($strTablespace) + 1);
-            }
-
-            # Get the file type (all links will be deleted since they are easy to recreate)
-            my $cType = $oFileHash{name}{"${strName}"}{type};
-
-            # If a directory check if it exists in the new manifest
-            if ($cType eq 'd')
-            {
-                if ($oManifest->test("${strSection}:path", "${strPath}"))
+                if ($oManifest->test("${strSection}:path"))
                 {
                     next;
                 }
             }
-            # Else if a file
-            elsif ($cType eq 'f')
+            else
             {
-                # If the original backup was compressed the remove the extension before checking the manifest
-                if ($bCompressed)
-                {
-                    $strPath = substr($strPath, 0, length($strPath) - 3);
-                }
+                $strSection = MANIFEST_TABLESPACE . '/' . $strTablespace;
+                $strPath = substr($strName, $iTablespaceLength + 1);
+            }
+        }
 
-                # To be preserved the file must exist in the new manifest and not be a reference to a previous backup
-                if ($oManifest->test("${strSection}:file", $strPath) &&
-                    !$oManifest->test("${strSection}:file", $strPath, MANIFEST_SUBKEY_REFERENCE))
-                {
-                    # To be preserved the checksum must be defined
-                    my $strChecksum = $oAbortedManifest->get("${strSection}:file", $strPath, MANIFEST_SUBKEY_CHECKSUM, false);
+        # Get the file type (all links will be deleted since they are easy to recreate)
+        my $cType = $oFileHash{name}{"${strName}"}{type};
 
-                    # The timestamp should also match and the size if the file is not compressed.  If the file is compressed it's
-                    # not worth extracting the size - it will be hashed later to verify its authenticity.
-                    if (defined($strChecksum) &&
-                        ($bCompressed || ($oManifest->numericGet("${strSection}:file", $strPath, MANIFEST_SUBKEY_SIZE) ==
-                            $oFileHash{name}{$strName}{size})) &&
-                        $oManifest->numericGet("${strSection}:file", $strPath, MANIFEST_SUBKEY_TIMESTAMP) ==
-                            $oFileHash{name}{$strName}{modification_time})
-                    {
-                        $oManifest->set("${strSection}:file", $strPath, MANIFEST_SUBKEY_CHECKSUM, $strChecksum);
-                        next;
-                    }
+        # If a directory check if it exists in the new manifest
+        if ($cType eq 'd')
+        {
+            if ($oManifest->test("${strSection}:path", "${strPath}"))
+            {
+                next;
+            }
+        }
+        # Else if a file
+        elsif ($cType eq 'f')
+        {
+            # If the original backup was compressed the remove the extension before checking the manifest
+            if ($bCompressed)
+            {
+                $strPath = substr($strPath, 0, length($strPath) - 3);
+            }
+
+            # To be preserved the file must exist in the new manifest and not be a reference to a previous backup
+            if ($oManifest->test("${strSection}:file", $strPath) &&
+                !$oManifest->test("${strSection}:file", $strPath, MANIFEST_SUBKEY_REFERENCE))
+            {
+                # To be preserved the checksum must be defined
+                my $strChecksum = $oAbortedManifest->get("${strSection}:file", $strPath, MANIFEST_SUBKEY_CHECKSUM, false);
+
+                # The timestamp should also match and the size if the file is not compressed.  If the file is compressed it's
+                # not worth extracting the size - it will be hashed later to verify its authenticity.
+                if (defined($strChecksum) &&
+                    ($bCompressed || ($oManifest->numericGet("${strSection}:file", $strPath, MANIFEST_SUBKEY_SIZE) ==
+                        $oFileHash{name}{$strName}{size})) &&
+                    $oManifest->numericGet("${strSection}:file", $strPath, MANIFEST_SUBKEY_TIMESTAMP) ==
+                        $oFileHash{name}{$strName}{modification_time})
+                {
+                    $oManifest->set("${strSection}:file", $strPath, MANIFEST_SUBKEY_CHECKSUM, $strChecksum);
+                    next;
                 }
             }
         }
@@ -406,20 +381,11 @@ sub processManifest
         my $strBackupDestinationPath;   # Relative path to the backup directory where the data will be stored
 
         $strBackupSourcePath = $oBackupManifest->get(MANIFEST_SECTION_BACKUP_PATH, $strPathKey, MANIFEST_SUBKEY_PATH);
-        $strBackupDestinationPath = $strPathKey;
+        $strBackupDestinationPath = $oBackupManifest->pathGet($strPathKey);
 
         # Create links for tablespaces
-        if ($oBackupManifest->test(MANIFEST_SECTION_BACKUP_PATH, $strPathKey, MANIFEST_SUBKEY_LINK))
+        if ($oBackupManifest->get(MANIFEST_SECTION_BACKUP_PATH, $strPathKey, MANIFEST_SUBKEY_LINK, false))
         {
-            if ($bFullCreate)
-            {
-                $self->{oFile}->linkCreate(PATH_BACKUP_TMP, $strBackupDestinationPath,
-                                    PATH_BACKUP_TMP,
-                                    'base/pg_tblspc/' . $oBackupManifest->get(MANIFEST_SECTION_BACKUP_PATH,
-                                                                              $strPathKey, MANIFEST_SUBKEY_LINK),
-                                    false, true, true);
-            }
-
             if ($oBackupManifest->numericGet(MANIFEST_SECTION_BACKUP_DB, MANIFEST_KEY_DB_VERSION) >= 9.0)
             {
                 $strBackupSourcePath .= '/' . $oBackupManifest->tablespacePathGet();
@@ -438,32 +404,10 @@ sub processManifest
                 {
                     if ($strPath ne '.')
                     {
-                        $self->{oFile}->pathCreate(PATH_BACKUP_TMP, "${strBackupDestinationPath}/${strPath}");
+                        $self->{oFile}->pathCreate(PATH_BACKUP_TMP, "${strBackupDestinationPath}${strPath}");
                     }
                 }
             }
-
-            # Create links
-            #
-            # Non-tablespace links are no longer created in backup directories because they are potentially dangerous.
-            # This feature may be brought back at a later date but more likely that it will be rethought completely.
-            #
-            # my $strSectionLink = "$strPathKey:link";
-            #
-            # if ($oBackupManifest->test($strSectionLink))
-            # {
-            #     foreach my $strLink ($oBackupManifest->keys($strSectionLink))
-            #     {
-            #         # Create links except in pg_tblspc because they have already been created
-            #         if (!($strPathKey eq 'base' && $strLink =~ /^pg_tblspc\/.*/))
-            #         {
-            #             $self->{oFile}->linkCreate(PATH_BACKUP_ABSOLUTE,
-            #                                 $oBackupManifest->get($strSectionLink, $strLink, MANIFEST_SUBKEY_DESTINATION),
-            #                                 PATH_BACKUP_TMP, "${strBackupDestinationPath}/${strLink}",
-            #                                 false, false, false);
-            #         }
-            #     }
-            # }
         }
 
         # Possible for the file section to exist with no files (i.e. empty tablespace)
@@ -486,8 +430,8 @@ sub processManifest
                 {
                     logDebugMisc($strOperation, "hardlink ${strBackupSourceFile} to ${strReference}");
 
-                    $self->{oFile}->linkCreate(PATH_BACKUP_CLUSTER, "${strReference}/${strBackupDestinationPath}/${strFile}",
-                                        PATH_BACKUP_TMP, "${strBackupDestinationPath}/${strFile}", true, false, true);
+                    $self->{oFile}->linkCreate(PATH_BACKUP_CLUSTER, "${strReference}/${strBackupDestinationPath}${strFile}",
+                                        PATH_BACKUP_TMP, "${strBackupDestinationPath}${strFile}", true, false, true);
                 }
                 else
                 {
@@ -510,7 +454,7 @@ sub processManifest
                 $oFileCopyMap{$strPathKey}{$strFileKey}{db_file} = $strBackupSourceFile;
                 $oFileCopyMap{$strPathKey}{$strFileKey}{file_section} = $strSectionFile;
                 $oFileCopyMap{$strPathKey}{$strFileKey}{file} = ${strFile};
-                $oFileCopyMap{$strPathKey}{$strFileKey}{backup_file} = "${strBackupDestinationPath}/${strFile}";
+                $oFileCopyMap{$strPathKey}{$strFileKey}{backup_file} = "${strBackupDestinationPath}${strFile}";
                 $oFileCopyMap{$strPathKey}{$strFileKey}{size} = $lFileSize;
                 $oFileCopyMap{$strPathKey}{$strFileKey}{modification_time} =
                     $oBackupManifest->numericGet($strSectionFile, $strFile, MANIFEST_SUBKEY_TIMESTAMP, false);
@@ -961,7 +905,7 @@ sub process
                 logDebugMisc($strOperation, "archive: ${strArchive} (${strArchiveFile})");
 
                 # Copy the log file from the archive repo to the backup
-                my $strDestinationFile = "base/pg_xlog/${strArchive}" . ($bCompress ? ".$self->{oFile}->{strCompressExtension}" : '');
+                my $strDestinationFile = "pg_xlog/${strArchive}" . ($bCompress ? ".$self->{oFile}->{strCompressExtension}" : '');
                 my $bArchiveCompressed = $strArchiveFile =~ "^.*\.$self->{oFile}->{strCompressExtension}\$";
 
                 my ($bCopyResult, $strCopyChecksum, $lCopySize) =

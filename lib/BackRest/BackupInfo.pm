@@ -285,8 +285,7 @@ sub add
     foreach my $strPathKey ($oBackupManifest->keys(MANIFEST_SECTION_BACKUP_PATH))
     {
         my $strFileSection = "${strPathKey}:" . MANIFEST_FILE;
-        my $strPath = $strPathKey;
-        $strPath =~ s/\:/\//g;
+        my $strPath = $oBackupManifest->pathGet($strPathKey);
 
         foreach my $strFileKey ($oBackupManifest->keys($strFileSection))
         {
@@ -295,7 +294,7 @@ sub add
 
             my $strFile = $oFile->pathGet(PATH_BACKUP_CLUSTER,
                                            (defined($strFileReference) ? "${strFileReference}" : $strBackupLabel) .
-                                           "/${strPath}/${strFileKey}" .
+                                           "/${strPath}${strFileKey}" .
                                            ($bCompress ? '.' . $oFile->{strCompressExtension} : ''));
 
             my $oStat = lstat($strFile);

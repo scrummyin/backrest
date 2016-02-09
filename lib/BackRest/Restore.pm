@@ -826,7 +826,7 @@ sub process
                 # Get restore information
                 $oRestoreHash{$strPathKey}{$strFileKey}{file} = $strFile;
                 $oRestoreHash{$strPathKey}{$strFileKey}{size} = $lSize;
-                $oRestoreHash{$strPathKey}{$strFileKey}{source_path} = $strPathKey;
+                $oRestoreHash{$strPathKey}{$strFileKey}{source_path} = $oManifest->pathGet($strPathKey);
                 $oRestoreHash{$strPathKey}{$strFileKey}{destination_path} = $strDestinationPath;
                 $oRestoreHash{$strPathKey}{$strFileKey}{reference} =
                     $oManifest->boolTest(MANIFEST_SECTION_BACKUP_OPTION, MANIFEST_KEY_HARDLINK, undef, true) ? undef :

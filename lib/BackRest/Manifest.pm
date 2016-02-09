@@ -369,11 +369,24 @@ sub valid
         {
             return true;
         }
-
     }
 
     confess &log(ASSERT, "manifest section '${strSection}', key '${strKey}'" .
                           (defined($strSubKey) ? ", subkey '$strSubKey'" : '') . ' is not valid');
+}
+
+####################################################################################################################################
+# pathGet
+#
+# Get location within the repo for a path.
+####################################################################################################################################
+sub pathGet
+{
+    my $self = shift;
+    my $strPathKey = shift;
+
+    my $strLink = $self->get(MANIFEST_SECTION_BACKUP_PATH, $strPathKey, MANIFEST_SUBKEY_LINK, false);
+    return defined($strLink) ? "pg_tblspc/${strLink}/" : '';
 }
 
 ####################################################################################################################################

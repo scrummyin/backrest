@@ -119,7 +119,7 @@ sub restoreFile
     {
         my ($bCopyResult, $strCopyChecksum, $lCopySize) =
             $oFile->copy(PATH_BACKUP_CLUSTER, (defined($$oFileHash{reference}) ? $$oFileHash{reference} : $strBackupPath) .
-                         "/$$oFileHash{source_path}/$$oFileHash{file}" .
+                         "/$$oFileHash{source_path}$$oFileHash{file}" .
                          ($bSourceCompression ? '.' . $oFile->{strCompressExtension} : ''),
                          PATH_DB_ABSOLUTE, $strDestinationFile,
                          $bSourceCompression,   # Source is compressed based on backup settings
