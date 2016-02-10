@@ -1068,8 +1068,13 @@ sub BackRestTestBackup_BackupEnd
             $oBackupLogTest->supplementalAdd(BackRestTestCommon_RepoPathGet() . "/pg_backrest.conf", true);
         }
 
-        # $oBackupLogTest->supplementalAdd(BackRestTestCommon_RepoPathGet() .
-        #                                  "/backup/${strBackupStanza}/${strBackup}/backup.manifest", $bBackupRemote);
+        my $strOriginalManifest = "backup.history/${strBackup}.manifest.gz";
+        my $strActualManifest = BackRestTestCommon_TestPathGet() . '/actual.manifest';
+        $oBackupFile->copy(PATH_BACKUP_CLUSTER, $strOriginalManifest,
+                           PATH_ABSOLUTE, $strActualManifest, true);
+
+        $oBackupLogTest->supplementalAdd($strActualManifest, undef, undef,
+                                         $oBackupFile->pathGet(PATH_BACKUP_CLUSTER, $strOriginalManifest));
         $oBackupLogTest->supplementalAdd(BackRestTestCommon_RepoPathGet() .
                                          "/backup/${strBackupStanza}/backup.info", $bBackupRemote);
     }
