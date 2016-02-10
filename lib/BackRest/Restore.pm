@@ -14,6 +14,7 @@ use File::Basename qw(dirname);
 use File::stat qw(lstat);
 
 use lib dirname($0);
+use BackRest::BackupInfo;
 use BackRest::Common::Exception;
 use BackRest::Common::Log;
 use BackRest::Config::Config;
@@ -232,15 +233,12 @@ sub manifestLoad
     }
 
     # Copy the backup manifest to the db cluster path
-    $self->{oFile}->copy(PATH_BACKUP_CLUSTER, $self->{strBackupSet} . '/' . FILE_MANIFEST,
-                         PATH_DB_ABSOLUTE, $self->{strDbClusterPath} . '/' . FILE_MANIFEST);
+    $self->{oFile}->copy(PATH_BACKUP_CLUSTER, PATH_MANIFEST . '/'. $self->{strBackupSet} . '.manifest.gz',
+                         PATH_DB_ABSOLUTE, $self->{strDbClusterPath} . '/' . FILE_MANIFEST, true);
 
     # Load the manifest into a hash
     my $oManifest = new BackRest::Manifest($self->{oFile}->pathGet(PATH_DB_ABSOLUTE,
                                                                    $self->{strDbClusterPath} . '/' . FILE_MANIFEST));
-
-    # Log the backup set to restore
-    &log(INFO, "restore backup set " . $oManifest->get(MANIFEST_SECTION_BACKUP, MANIFEST_KEY_LABEL));
 
     # If backup is latest then set it equal to backup label, else verify that requested backup and label match
     my $strBackupLabel = $oManifest->get(MANIFEST_SECTION_BACKUP, MANIFEST_KEY_LABEL);
@@ -752,6 +750,41 @@ sub process
         optionSet(OPTION_DELTA, false);
         optionSet(OPTION_FORCE, false);
     }
+    # Else at least make sure $PGDATA exists
+    else
+    {
+        $self->{oFile}->exists(PATH_DB_ABSOLUTE, $self->{strDbClusterPath});
+    }
+
+    # Copy backup info, load it, then delete
+    $self->{oFile}->copy(PATH_BACKUP_CLUSTER, FILE_BACKUP_INFO,
+                         PATH_DB_ABSOLUTE, $self->{strDbClusterPath} . '/' . FILE_BACKUP_INFO);
+
+    my $oBackupInfo = new BackRest::BackupInfo($self->{strDbClusterPath}, false);
+
+    $self->{oFile}->remove(PATH_DB_ABSOLUTE, $self->{strDbClusterPath} . '/' . FILE_BACKUP_INFO);
+
+    # If set to restore is latest then get the actual set
+    if ($self->{strBackupSet} eq OPTION_DEFAULT_RESTORE_SET)
+    {
+        $self->{strBackupSet} = $oBackupInfo->last(BACKUP_TYPE_INCR);
+
+        if (!defined($self->{strBackupSet}))
+        {
+            confess &log(ERROR, "no backup sets to restore", ERROR_BACKUP_SET_INVALID);
+        }
+    }
+    # Otherwise check to make sure specified set is valid
+    else
+    {
+        if (!$oBackupInfo->current($self->{strBackupSet}))
+        {
+            confess &log(ERROR, "backup set $self->{strBackupSet} is not valid", ERROR_BACKUP_SET_INVALID);
+        }
+    }
+
+    # Log the backup set to restore
+    &log(INFO, "restore backup set " . $self->{strBackupSet});
 
     # Make sure the backup path is valid and load the manifest
     my $oManifest = $self->manifestLoad();

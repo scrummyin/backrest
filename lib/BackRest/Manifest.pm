@@ -32,8 +32,12 @@ use constant OP_MANIFEST_SAVE                                       => OP_MANIFE
 ####################################################################################################################################
 # File/path constants
 ####################################################################################################################################
+use constant PATH_MANIFEST                                          => 'backup.history';
+    push @EXPORT, qw(PATH_MANIFEST);
 use constant FILE_MANIFEST                                          => 'backup.manifest';
     push @EXPORT, qw(FILE_MANIFEST);
+use constant FILE_MANIFEST_LAST                                     => 'backup-last.manifest';
+    push @EXPORT, qw(FILE_MANIFEST_LAST);
 use constant PATH_PG_TBLSPC                                         => 'pg_tblspc';
     push @EXPORT, qw(PATH_PG_TBLSPC);
 use constant FILE_PG_CONTROL                                        => 'global/pg_control';

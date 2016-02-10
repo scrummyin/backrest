@@ -344,7 +344,7 @@ sub pathGet
 
     # Only allow temp files for PATH_BACKUP_ARCHIVE, PATH_BACKUP_ARCHIVE_OUT, PATH_BACKUP_TMP and any absolute path
     if ($bTemp && !($strType eq PATH_BACKUP_ARCHIVE || $strType eq PATH_BACKUP_ARCHIVE_OUT || $strType eq PATH_BACKUP_TMP ||
-        $bAbsolute))
+        $strType eq PATH_BACKUP_CLUSTER || $bAbsolute))
     {
         confess &log(ASSERT, 'temp file not supported on path ' . $strType);
     }
@@ -440,7 +440,19 @@ sub pathGet
 
     if ($strType eq PATH_BACKUP_CLUSTER)
     {
-        return $self->{strBackupPath} . "/backup/$self->{strStanza}" . (defined($strFile) ? "/${strFile}" : '');
+        my $strArchivePath = $self->{strBackupPath} . "/backup/$self->{strStanza}" . (defined($strFile) ? "/${strFile}" : '');
+
+        if ($bTemp)
+        {
+            if (!defined($strFile))
+            {
+                confess &log(ASSERT, 'db cluster temp must have strFile defined');
+            }
+
+            $strArchivePath = "${strArchivePath}.tmp";
+        }
+
+        return $strArchivePath;
     }
 
     # Error when path type not recognized

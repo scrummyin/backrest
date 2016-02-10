@@ -14,6 +14,7 @@ use File::Basename qw(dirname basename);
 use File::stat;
 
 use lib dirname($0);
+use BackRest::BackupCommon;
 use BackRest::Common::Exception;
 use BackRest::Common::Ini;
 use BackRest::Common::Log;
@@ -30,6 +31,7 @@ use constant OP_INFO_BACKUP_ADD                                     => OP_BACKUP
 use constant OP_INFO_BACKUP_CHECK                                   => OP_BACKUP_INFO . "->check";
 use constant OP_INFO_BACKUP_CURRENT                                 => OP_BACKUP_INFO . "->current";
 use constant OP_INFO_BACKUP_DELETE                                  => OP_BACKUP_INFO . "->delete";
+use constant OP_INFO_BACKUP_LAST                                    => OP_BACKUP_INFO . "->last";
 use constant OP_INFO_BACKUP_LIST                                    => OP_BACKUP_INFO . "->list";
 use constant OP_INFO_BACKUP_NEW                                     => OP_BACKUP_INFO . "->new";
 
@@ -115,12 +117,14 @@ sub new
     my
     (
         $strOperation,
-        $strBackupClusterPath                       # Backup cluster path
+        $strBackupClusterPath,
+        $bValidate
     ) =
         logDebugParam
         (
             OP_INFO_BACKUP_NEW, \@_,
-            {name => 'strBackupClusterPath'}
+            {name => 'strBackupClusterPath'},
+            {name => 'bValidate', default => true}
         );
 
     # Build the backup info path/file name
@@ -134,7 +138,10 @@ sub new
     $self->{strBackupClusterPath} = $strBackupClusterPath;
 
     # Validate the backup info
-    $self->validate();
+    if ($bValidate)
+    {
+        $self->validate();
+    }
 
     # Return from function and log return values if any
     return logDebugReturn
@@ -318,17 +325,6 @@ sub add
         }
     }
 
-    # Add the manifest.backup size
-    my $strManifestFile = $oFile->pathGet(PATH_BACKUP_CLUSTER, "/${strBackupLabel}/" . FILE_MANIFEST);
-    my $oStat = lstat($strManifestFile);
-
-    # Check for errors in stat
-    defined($oStat)
-        or confess &log(ERROR, "unable to lstat ${strManifestFile}");
-
-    $lBackupRepoSize += $oStat->size;
-    $lBackupRepoSizeDelta += $oStat->size;
-
     # Set backup size info
     $self->numericSet(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_BACKUP_SIZE, $lBackupSize);
     $self->numericSet(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_BACKUP_SIZE_DELTA, $lBackupSizeDelta);
@@ -460,6 +456,39 @@ sub list
     (
         $strOperation,
         {name => 'stryBackup', value => \@stryBackup}
+    );
+}
+
+
+####################################################################################################################################
+# last
+#
+# Find the last backup depending on the type.
+####################################################################################################################################
+sub last
+{
+    my $self = shift;
+
+    # Assign function parameters, defaults, and log debug info
+    my
+    (
+        $strOperation,
+        $strType
+    ) =
+        logDebugParam
+        (
+            OP_INFO_BACKUP_LAST, \@_,
+            {name => 'strType'}
+        );
+
+    my $strFilter = backupRegExpGet(true, $strType ne BACKUP_TYPE_FULL, $strType eq BACKUP_TYPE_INCR);
+    my $strBackup = ($self->list($strFilter, 'reverse'))[0];
+
+    # Return from function and log return values if any
+    return logDebugReturn
+    (
+        $strOperation,
+        {name => 'strLabel', value => $strBackup}
     );
 }
 

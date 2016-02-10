@@ -947,12 +947,12 @@ sub BackRestTestBackup_LastBackup
 
     my @stryBackup = $oFile->list(PATH_BACKUP_CLUSTER, undef, undef, 'reverse');
 
-    if (!defined($stryBackup[2]))
+    if (!defined($stryBackup[3]))
     {
         confess 'no backup was found';
     }
 
-    return $stryBackup[2];
+    return $stryBackup[3];
 }
 
 ####################################################################################################################################
@@ -1068,8 +1068,8 @@ sub BackRestTestBackup_BackupEnd
             $oBackupLogTest->supplementalAdd(BackRestTestCommon_RepoPathGet() . "/pg_backrest.conf", true);
         }
 
-        $oBackupLogTest->supplementalAdd(BackRestTestCommon_RepoPathGet() .
-                                         "/backup/${strBackupStanza}/${strBackup}/backup.manifest", $bBackupRemote);
+        # $oBackupLogTest->supplementalAdd(BackRestTestCommon_RepoPathGet() .
+        #                                  "/backup/${strBackupStanza}/${strBackup}/backup.manifest", $bBackupRemote);
         $oBackupLogTest->supplementalAdd(BackRestTestCommon_RepoPathGet() .
                                          "/backup/${strBackupStanza}/backup.info", $bBackupRemote);
     }
@@ -1192,14 +1192,20 @@ sub BackRestTestBackup_BackupCompare
     ${$oExpectedManifestRef}{&MANIFEST_SECTION_BACKUP}{&MANIFEST_KEY_LABEL} = $strBackup;
 
     # Change mode on the backup path so it can be read
-    if ($bRemote)
-    {
-        executeTest('chmod 750 ' . BackRestTestCommon_RepoPathGet(),
-                    {bRemote => true});
-    }
+    # if ($bRemote)
+    # {
+    #     executeTest('chmod 750 ' . BackRestTestCommon_RepoPathGet(),
+    #                 {bRemote => true});
+    # }
 
     my %oActualManifest;
-    iniLoad($oFile->pathGet(PATH_BACKUP_CLUSTER, $strBackup) . '/' . FILE_MANIFEST, \%oActualManifest);
+    my $strTestPath = BackRestTestCommon_TestPathGet();
+    my $strActualManifest = "${strTestPath}/actual.manifest";
+    my $strExpectedManifest = "${strTestPath}/expected.manifest";
+
+    $oFile->copy(PATH_BACKUP_CLUSTER, "backup.history/${strBackup}.manifest.gz",
+                 PATH_ABSOLUTE, $strActualManifest, true);
+    iniLoad($strActualManifest, \%oActualManifest);
 
     ${$oExpectedManifestRef}{&MANIFEST_SECTION_BACKUP}{&MANIFEST_KEY_TIMESTAMP_START} =
         $oActualManifest{&MANIFEST_SECTION_BACKUP}{&MANIFEST_KEY_TIMESTAMP_START};
@@ -1211,22 +1217,20 @@ sub BackRestTestBackup_BackupCompare
         $oActualManifest{&INI_SECTION_BACKREST}{&INI_KEY_CHECKSUM};
     ${$oExpectedManifestRef}{&INI_SECTION_BACKREST}{&INI_KEY_FORMAT} = BACKREST_FORMAT + 0;
 
-    my $strTestPath = BackRestTestCommon_TestPathGet();
+    iniSave($strActualManifest, \%oActualManifest);
+    iniSave($strExpectedManifest, $oExpectedManifestRef);
 
-    iniSave("${strTestPath}/actual.manifest", \%oActualManifest);
-    iniSave("${strTestPath}/expected.manifest", $oExpectedManifestRef);
-
-    executeTest("diff ${strTestPath}/expected.manifest ${strTestPath}/actual.manifest");
+    executeTest("diff ${strExpectedManifest} ${strActualManifest}");
 
     # Change mode on the backup path back before unit tests continue
-    if ($bRemote)
-    {
-        executeTest('chmod 700 ' . BackRestTestCommon_RepoPathGet(),
-                    {bRemote => true});
-    }
+    # if ($bRemote)
+    # {
+    #     executeTest('chmod 700 ' . BackRestTestCommon_RepoPathGet(),
+    #                 {bRemote => true});
+    # }
 
-    $oFile->remove(PATH_ABSOLUTE, "${strTestPath}/expected.manifest");
-    $oFile->remove(PATH_ABSOLUTE, "${strTestPath}/actual.manifest");
+    $oFile->remove(PATH_ABSOLUTE, $strExpectedManifest);
+    $oFile->remove(PATH_ABSOLUTE, $strActualManifest);
 }
 
 ####################################################################################################################################
@@ -1254,17 +1258,21 @@ sub BackRestTestBackup_ManifestMunge
     }
 
     # Change mode on the backup path so it can be read/written
-    if ($bRemote)
-    {
-        executeTest('chmod 750 ' . BackRestTestCommon_RepoPathGet(),
-                    {bRemote => true});
-        executeTest('chmod 770 ' . $oFile->pathGet(PATH_BACKUP_CLUSTER, $strBackup) . '/' . FILE_MANIFEST,
-                    {bRemote => true});
-    }
+    # if ($bRemote)
+    # {
+    #     executeTest('chmod 750 ' . BackRestTestCommon_RepoPathGet(),
+    #                 {bRemote => true});
+    #     executeTest('chmod 770 ' . $oFile->pathGet(PATH_BACKUP_CLUSTER, $strBackup) . '/' . FILE_MANIFEST,
+    #                 {bRemote => true});
+    # }
 
     # Read the manifest
     my %oManifest;
-    iniLoad($oFile->pathGet(PATH_BACKUP_CLUSTER, $strBackup) . '/' . FILE_MANIFEST, \%oManifest);
+    my $strActualManifest = BackRestTestCommon_TestPathGet() . '/actual.manifest';
+
+    $oFile->copy(PATH_BACKUP_CLUSTER, "backup.history/${strBackup}.manifest.gz",
+                 PATH_ABSOLUTE, $strActualManifest, true);
+    iniLoad($strActualManifest, \%oManifest);
 
     # Write in the munged value
     if (defined($strSubKey))
@@ -1301,16 +1309,19 @@ sub BackRestTestBackup_ManifestMunge
     $oManifest{&INI_SECTION_BACKREST}{&INI_KEY_CHECKSUM} = $oSHA->hexdigest();
 
     # Resave the manifest
-    iniSave($oFile->pathGet(PATH_BACKUP_CLUSTER, $strBackup) . '/' . FILE_MANIFEST, \%oManifest);
+    iniSave($strActualManifest, \%oManifest);
+
+    $oFile->copy(PATH_ABSOLUTE, $strActualManifest,
+                 PATH_BACKUP_CLUSTER, "backup.history/${strBackup}.manifest.gz", false, true);
 
     # Change mode on the backup path back before unit tests continue
-    if ($bRemote)
-    {
-        executeTest('chmod 750 ' . $oFile->pathGet(PATH_BACKUP_CLUSTER, $strBackup) . '/' . FILE_MANIFEST,
-                    {bRemote => true});
-        executeTest('chmod 700 ' . BackRestTestCommon_RepoPathGet(),
-                    {bRemote => true});
-    }
+    # if ($bRemote)
+    # {
+    #     executeTest('chmod 750 ' . $oFile->pathGet(PATH_BACKUP_CLUSTER, $strBackup) . '/' . FILE_MANIFEST,
+    #                 {bRemote => true});
+    #     executeTest('chmod 700 ' . BackRestTestCommon_RepoPathGet(),
+    #                 {bRemote => true});
+    # }
 }
 
 ####################################################################################################################################
@@ -1364,23 +1375,27 @@ sub BackRestTestBackup_Restore
     if (!defined($oExpectedManifestRef))
     {
         # Change mode on the backup path so it can be read
-        if ($bRemote)
-        {
-            executeTest('chmod 750 ' . BackRestTestCommon_RepoPathGet(),
-                        {bRemote => true});
-        }
+        # if ($bRemote)
+        # {
+        #     executeTest('chmod 750 ' . BackRestTestCommon_RepoPathGet(),
+        #                 {bRemote => true});
+        # }
 
-        my $oExpectedManifest = new BackRest::Manifest(BackRestTestCommon_RepoPathGet() .
-                                                       "/backup/${strStanza}/${strBackup}/backup.manifest", true);
+        my $strActualManifest = BackRestTestCommon_TestPathGet() . '/actual.manifest';
+
+        $oFile->copy(PATH_BACKUP_CLUSTER, 'backup.history/' . BackRestTestBackup_LastBackup($oFile) . '.manifest.gz',
+                     PATH_ABSOLUTE, $strActualManifest, true);
+
+        my $oExpectedManifest = new BackRest::Manifest($strActualManifest, true);
 
         $oExpectedManifestRef = $oExpectedManifest->{oContent};
 
-        # Change mode on the backup path back before unit tests continue
-        if ($bRemote)
-        {
-            executeTest('chmod 700 ' . BackRestTestCommon_RepoPathGet(),
-                        {bRemote => true});
-        }
+        # # Change mode on the backup path back before unit tests continue
+        # if ($bRemote)
+        # {
+        #     executeTest('chmod 700 ' . BackRestTestCommon_RepoPathGet(),
+        #                 {bRemote => true});
+        # }
     }
 
     if (defined($oRemapHashRef))
@@ -1443,28 +1458,32 @@ sub BackRestTestBackup_RestoreCompare
 
     if (defined(${$oExpectedManifestRef}{&MANIFEST_SECTION_BACKUP}{&MANIFEST_KEY_PRIOR}))
     {
-        # Change mode on the backup path so it can be read
-        if ($bRemote)
-        {
-            executeTest('chmod 750 ' . BackRestTestCommon_RepoPathGet(),
-                        {bRemote => true});
-        }
+        # # Change mode on the backup path so it can be read
+        # if ($bRemote)
+        # {
+        #     executeTest('chmod 750 ' . BackRestTestCommon_RepoPathGet(),
+        #                 {bRemote => true});
+        # }
 
-        my $oExpectedManifest = new BackRest::Manifest(BackRestTestCommon_RepoPathGet() .
-                                                       "/backup/${strStanza}/${strBackup}/" . FILE_MANIFEST, true);
+        my $strActualManifest = BackRestTestCommon_TestPathGet() . '/actual.manifest';
 
-        $oLastManifest = new BackRest::Manifest(BackRestTestCommon_RepoPathGet() .
-                                                "/backup/${strStanza}/" .
-                                                ${$oExpectedManifestRef}{&MANIFEST_SECTION_BACKUP}{&MANIFEST_KEY_PRIOR} .
-                                                '/' . FILE_MANIFEST, true);
+        $oFile->copy(PATH_BACKUP_CLUSTER, "backup.history/${strBackup}.manifest.gz",
+                     PATH_ABSOLUTE, $strActualManifest, true);
 
-        # Change mode on the backup path back before unit tests continue
-        if ($bRemote)
-        {
-            executeTest('chmod 700 ' . BackRestTestCommon_RepoPathGet(),
-                        {bRemote => true});
-        }
+        my $oExpectedManifest = new BackRest::Manifest($strActualManifest, true);
 
+        $oFile->copy(PATH_BACKUP_CLUSTER, 'backup.history/' .
+                     ${$oExpectedManifestRef}{&MANIFEST_SECTION_BACKUP}{&MANIFEST_KEY_PRIOR} . '.manifest.gz',
+                     PATH_ABSOLUTE, $strActualManifest, true);
+
+        $oLastManifest = new BackRest::Manifest($strActualManifest, true);
+
+        # # Change mode on the backup path back before unit tests continue
+        # if ($bRemote)
+        # {
+        #     executeTest('chmod 700 ' . BackRestTestCommon_RepoPathGet(),
+        #                 {bRemote => true});
+        # }
     }
 
     # Generate the tablespace map for real backups
