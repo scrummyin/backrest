@@ -488,7 +488,7 @@ sub last
     return logDebugReturn
     (
         $strOperation,
-        {name => 'strLabel', value => $strBackup}
+        {name => 'strBackup', value => $strBackup}
     );
 }
 

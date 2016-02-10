@@ -1038,7 +1038,7 @@ sub BackRestTestBackup_Test
                                         $strTmpPath, $bRemote);
 
             $oFile->copy(PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strFullBackup}.manifest.gz",
-                         PATH_ABSOLUTE, "$strTmpPath/backup.manifest", true);
+                         PATH_BACKUP_TMP, FILE_MANIFEST, true);
 
             my $oMungeManifest = BackRestTestCommon_manifestLoad("$strTmpPath/backup.manifest", $bRemote);
             $oMungeManifest->remove('base:file', 'PG_VERSION', 'checksum');
@@ -1216,7 +1216,7 @@ sub BackRestTestBackup_Test
                                         $strTmpPath, $bRemote);
 
             $oFile->copy(PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strBackup}.manifest.gz",
-                         PATH_ABSOLUTE, "$strTmpPath/backup.manifest", true);
+                         PATH_BACKUP_TMP, FILE_MANIFEST, true);
 
             $oMungeManifest = BackRestTestCommon_manifestLoad("$strTmpPath/backup.manifest", $bRemote);
             $oMungeManifest->set('base:file', 'badchecksum.txt', 'checksum', 'bogus');

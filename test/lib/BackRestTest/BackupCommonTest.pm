@@ -1253,18 +1253,18 @@ sub BackRestTestBackup_ManifestMunge
         confess &log(ASSERT, 'strSection and strKey must be defined');
     }
 
+    my $strManifestFile = PATH_MANIFEST . "/${strBackup}.manifest";
+
     # Change mode on the backup path so it can be read/written
     if ($bRemote)
     {
-        executeTest('chmod 750 ' . BackRestTestCommon_RepoPathGet(),
-                    {bRemote => true});
-        executeTest('chmod 770 ' . $oFile->pathGet(PATH_BACKUP_CLUSTER, $strBackup) . '/' . FILE_MANIFEST,
-                    {bRemote => true});
+        executeTest('chmod 750 ' . BackRestTestCommon_RepoPathGet(), {bRemote => true});
+        executeTest('chmod 770 ' . $oFile->pathGet(PATH_BACKUP_CLUSTER, $strManifestFile), {bRemote => true});
     }
 
     # Read the manifest
     my %oManifest;
-    iniLoad($oFile->pathGet(PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strBackup}.manifest"), \%oManifest);
+    iniLoad($oFile->pathGet(PATH_BACKUP_CLUSTER, $strManifestFile), \%oManifest);
 
     # Write in the munged value
     if (defined($strSubKey))
@@ -1301,15 +1301,13 @@ sub BackRestTestBackup_ManifestMunge
     $oManifest{&INI_SECTION_BACKREST}{&INI_KEY_CHECKSUM} = $oSHA->hexdigest();
 
     # Resave the manifest
-    iniSave($oFile->pathGet(PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strBackup}.manifest"), \%oManifest);
+    iniSave($oFile->pathGet(PATH_BACKUP_CLUSTER, $strManifestFile), \%oManifest);
 
     # Change mode on the backup path back before unit tests continue
     if ($bRemote)
     {
-        executeTest('chmod 750 ' . $oFile->pathGet(PATH_BACKUP_CLUSTER, $strBackup) . '/' . FILE_MANIFEST,
-                    {bRemote => true});
-        executeTest('chmod 700 ' . BackRestTestCommon_RepoPathGet(),
-                    {bRemote => true});
+        executeTest('chmod 750 ' . $oFile->pathGet(PATH_BACKUP_CLUSTER, $strManifestFile), {bRemote => true});
+        executeTest('chmod 700 ' . BackRestTestCommon_RepoPathGet(), {bRemote => true});
     }
 }
 

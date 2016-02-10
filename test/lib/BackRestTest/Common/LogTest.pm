@@ -152,7 +152,6 @@ sub supplementalAdd
     my $strFileName = shift;
     my $bRemote = shift;
     my $strComment = shift;
-    my $strOriginalFileName = shift;
 
     if ($bRemote)
     {
@@ -163,8 +162,7 @@ sub supplementalAdd
     open(my $hFile, '<', $strFileName)
         or confess &log(ERROR, "unable to open ${strFileName} for appending to test log");
 
-    my $strHeader .= "+ supplemental file: " .
-                     $self->regExpReplaceAll(defined($strOriginalFileName) ? $strOriginalFileName : $strFileName);
+    my $strHeader .= "+ supplemental file: " . $self->regExpReplaceAll($strFileName);
 
     if (defined($strComment))
     {

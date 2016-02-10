@@ -762,7 +762,7 @@ sub process
 
     my $oBackupInfo = new BackRest::BackupInfo($self->{strDbClusterPath}, false);
 
-    $self->{oFile}->remove(PATH_DB_ABSOLUTE, $self->{strDbClusterPath} . '/' . FILE_BACKUP_INFO);
+    $self->{oFile}->remove(PATH_DB_ABSOLUTE, $self->{strDbClusterPath} . '/' . FILE_BACKUP_INFO, undef, false);
 
     # If set to restore is latest then get the actual set
     if ($self->{strBackupSet} eq OPTION_DEFAULT_RESTORE_SET)
