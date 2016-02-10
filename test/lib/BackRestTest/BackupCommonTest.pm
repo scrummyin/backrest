@@ -947,12 +947,12 @@ sub BackRestTestBackup_LastBackup
 
     my @stryBackup = $oFile->list(PATH_BACKUP_CLUSTER, undef, undef, 'reverse');
 
-    if (!defined($stryBackup[2]))
+    if (!defined($stryBackup[3]))
     {
         confess 'no backup was found';
     }
 
-    return $stryBackup[2];
+    return $stryBackup[3];
 }
 
 ####################################################################################################################################
@@ -1068,8 +1068,8 @@ sub BackRestTestBackup_BackupEnd
             $oBackupLogTest->supplementalAdd(BackRestTestCommon_RepoPathGet() . "/pg_backrest.conf", true);
         }
 
-        $oBackupLogTest->supplementalAdd(BackRestTestCommon_RepoPathGet() .
-                                         "/backup/${strBackupStanza}/${strBackup}/backup.manifest", $bBackupRemote);
+        $oBackupLogTest->supplementalAdd($oBackupFile->pathGet(PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strBackup}.manifest"),
+                                         $bBackupRemote);
         $oBackupLogTest->supplementalAdd(BackRestTestCommon_RepoPathGet() .
                                          "/backup/${strBackupStanza}/backup.info", $bBackupRemote);
     }
@@ -1199,7 +1199,7 @@ sub BackRestTestBackup_BackupCompare
     }
 
     my %oActualManifest;
-    iniLoad($oFile->pathGet(PATH_BACKUP_CLUSTER, $strBackup) . '/' . FILE_MANIFEST, \%oActualManifest);
+    iniLoad($oFile->pathGet(PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strBackup}.manifest"), \%oActualManifest);
 
     ${$oExpectedManifestRef}{&MANIFEST_SECTION_BACKUP}{&MANIFEST_KEY_TIMESTAMP_START} =
         $oActualManifest{&MANIFEST_SECTION_BACKUP}{&MANIFEST_KEY_TIMESTAMP_START};
@@ -1264,7 +1264,7 @@ sub BackRestTestBackup_ManifestMunge
 
     # Read the manifest
     my %oManifest;
-    iniLoad($oFile->pathGet(PATH_BACKUP_CLUSTER, $strBackup) . '/' . FILE_MANIFEST, \%oManifest);
+    iniLoad($oFile->pathGet(PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strBackup}.manifest"), \%oManifest);
 
     # Write in the munged value
     if (defined($strSubKey))
@@ -1301,7 +1301,7 @@ sub BackRestTestBackup_ManifestMunge
     $oManifest{&INI_SECTION_BACKREST}{&INI_KEY_CHECKSUM} = $oSHA->hexdigest();
 
     # Resave the manifest
-    iniSave($oFile->pathGet(PATH_BACKUP_CLUSTER, $strBackup) . '/' . FILE_MANIFEST, \%oManifest);
+    iniSave($oFile->pathGet(PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strBackup}.manifest"), \%oManifest);
 
     # Change mode on the backup path back before unit tests continue
     if ($bRemote)
@@ -1370,8 +1370,9 @@ sub BackRestTestBackup_Restore
                         {bRemote => true});
         }
 
-        my $oExpectedManifest = new BackRest::Manifest(BackRestTestCommon_RepoPathGet() .
-                                                       "/backup/${strStanza}/${strBackup}/backup.manifest", true);
+        my $oExpectedManifest = new BackRest::Manifest(
+            $oFile->pathGet(PATH_BACKUP_CLUSTER, PATH_MANIFEST . '/' .
+                            ($strBackup eq 'latest' ? BackRestTestBackup_LastBackup($oFile) : $strBackup) . '.manifest'), true);
 
         $oExpectedManifestRef = $oExpectedManifest->{oContent};
 
@@ -1393,7 +1394,7 @@ sub BackRestTestBackup_Restore
         BackRestTestCommon_ConfigRecovery($oRecoveryHashRef, $bRemote);
     }
 
-    # Create the backup command
+    # Create the restorecommand
     executeTest(($bRemote ? BackRestTestCommon_CommandMainAbsGet() : BackRestTestCommon_CommandMainGet()) .
                 ' --config=' . BackRestTestCommon_DbPathGet() .
                 '/pg_backrest.conf'  . (defined($bDelta) && $bDelta ? ' --delta' : '') .
@@ -1450,13 +1451,13 @@ sub BackRestTestBackup_RestoreCompare
                         {bRemote => true});
         }
 
-        my $oExpectedManifest = new BackRest::Manifest(BackRestTestCommon_RepoPathGet() .
-                                                       "/backup/${strStanza}/${strBackup}/" . FILE_MANIFEST, true);
+        my $oExpectedManifest = new BackRest::Manifest(
+            $oFile->pathGet(PATH_BACKUP_CLUSTER, PATH_MANIFEST . '/' .
+                            ($strBackup eq 'latest' ? BackRestTestBackup_LastBackup($oFile) : $strBackup) . '.manifest'), true);
 
-        $oLastManifest = new BackRest::Manifest(BackRestTestCommon_RepoPathGet() .
-                                                "/backup/${strStanza}/" .
-                                                ${$oExpectedManifestRef}{&MANIFEST_SECTION_BACKUP}{&MANIFEST_KEY_PRIOR} .
-                                                '/' . FILE_MANIFEST, true);
+        $oLastManifest = new BackRest::Manifest(
+            $oFile->pathGet(PATH_BACKUP_CLUSTER, PATH_MANIFEST . '/' .
+                            ${$oExpectedManifestRef}{&MANIFEST_SECTION_BACKUP}{&MANIFEST_KEY_PRIOR} . '.manifest'), true);
 
         # Change mode on the backup path back before unit tests continue
         if ($bRemote)

@@ -40,7 +40,6 @@ use constant OP_BACKUP_NEW                                          => OP_BACKUP
 use constant OP_BACKUP_PROCESS                                      => OP_BACKUP . '->process';
 use constant OP_BACKUP_PROCESS_MANIFEST                             => OP_BACKUP . '->processManifest';
 use constant OP_BACKUP_TMP_CLEAN                                    => OP_BACKUP . '->tmpClean';
-use constant OP_BACKUP_TYPE_FIND                                    => OP_BACKUP . '->typeFind';
 
 ####################################################################################################################################
 # new
@@ -100,49 +99,6 @@ sub DESTROY
     return logDebugReturn
     (
         $strOperation
-    );
-}
-
-####################################################################################################################################
-# typeFind
-#
-# Find the last backup depending on the type.
-####################################################################################################################################
-sub typeFind
-{
-    my $self = shift;
-
-    # Assign function parameters, defaults, and log debug info
-    my
-    (
-        $strOperation,
-        $strType,
-        $strBackupClusterPath
-    ) =
-        logDebugParam
-        (
-            OP_BACKUP_TYPE_FIND, \@_,
-            {name => 'strType'},
-            {name => 'strBackupClusterPath'}
-        );
-
-    my $strLabel;
-
-    if ($strType eq BACKUP_TYPE_INCR)
-    {
-        $strLabel = ($self->{oFile}->list(PATH_BACKUP_CLUSTER, undef, backupRegExpGet(true, true, true), 'reverse'))[0];
-    }
-
-    if (!defined($strLabel) && $strType ne BACKUP_TYPE_FULL)
-    {
-        $strLabel = ($self->{oFile}->list(PATH_BACKUP_CLUSTER, undef, backupRegExpGet(true), 'reverse'))[0];
-    }
-
-    # Return from function and log return values if any
-    return logDebugReturn
-    (
-        $strOperation,
-        {name => 'strLabel', value => $strLabel}
     );
 }
 
@@ -636,20 +592,22 @@ sub process
     my $oBackupManifest = new BackRest::Manifest($strBackupConfFile, false);
 
     # Find the previous backup based on the type
-    my $oLastManifest = undef;
+    my $oLastManifest;
+    my $strBackupLastPath;
 
-    my $strBackupLastPath = $self->typeFind($strType, $self->{oFile}->pathGet(PATH_BACKUP_CLUSTER));
-
-    if (defined($strBackupLastPath))
+    if ($strType ne BACKUP_TYPE_FULL)
     {
-        $oLastManifest = new BackRest::Manifest($self->{oFile}->pathGet(PATH_BACKUP_CLUSTER) . "/${strBackupLastPath}/backup.manifest");
+        $strBackupLastPath = $oBackupInfo->last($strType eq BACKUP_TYPE_DIFF ? BACKUP_TYPE_FULL : BACKUP_TYPE_INCR);
 
-        &log(INFO, 'last backup label = ' . $oLastManifest->get(MANIFEST_SECTION_BACKUP, MANIFEST_KEY_LABEL) .
-                   ', version = ' . $oLastManifest->get(INI_SECTION_BACKREST, INI_KEY_VERSION));
-
-        # If this is incr or diff warn if certain options have changed
-        if ($strType ne BACKUP_TYPE_FULL)
+        if (defined($strBackupLastPath))
         {
+            $oLastManifest = new BackRest::Manifest(
+                $self->{oFile}->pathGet(PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strBackupLastPath}.manifest"));
+
+            &log(INFO, 'last backup label = ' . $oLastManifest->get(MANIFEST_SECTION_BACKUP, MANIFEST_KEY_LABEL) .
+                       ', version = ' . $oLastManifest->get(INI_SECTION_BACKREST, INI_KEY_VERSION));
+
+            # If this is incr or diff warn if certain options have changed
             my $strKey;
 
             # Warn if compress option changed
@@ -668,15 +626,11 @@ sub process
                 $bHardLink = $oLastManifest->boolGet(MANIFEST_SECTION_BACKUP_OPTION, MANIFEST_KEY_HARDLINK);
             }
         }
-    }
-    else
-    {
-        if ($strType eq BACKUP_TYPE_DIFF || $strType eq BACKUP_TYPE_INCR)
+        else
         {
             &log(WARN, "no prior backup exists, ${strType} backup has been changed to full");
+            $strType = BACKUP_TYPE_FULL;
         }
-
-        $strType = BACKUP_TYPE_FULL;
     }
 
     # Backup settings
@@ -953,9 +907,19 @@ sub process
 
     &log(INFO, "new backup label = ${strBackupLabel}");
 
-    # Rename the backup tmp path to complete the backup
+    # Make a compressed copy of the manifest for historical purposes
+    $self->{oFile}->copy(PATH_BACKUP_TMP, FILE_MANIFEST,
+                         PATH_BACKUP_TMP, FILE_MANIFEST . '.gz',
+                         undef, true);
+
+    $self->{oFile}->move(PATH_BACKUP_TMP, FILE_MANIFEST . '.gz',
+                         PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strBackupLabel}.manifest.gz", true);
+
+    # Move the backup tmp path to complete the backup
     logDebugMisc($strOperation, "move ${strBackupTmpPath} to " . $self->{oFile}->pathGet(PATH_BACKUP_CLUSTER, $strBackupLabel));
     $self->{oFile}->move(PATH_BACKUP_TMP, undef, PATH_BACKUP_CLUSTER, $strBackupLabel);
+    $self->{oFile}->move(PATH_BACKUP_CLUSTER, "${strBackupLabel}/" . FILE_MANIFEST,
+                         PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strBackupLabel}.manifest");
 
     # Create a link to the most recent backup
     $self->{oFile}->remove(PATH_BACKUP_CLUSTER, "latest");
