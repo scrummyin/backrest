@@ -32,7 +32,7 @@ use constant OP_MANIFEST_SAVE                                       => OP_MANIFE
 ####################################################################################################################################
 # File/path constants
 ####################################################################################################################################
-use constant PATH_MANIFEST                                          => 'backup.history';
+use constant PATH_MANIFEST                                          => 'backup.manifest';
     push @EXPORT, qw(PATH_MANIFEST);
 use constant FILE_MANIFEST                                          => 'backup.manifest';
     push @EXPORT, qw(FILE_MANIFEST);

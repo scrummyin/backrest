@@ -35,7 +35,7 @@ db-version="9.2"
 [BACKUP-FULL-1]
 [BACKUP-INCR-1]
 
-> ls [TEST_PATH]/backrest/backup/db/backup.history
+> ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-1].manifest
 [BACKUP-INCR-1].manifest
@@ -343,7 +343,7 @@ db-version="9.2"
 [BACKUP-FULL-1]
 [BACKUP-INCR-1]
 
-> ls [TEST_PATH]/backrest/backup/db/backup.history
+> ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-1].manifest
 [BACKUP-INCR-1].manifest
@@ -649,7 +649,7 @@ db-version="9.2"
 [BACKUP-INCR-1]
 [BACKUP-FULL-2]
 
-> ls [TEST_PATH]/backrest/backup/db/backup.history
+> ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-1].manifest
 [BACKUP-INCR-1].manifest
@@ -969,7 +969,7 @@ db-version="9.2"
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-2]
 
-> ls [TEST_PATH]/backrest/backup/db/backup.history
+> ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-2].manifest
 
@@ -1028,7 +1028,7 @@ db-version="9.2"
 [BACKUP-DIFF-1]
 [BACKUP-DIFF-2]
 
-> ls [TEST_PATH]/backrest/backup/db/backup.history
+> ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-2].manifest
 [BACKUP-DIFF-1].manifest
@@ -1361,7 +1361,7 @@ db-version="9.2"
 [BACKUP-FULL-2]
 [BACKUP-DIFF-2]
 
-> ls [TEST_PATH]/backrest/backup/db/backup.history
+> ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-2].manifest
 [BACKUP-DIFF-2].manifest
@@ -1697,7 +1697,7 @@ db-version="9.2"
 [BACKUP-DIFF-3]
 [BACKUP-INCR-2]
 
-> ls [TEST_PATH]/backrest/backup/db/backup.history
+> ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-2].manifest
 [BACKUP-DIFF-2].manifest
@@ -2054,7 +2054,7 @@ db-version="9.2"
 [BACKUP-DIFF-3]
 [BACKUP-INCR-2]
 
-> ls [TEST_PATH]/backrest/backup/db/backup.history
+> ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-3].manifest
 [BACKUP-DIFF-3].manifest
@@ -2125,7 +2125,7 @@ db-version="9.2"
 [BACKUP-INCR-2]
 [BACKUP-DIFF-4]
 
-> ls [TEST_PATH]/backrest/backup/db/backup.history
+> ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-3].manifest
 [BACKUP-DIFF-3].manifest
@@ -2208,7 +2208,7 @@ db-version="9.2"
 [BACKUP-FULL-3]
 [BACKUP-DIFF-4]
 
-> ls [TEST_PATH]/backrest/backup/db/backup.history
+> ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-3].manifest
 [BACKUP-DIFF-4].manifest
@@ -2275,7 +2275,7 @@ db-version="9.2"
 [BACKUP-DIFF-4]
 [BACKUP-INCR-3]
 
-> ls [TEST_PATH]/backrest/backup/db/backup.history
+> ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-3].manifest
 [BACKUP-DIFF-4].manifest
@@ -2356,7 +2356,7 @@ db-version="9.2"
 [BACKUP-DIFF-4]
 [BACKUP-INCR-3]
 
-> ls [TEST_PATH]/backrest/backup/db/backup.history
+> ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-3].manifest
 [BACKUP-DIFF-4].manifest
