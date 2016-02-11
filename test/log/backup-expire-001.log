@@ -30,10 +30,15 @@ db-version="9.2"
 [db:history]
 1={"db-catalog-version":20920101,"db-control-version":921,"db-system-id":920000000000000001,"db-version":"9.2"}
 
-> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.info"
+> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.*"
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-1]
 [BACKUP-INCR-1]
+
+> ls [TEST_PATH]/backrest/backup/db/backup.history
+------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-1].manifest
+[BACKUP-INCR-1].manifest
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -333,10 +338,15 @@ db-version="9.2"
 [db:history]
 1={"db-catalog-version":20920101,"db-control-version":921,"db-system-id":920000000000000001,"db-version":"9.2"}
 
-> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.info"
+> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.*"
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-1]
 [BACKUP-INCR-1]
+
+> ls [TEST_PATH]/backrest/backup/db/backup.history
+------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-1].manifest
+[BACKUP-INCR-1].manifest
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -633,11 +643,17 @@ db-version="9.2"
 [db:history]
 1={"db-catalog-version":20920101,"db-control-version":921,"db-system-id":920000000000000001,"db-version":"9.2"}
 
-> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.info"
+> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.*"
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-1]
 [BACKUP-INCR-1]
 [BACKUP-FULL-2]
+
+> ls [TEST_PATH]/backrest/backup/db/backup.history
+------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-1].manifest
+[BACKUP-INCR-1].manifest
+[BACKUP-FULL-2].manifest
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -949,9 +965,13 @@ db-version="9.2"
 [db:history]
 1={"db-catalog-version":20920101,"db-control-version":921,"db-system-id":920000000000000001,"db-version":"9.2"}
 
-> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.info"
+> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.*"
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-2]
+
+> ls [TEST_PATH]/backrest/backup/db/backup.history
+------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-2].manifest
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -1002,11 +1022,17 @@ db-version="9.2"
 [db:history]
 1={"db-catalog-version":20920101,"db-control-version":921,"db-system-id":920000000000000001,"db-version":"9.2"}
 
-> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.info"
+> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.*"
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-2]
 [BACKUP-DIFF-1]
 [BACKUP-DIFF-2]
+
+> ls [TEST_PATH]/backrest/backup/db/backup.history
+------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-2].manifest
+[BACKUP-DIFF-1].manifest
+[BACKUP-DIFF-2].manifest
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -1330,10 +1356,15 @@ db-version="9.2"
 [db:history]
 1={"db-catalog-version":20920101,"db-control-version":921,"db-system-id":920000000000000001,"db-version":"9.2"}
 
-> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.info"
+> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.*"
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-2]
 [BACKUP-DIFF-2]
+
+> ls [TEST_PATH]/backrest/backup/db/backup.history
+------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-2].manifest
+[BACKUP-DIFF-2].manifest
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -1658,13 +1689,21 @@ db-version="9.2"
 [db:history]
 1={"db-catalog-version":20920101,"db-control-version":921,"db-system-id":920000000000000001,"db-version":"9.2"}
 
-> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.info"
+> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.*"
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-2]
 [BACKUP-DIFF-2]
 [BACKUP-FULL-3]
 [BACKUP-DIFF-3]
 [BACKUP-INCR-2]
+
+> ls [TEST_PATH]/backrest/backup/db/backup.history
+------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-2].manifest
+[BACKUP-DIFF-2].manifest
+[BACKUP-FULL-3].manifest
+[BACKUP-DIFF-3].manifest
+[BACKUP-INCR-2].manifest
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -2009,11 +2048,17 @@ db-version="9.2"
 [db:history]
 1={"db-catalog-version":20920101,"db-control-version":921,"db-system-id":920000000000000001,"db-version":"9.2"}
 
-> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.info"
+> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.*"
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-3]
 [BACKUP-DIFF-3]
 [BACKUP-INCR-2]
+
+> ls [TEST_PATH]/backrest/backup/db/backup.history
+------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-3].manifest
+[BACKUP-DIFF-3].manifest
+[BACKUP-INCR-2].manifest
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -2073,12 +2118,19 @@ db-version="9.2"
 [db:history]
 1={"db-catalog-version":20920101,"db-control-version":921,"db-system-id":920000000000000001,"db-version":"9.2"}
 
-> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.info"
+> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.*"
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-3]
 [BACKUP-DIFF-3]
 [BACKUP-INCR-2]
 [BACKUP-DIFF-4]
+
+> ls [TEST_PATH]/backrest/backup/db/backup.history
+------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-3].manifest
+[BACKUP-DIFF-3].manifest
+[BACKUP-INCR-2].manifest
+[BACKUP-DIFF-4].manifest
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -2151,10 +2203,15 @@ db-version="9.2"
 [db:history]
 1={"db-catalog-version":20920101,"db-control-version":921,"db-system-id":920000000000000001,"db-version":"9.2"}
 
-> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.info"
+> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.*"
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-3]
 [BACKUP-DIFF-4]
+
+> ls [TEST_PATH]/backrest/backup/db/backup.history
+------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-3].manifest
+[BACKUP-DIFF-4].manifest
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -2212,11 +2269,17 @@ db-version="9.2"
 [db:history]
 1={"db-catalog-version":20920101,"db-control-version":921,"db-system-id":920000000000000001,"db-version":"9.2"}
 
-> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.info"
+> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.*"
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-3]
 [BACKUP-DIFF-4]
 [BACKUP-INCR-3]
+
+> ls [TEST_PATH]/backrest/backup/db/backup.history
+------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-3].manifest
+[BACKUP-DIFF-4].manifest
+[BACKUP-INCR-3].manifest
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -2287,11 +2350,17 @@ db-version="9.2"
 [db:history]
 1={"db-catalog-version":20920101,"db-control-version":921,"db-system-id":920000000000000001,"db-version":"9.2"}
 
-> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.info"
+> ls [TEST_PATH]/backrest/backup/db | grep -v "backup.*"
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-3]
 [BACKUP-DIFF-4]
 [BACKUP-INCR-3]
+
+> ls [TEST_PATH]/backrest/backup/db/backup.history
+------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-3].manifest
+[BACKUP-DIFF-4].manifest
+[BACKUP-INCR-3].manifest
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------

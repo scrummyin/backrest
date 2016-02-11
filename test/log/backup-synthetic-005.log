@@ -1,6 +1,32 @@
 run 005 - rmt 1, cmp 0, hardlink 0
 ==================================
 
+info
+> [BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf info
+------------------------------------------------------------------------------------------------------------------------------------
+DEBUG:     info start: --backup-host=127.0.0.1 --backup-user=backrest --cmd-remote=[BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf --config-remote=[TEST_PATH]/backrest/pg_backrest.conf --log-level-console=debug --log-level-file=trace --repo-path=[TEST_PATH]/local --repo-remote-path=[TEST_PATH]/backrest
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no backrest@127.0.0.1 '[BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest remote', strName = remote
+DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = backup, strStanza = [undef]
+DEBUG:     Info->stanzaList(): oFile = [object], strStanza = [undef]
+No stanzas exist in [TEST_PATH]/backrest.
+DEBUG:     Exit::exitSafe(): iExitCode = 0, strSignal = [undef]
+DEBUG:     info stop
+DEBUG:     Common:::Lock::lockRelease(): bFailOnNoLock = false
+
+info
+> [BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf info --output=json
+------------------------------------------------------------------------------------------------------------------------------------
+DEBUG:     info start: --backup-host=127.0.0.1 --backup-user=backrest --cmd-remote=[BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf --config-remote=[TEST_PATH]/backrest/pg_backrest.conf --log-level-console=debug --log-level-file=trace --output=json --repo-path=[TEST_PATH]/local --repo-remote-path=[TEST_PATH]/backrest
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no backrest@127.0.0.1 '[BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest remote', strName = remote
+DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = backup, strStanza = [undef]
+DEBUG:     Info->stanzaList(): oFile = [object], strStanza = [undef]
+[]
+DEBUG:     Exit::exitSafe(): iExitCode = 0, strSignal = [undef]
+DEBUG:     info stop
+DEBUG:     Common:::Lock::lockRelease(): bFailOnNoLock = false
+
 full backup
 > [BACKREST_BIN] --config=[TEST_PATH]/backrest/pg_backrest.conf --no-start-stop --manifest-save-threshold=3 --db-timeout=2 --type=full --stanza=db backup
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -8,7 +34,7 @@ full backup
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 2, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --db-timeout=2 --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 2, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --db-timeout=2 --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 2, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --db-timeout=2 --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -111,7 +137,7 @@ db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
-db-user=[USER-1]
+db-user=[USER-2]
 
 # backup settings
 [global:backup]
@@ -164,19 +190,19 @@ option-start-stop=false
 base={"path":"[TEST_PATH]/db/common"}
 
 [base:file]
-PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-base/base1.txt={"checksum":"a3b357a3e395e43fcfb19bb13f3c1b5179279593","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-1]"}
+PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+base/base1.txt={"checksum":"a3b357a3e395e43fcfb19bb13f3c1b5179279593","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-2]"}
 
 [base:link]
-link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-1]"}
+link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-2]"}
 
 [base:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-base={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-global={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+base={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+global={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.info
 ---------------------------------------------------------------
@@ -208,7 +234,7 @@ full backup (protocol timeout)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --db-timeout=1 --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --db-timeout=1 --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --db-timeout=1 --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -252,7 +278,7 @@ full backup (abort backup - local)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -287,7 +313,7 @@ full backup (global stop)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -322,7 +348,7 @@ full backup (stanza stop)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -376,7 +402,7 @@ full backup (abort backup - remote)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -434,7 +460,7 @@ info db
 > [BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf --stanza=db info
 ------------------------------------------------------------------------------------------------------------------------------------
 DEBUG:     info start: --backup-host=127.0.0.1 --backup-user=backrest --cmd-remote=[BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf --config-remote=[TEST_PATH]/backrest/pg_backrest.conf --log-level-console=debug --log-level-file=trace --repo-path=[TEST_PATH]/local --repo-remote-path=[TEST_PATH]/backrest --stanza=db
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no backrest@127.0.0.1 '[BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = backup, strStanza = db
 DEBUG:     Info->stanzaList(): oFile = [object], strStanza = db
@@ -452,7 +478,7 @@ info db
 > [BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf --stanza=db info --output=json
 ------------------------------------------------------------------------------------------------------------------------------------
 DEBUG:     info start: --backup-host=127.0.0.1 --backup-user=backrest --cmd-remote=[BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf --config-remote=[TEST_PATH]/backrest/pg_backrest.conf --log-level-console=debug --log-level-file=trace --output=json --repo-path=[TEST_PATH]/local --repo-remote-path=[TEST_PATH]/backrest --stanza=db
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no backrest@127.0.0.1 '[BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = backup, strStanza = db
 DEBUG:     Info->stanzaList(): oFile = [object], strStanza = db
@@ -514,7 +540,7 @@ full backup (resume)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -622,7 +648,7 @@ db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
-db-user=[USER-1]
+db-user=[USER-2]
 
 # backup settings
 [global:backup]
@@ -675,19 +701,19 @@ option-start-stop=false
 base={"path":"[TEST_PATH]/db/common"}
 
 [base:file]
-PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-base/base1.txt={"checksum":"a3b357a3e395e43fcfb19bb13f3c1b5179279593","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-1]"}
+PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+base/base1.txt={"checksum":"a3b357a3e395e43fcfb19bb13f3c1b5179279593","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-2]"}
 
 [base:link]
-link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-1]"}
+link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-2]"}
 
 [base:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-base={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-global={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+base={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+global={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.info
 ---------------------------------------------------------------
@@ -727,7 +753,7 @@ restore delta, backup '[BACKUP-FULL-2]' (add and delete files)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = restore
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/local
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=restore --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=restore --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no backrest@127.0.0.1 '[BACKREST_BIN] --command=restore --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = backup, strStanza = db
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common/postmaster.pid, strPathType = db:absolute
@@ -781,8 +807,8 @@ DEBUG:     File->exists=>: bExists = true
 DEBUG:     Restore->process: restore in main process
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common/base/base1.txt, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
-DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-2], strDestinationFile = [TEST_PATH]/db/common/base/base1.txt, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-FULL-2]/base/base1.txt, strSourcePathType = backup:cluster, strUser = [USER-1]
-DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common/base/base1.txt.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-1]
+DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-2], strDestinationFile = [TEST_PATH]/db/common/base/base1.txt, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-FULL-2]/base/base1.txt, strSourcePathType = backup:cluster, strUser = [USER-2]
+DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common/base/base1.txt.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-2]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common/base/base1.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common/base/base1.txt.backrest.tmp, strSourcePathType = absolute
  INFO: restore file [TEST_PATH]/db/common/base/base1.txt (4B, 0%) checksum a3b357a3e395e43fcfb19bb13f3c1b5179279593
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common/PG_VERSION, strPathType = db:absolute
@@ -796,8 +822,8 @@ DEBUG:     File->exists=>: bExists = false
  INFO: restore global/pg_control (copied last to ensure aborted restores cannot be started)
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common/global/pg_control, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
-DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = [TEST_PATH]/db/common/global/pg_control, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-FULL-2]/global/pg_control, strSourcePathType = backup:cluster, strUser = [USER-1]
-DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common/global/pg_control.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-1]
+DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = [TEST_PATH]/db/common/global/pg_control, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-FULL-2]/global/pg_control, strSourcePathType = backup:cluster, strUser = [USER-2]
+DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common/global/pg_control.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-2]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common/global/pg_control, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common/global/pg_control.backrest.tmp, strSourcePathType = absolute
  INFO: restore file [TEST_PATH]/db/common/global/pg_control (8KB, 100%) checksum 56fe5780b8dca9705e0c22032a83828860a21235
 DEBUG:     File->remove(): bIgnoreMissing = false, bTemp = [undef], strPath = [TEST_PATH]/db/common/backup.manifest, strPathType = db:absolute
@@ -845,7 +871,7 @@ incr backup (invalid database version)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -874,7 +900,7 @@ incr backup (invalid system id)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -903,7 +929,7 @@ incr backup (invalid control version)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -932,7 +958,7 @@ incr backup (invalid catalog version)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -985,7 +1011,7 @@ incr backup (add tablespace 1)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -1093,7 +1119,7 @@ db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
-db-user=[USER-1]
+db-user=[USER-2]
 
 # backup settings
 [global:backup]
@@ -1148,27 +1174,27 @@ base={"path":"[TEST_PATH]/db/common"}
 tablespace/1={"link":"1","path":"[TEST_PATH]/db/tablespace/ts1"}
 
 [base:file]
-PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-base/base1.txt={"checksum":"a3b357a3e395e43fcfb19bb13f3c1b5179279593","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-1]"}
+PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+base/base1.txt={"checksum":"a3b357a3e395e43fcfb19bb13f3c1b5179279593","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-2]"}
 
 [base:link]
-link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-1]"}
-pg_tblspc/1={"destination":"[TEST_PATH]/db/tablespace/ts1","group":"[GROUP-1]","user":"[USER-1]"}
+link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-2]"}
+pg_tblspc/1={"destination":"[TEST_PATH]/db/tablespace/ts1","group":"[GROUP-1]","user":"[USER-2]"}
 
 [base:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-base={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-global={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+base={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+global={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 [tablespace/1:file]
-tablespace1.txt={"checksum":"d85de07d6421d90aa9191c11c889bfde43680f0f","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
+tablespace1.txt={"checksum":"d85de07d6421d90aa9191c11c889bfde43680f0f","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
 
 [tablespace/1:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.info
 ---------------------------------------------------------------
@@ -1203,7 +1229,7 @@ incr backup (resume and add tablespace 2)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -1327,7 +1353,7 @@ db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
-db-user=[USER-1]
+db-user=[USER-2]
 
 # backup settings
 [global:backup]
@@ -1383,34 +1409,34 @@ tablespace/1={"link":"1","path":"[TEST_PATH]/db/tablespace/ts1"}
 tablespace/2={"link":"2","path":"[TEST_PATH]/db/tablespace/ts2"}
 
 [base:file]
-PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-base/base1.txt={"checksum":"a3b357a3e395e43fcfb19bb13f3c1b5179279593","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-1]"}
+PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+base/base1.txt={"checksum":"a3b357a3e395e43fcfb19bb13f3c1b5179279593","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-2]"}
 
 [base:link]
-link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-1]"}
-pg_tblspc/1={"destination":"[TEST_PATH]/db/tablespace/ts1","group":"[GROUP-1]","user":"[USER-1]"}
-pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2","group":"[GROUP-1]","user":"[USER-1]"}
+link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-2]"}
+pg_tblspc/1={"destination":"[TEST_PATH]/db/tablespace/ts1","group":"[GROUP-1]","user":"[USER-2]"}
+pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2","group":"[GROUP-1]","user":"[USER-2]"}
 
 [base:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-base={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-global={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+base={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+global={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 [tablespace/1:file]
-tablespace1.txt={"checksum":"d85de07d6421d90aa9191c11c889bfde43680f0f","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
+tablespace1.txt={"checksum":"d85de07d6421d90aa9191c11c889bfde43680f0f","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
 
 [tablespace/1:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 [tablespace/2:file]
-tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
+tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
 
 [tablespace/2:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.info
 ---------------------------------------------------------------
@@ -1446,7 +1472,7 @@ diff backup (cannot resume - new diff)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -1476,8 +1502,7 @@ DEBUG:     File->manifest(): oManifestHashRef = [hash], strPath = [TEST_PATH]/db
 DEBUG:     Manifest->build(): bNoStartStop = true, oFile = [object], oLastManifest = [object], oTablespaceMapRef = [hash], strDbClusterPath = [TEST_PATH]/db/tablespace/ts2, strLevel = tablespace/2
 DEBUG:     File->manifest(): oManifestHashRef = [hash], strPath = [TEST_PATH]/db/tablespace/ts2/[TS_PATH-1], strPathType = db:absolute
 DEBUG:     File->wait(): strPathType = db:absolute
-ERROR: unable to open [TEST_PATH]/backrest/temp/db.tmp/backup.manifest
- WARN: aborted backup exists, but cannot be resumed (unable to read [TEST_PATH]/backrest/temp/db.tmp/backup.manifest) - will be dropped and recreated
+ WARN: aborted backup exists, but cannot be resumed (new backup-type 'diff' does not match aborted backup-type 'incr') - will be dropped and recreated
 DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPath = [undef], strPathType = backup:tmp
 DEBUG:     Backup->processManifest(): bCompress = false, bHardLink = false, oBackupManifest = [object], strType = diff
 DEBUG:     Backup->processManifest: reference [TEST_PATH]/db/common/PG_VERSION to [BACKUP-FULL-2]
@@ -1566,7 +1591,7 @@ db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
-db-user=[USER-1]
+db-user=[USER-2]
 
 # backup settings
 [global:backup]
@@ -1622,34 +1647,34 @@ tablespace/1={"link":"1","path":"[TEST_PATH]/db/tablespace/ts1"}
 tablespace/2={"link":"2","path":"[TEST_PATH]/db/tablespace/ts2"}
 
 [base:file]
-PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-base/base1.txt={"checksum":"a3b357a3e395e43fcfb19bb13f3c1b5179279593","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-1]"}
+PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+base/base1.txt={"checksum":"a3b357a3e395e43fcfb19bb13f3c1b5179279593","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-2]"}
 
 [base:link]
-link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-1]"}
-pg_tblspc/1={"destination":"[TEST_PATH]/db/tablespace/ts1","group":"[GROUP-1]","user":"[USER-1]"}
-pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2","group":"[GROUP-1]","user":"[USER-1]"}
+link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-2]"}
+pg_tblspc/1={"destination":"[TEST_PATH]/db/tablespace/ts1","group":"[GROUP-1]","user":"[USER-2]"}
+pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2","group":"[GROUP-1]","user":"[USER-2]"}
 
 [base:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-base={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-global={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+base={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+global={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 [tablespace/1:file]
-tablespace1.txt={"checksum":"d85de07d6421d90aa9191c11c889bfde43680f0f","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
+tablespace1.txt={"checksum":"d85de07d6421d90aa9191c11c889bfde43680f0f","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
 
 [tablespace/1:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 [tablespace/2:file]
-tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
+tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
 
 [tablespace/2:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.info
 ---------------------------------------------------------------
@@ -1686,7 +1711,7 @@ diff backup (cannot resume - disabled)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -1805,7 +1830,7 @@ db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
-db-user=[USER-1]
+db-user=[USER-2]
 
 # backup settings
 [global:backup]
@@ -1861,34 +1886,34 @@ tablespace/1={"link":"1","path":"[TEST_PATH]/db/tablespace/ts1"}
 tablespace/2={"link":"2","path":"[TEST_PATH]/db/tablespace/ts2"}
 
 [base:file]
-PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-base/base1.txt={"checksum":"a3b357a3e395e43fcfb19bb13f3c1b5179279593","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-1]"}
+PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+base/base1.txt={"checksum":"a3b357a3e395e43fcfb19bb13f3c1b5179279593","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-2]"}
 
 [base:link]
-link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-1]"}
-pg_tblspc/1={"destination":"[TEST_PATH]/db/tablespace/ts1","group":"[GROUP-1]","user":"[USER-1]"}
-pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2","group":"[GROUP-1]","user":"[USER-1]"}
+link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-2]"}
+pg_tblspc/1={"destination":"[TEST_PATH]/db/tablespace/ts1","group":"[GROUP-1]","user":"[USER-2]"}
+pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2","group":"[GROUP-1]","user":"[USER-2]"}
 
 [base:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-base={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-global={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+base={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+global={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 [tablespace/1:file]
-tablespace1.txt={"checksum":"d85de07d6421d90aa9191c11c889bfde43680f0f","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
+tablespace1.txt={"checksum":"d85de07d6421d90aa9191c11c889bfde43680f0f","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
 
 [tablespace/1:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 [tablespace/2:file]
-tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
+tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
 
 [tablespace/2:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.info
 ---------------------------------------------------------------
@@ -1926,7 +1951,7 @@ restore, backup '[BACKUP-DIFF-2]', expect exit 115 (fail on used path)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = restore
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/local
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=restore --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=restore --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no backrest@127.0.0.1 '[BACKREST_BIN] --command=restore --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = backup, strStanza = db
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common/postmaster.pid, strPathType = db:absolute
@@ -1968,7 +1993,7 @@ restore, backup '[BACKUP-DIFF-2]', expect exit 104 (fail on undef format)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = restore
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/local
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=restore --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=restore --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no backrest@127.0.0.1 '[BACKREST_BIN] --command=restore --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = backup, strStanza = db
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common/postmaster.pid, strPathType = db:absolute
@@ -1999,7 +2024,7 @@ restore, backup '[BACKUP-DIFF-2]', expect exit 104 (fail on mismatch format)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = restore
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/local
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=restore --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=restore --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no backrest@127.0.0.1 '[BACKREST_BIN] --command=restore --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = backup, strStanza = db
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common/postmaster.pid, strPathType = db:absolute
@@ -2030,7 +2055,7 @@ restore, backup '[BACKUP-DIFF-2]', remap (remap all paths)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = restore
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/local
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=restore --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=restore --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no backrest@127.0.0.1 '[BACKREST_BIN] --command=restore --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = backup, strStanza = db
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2/postmaster.pid, strPathType = db:absolute
@@ -2103,32 +2128,32 @@ DEBUG:     File->exists=>: bExists = true
 DEBUG:     Restore->process: restore in main process
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2/badchecksum.txt, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
-DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-2], strDestinationFile = [TEST_PATH]/db/common-2/badchecksum.txt, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-DIFF-2]/badchecksum.txt, strSourcePathType = backup:cluster, strUser = [USER-1]
-DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common-2/badchecksum.txt.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-1]
+DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-2], strDestinationFile = [TEST_PATH]/db/common-2/badchecksum.txt, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-DIFF-2]/badchecksum.txt, strSourcePathType = backup:cluster, strUser = [USER-2]
+DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common-2/badchecksum.txt.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-2]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common-2/badchecksum.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common-2/badchecksum.txt.backrest.tmp, strSourcePathType = absolute
  INFO: restore file [TEST_PATH]/db/common-2/badchecksum.txt (11B, 0%) checksum f927212cd08d11a42a666b2f04235398e9ceeb51
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2/base/base1.txt, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
-DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-2], strDestinationFile = [TEST_PATH]/db/common-2/base/base1.txt, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-FULL-2]/base/base1.txt, strSourcePathType = backup:cluster, strUser = [USER-1]
-DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common-2/base/base1.txt.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-1]
+DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-2], strDestinationFile = [TEST_PATH]/db/common-2/base/base1.txt, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-FULL-2]/base/base1.txt, strSourcePathType = backup:cluster, strUser = [USER-2]
+DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common-2/base/base1.txt.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-2]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common-2/base/base1.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common-2/base/base1.txt.backrest.tmp, strSourcePathType = absolute
  INFO: restore file [TEST_PATH]/db/common-2/base/base1.txt (4B, 0%) checksum a3b357a3e395e43fcfb19bb13f3c1b5179279593
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2/PG_VERSION, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
-DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-2], strDestinationFile = [TEST_PATH]/db/common-2/PG_VERSION, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-FULL-2]/PG_VERSION, strSourcePathType = backup:cluster, strUser = [USER-1]
-DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common-2/PG_VERSION.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-1]
+DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-2], strDestinationFile = [TEST_PATH]/db/common-2/PG_VERSION, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-FULL-2]/PG_VERSION, strSourcePathType = backup:cluster, strUser = [USER-2]
+DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common-2/PG_VERSION.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-2]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common-2/PG_VERSION, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common-2/PG_VERSION.backrest.tmp, strSourcePathType = absolute
  INFO: restore file [TEST_PATH]/db/common-2/PG_VERSION (3B, 0%) checksum e1f7a3a299f62225cba076fc6d3d6e677f303482
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/tablespace/ts1-2/[TS_PATH-1]/tablespace1.txt, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
-DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-2], strDestinationFile = [TEST_PATH]/db/tablespace/ts1-2/[TS_PATH-1]/tablespace1.txt, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-DIFF-2]/pg_tblspc/1/tablespace1.txt, strSourcePathType = backup:cluster, strUser = [USER-1]
-DEBUG:     File->owner(): strFile = [TEST_PATH]/db/tablespace/ts1-2/[TS_PATH-1]/tablespace1.txt.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-1]
+DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-2], strDestinationFile = [TEST_PATH]/db/tablespace/ts1-2/[TS_PATH-1]/tablespace1.txt, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-DIFF-2]/pg_tblspc/1/tablespace1.txt, strSourcePathType = backup:cluster, strUser = [USER-2]
+DEBUG:     File->owner(): strFile = [TEST_PATH]/db/tablespace/ts1-2/[TS_PATH-1]/tablespace1.txt.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-2]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/tablespace/ts1-2/[TS_PATH-1]/tablespace1.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/tablespace/ts1-2/[TS_PATH-1]/tablespace1.txt.backrest.tmp, strSourcePathType = absolute
  INFO: restore file [TEST_PATH]/db/tablespace/ts1-2/[TS_PATH-1]/tablespace1.txt (7B, 0%) checksum d85de07d6421d90aa9191c11c889bfde43680f0f
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2.txt, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
-DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-2], strDestinationFile = [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2.txt, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-DIFF-2]/pg_tblspc/2/tablespace2.txt, strSourcePathType = backup:cluster, strUser = [USER-1]
-DEBUG:     File->owner(): strFile = [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2.txt.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-1]
+DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-2], strDestinationFile = [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2.txt, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-DIFF-2]/pg_tblspc/2/tablespace2.txt, strSourcePathType = backup:cluster, strUser = [USER-2]
+DEBUG:     File->owner(): strFile = [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2.txt.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-2]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2.txt.backrest.tmp, strSourcePathType = absolute
  INFO: restore file [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2.txt (7B, 0%) checksum dc7f76e43c46101b47acc55ae4d593a9e6983578
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2/recovery.conf, strPathType = db:absolute
@@ -2137,8 +2162,8 @@ DEBUG:     File->exists=>: bExists = false
  INFO: restore global/pg_control (copied last to ensure aborted restores cannot be started)
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2/global/pg_control, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
-DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = [TEST_PATH]/db/common-2/global/pg_control, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-FULL-2]/global/pg_control, strSourcePathType = backup:cluster, strUser = [USER-1]
-DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common-2/global/pg_control.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-1]
+DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = [TEST_PATH]/db/common-2/global/pg_control, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-FULL-2]/global/pg_control, strSourcePathType = backup:cluster, strUser = [USER-2]
+DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common-2/global/pg_control.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-2]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common-2/global/pg_control, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common-2/global/pg_control.backrest.tmp, strSourcePathType = absolute
  INFO: restore file [TEST_PATH]/db/common-2/global/pg_control (8KB, 100%) checksum 56fe5780b8dca9705e0c22032a83828860a21235
 DEBUG:     File->remove(): bIgnoreMissing = false, bTemp = [undef], strPath = [TEST_PATH]/db/common-2/backup.manifest, strPathType = db:absolute
@@ -2184,7 +2209,7 @@ incr backup (add files and remove tablespace 2)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -2297,7 +2322,7 @@ db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common-2
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
-db-user=[USER-1]
+db-user=[USER-2]
 
 [global:backup]
 archive-copy=y
@@ -2348,29 +2373,29 @@ base={"path":"[TEST_PATH]/db/common-2"}
 tablespace/2={"link":"2","path":"[TEST_PATH]/db/tablespace/ts2-2"}
 
 [base:file]
-PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-DIFF-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-base/base1.txt={"checksum":"a3b357a3e395e43fcfb19bb13f3c1b5179279593","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-base/base2.txt={"checksum":"09b5e31766be1dba1ec27de82f975c1b6eea2a92","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-1]"}
+PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-DIFF-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+base/base1.txt={"checksum":"a3b357a3e395e43fcfb19bb13f3c1b5179279593","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+base/base2.txt={"checksum":"09b5e31766be1dba1ec27de82f975c1b6eea2a92","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-2]"}
 
 [base:link]
-link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-1]"}
-pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2-2","group":"[GROUP-1]","user":"[USER-1]"}
+link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-2]"}
+pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2-2","group":"[GROUP-1]","user":"[USER-2]"}
 
 [base:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-base={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-global={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+base={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+global={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 [tablespace/2:file]
-tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-DIFF-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-tablespace2b.txt={"checksum":"e324463005236d83e6e54795dbddd20a74533bf3","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
+tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-DIFF-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+tablespace2b.txt={"checksum":"e324463005236d83e6e54795dbddd20a74533bf3","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
 
 [tablespace/2:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.info
 ---------------------------------------------------------------
@@ -2410,7 +2435,7 @@ incr backup (update files)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -2520,7 +2545,7 @@ db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common-2
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
-db-user=[USER-1]
+db-user=[USER-2]
 
 [global:backup]
 archive-copy=y
@@ -2571,29 +2596,29 @@ base={"path":"[TEST_PATH]/db/common-2"}
 tablespace/2={"link":"2","path":"[TEST_PATH]/db/tablespace/ts2-2"}
 
 [base:file]
-PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-DIFF-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-base/base1.txt={"checksum":"9a53d532e27785e681766c98516a5e93f096a501","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-base/base2.txt={"checksum":"09b5e31766be1dba1ec27de82f975c1b6eea2a92","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-INCR-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-1]"}
+PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-DIFF-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+base/base1.txt={"checksum":"9a53d532e27785e681766c98516a5e93f096a501","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+base/base2.txt={"checksum":"09b5e31766be1dba1ec27de82f975c1b6eea2a92","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-INCR-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-2]"}
 
 [base:link]
-link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-1]"}
-pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2-2","group":"[GROUP-1]","user":"[USER-1]"}
+link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-2]"}
+pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2-2","group":"[GROUP-1]","user":"[USER-2]"}
 
 [base:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-base={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-global={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+base={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+global={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 [tablespace/2:file]
-tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-DIFF-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-tablespace2b.txt={"checksum":"e324463005236d83e6e54795dbddd20a74533bf3","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-INCR-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
+tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-DIFF-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+tablespace2b.txt={"checksum":"e324463005236d83e6e54795dbddd20a74533bf3","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-INCR-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
 
 [tablespace/2:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.info
 ---------------------------------------------------------------
@@ -2635,7 +2660,7 @@ diff backup (no updates)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -2758,7 +2783,7 @@ db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common-2
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
-db-user=[USER-1]
+db-user=[USER-2]
 
 [global:backup]
 archive-copy=y
@@ -2809,29 +2834,29 @@ base={"path":"[TEST_PATH]/db/common-2"}
 tablespace/2={"link":"2","path":"[TEST_PATH]/db/tablespace/ts2-2"}
 
 [base:file]
-PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-base/base1.txt={"checksum":"9a53d532e27785e681766c98516a5e93f096a501","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-base/base2.txt={"checksum":"09b5e31766be1dba1ec27de82f975c1b6eea2a92","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-1]"}
+PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+base/base1.txt={"checksum":"9a53d532e27785e681766c98516a5e93f096a501","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+base/base2.txt={"checksum":"09b5e31766be1dba1ec27de82f975c1b6eea2a92","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-2]"}
 
 [base:link]
-link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-1]"}
-pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2-2","group":"[GROUP-1]","user":"[USER-1]"}
+link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-2]"}
+pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2-2","group":"[GROUP-1]","user":"[USER-2]"}
 
 [base:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-base={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-global={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+base={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+global={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 [tablespace/2:file]
-tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-tablespace2b.txt={"checksum":"e324463005236d83e6e54795dbddd20a74533bf3","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
+tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+tablespace2b.txt={"checksum":"e324463005236d83e6e54795dbddd20a74533bf3","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
 
 [tablespace/2:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.info
 ---------------------------------------------------------------
@@ -2875,7 +2900,7 @@ incr backup (remove files - but won't affect manifest)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -2984,7 +3009,7 @@ db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common-2
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
-db-user=[USER-1]
+db-user=[USER-2]
 
 [global:backup]
 archive-copy=y
@@ -3035,29 +3060,29 @@ base={"path":"[TEST_PATH]/db/common-2"}
 tablespace/2={"link":"2","path":"[TEST_PATH]/db/tablespace/ts2-2"}
 
 [base:file]
-PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-DIFF-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-base/base1.txt={"checksum":"9a53d532e27785e681766c98516a5e93f096a501","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-DIFF-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-base/base2.txt={"checksum":"09b5e31766be1dba1ec27de82f975c1b6eea2a92","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-DIFF-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-1]"}
+PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-DIFF-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+base/base1.txt={"checksum":"9a53d532e27785e681766c98516a5e93f096a501","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-DIFF-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+base/base2.txt={"checksum":"09b5e31766be1dba1ec27de82f975c1b6eea2a92","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-DIFF-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-2]"}
 
 [base:link]
-link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-1]"}
-pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2-2","group":"[GROUP-1]","user":"[USER-1]"}
+link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-2]"}
+pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2-2","group":"[GROUP-1]","user":"[USER-2]"}
 
 [base:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-base={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-global={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+base={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+global={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 [tablespace/2:file]
-tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-DIFF-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-tablespace2b.txt={"checksum":"e324463005236d83e6e54795dbddd20a74533bf3","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-DIFF-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
+tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-DIFF-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+tablespace2b.txt={"checksum":"e324463005236d83e6e54795dbddd20a74533bf3","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-DIFF-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
 
 [tablespace/2:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.info
 ---------------------------------------------------------------
@@ -3103,7 +3128,7 @@ diff backup (remove files during backup)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -3223,7 +3248,7 @@ db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common-2
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
-db-user=[USER-1]
+db-user=[USER-2]
 
 [global:backup]
 archive-copy=y
@@ -3274,27 +3299,27 @@ base={"path":"[TEST_PATH]/db/common-2"}
 tablespace/2={"link":"2","path":"[TEST_PATH]/db/tablespace/ts2-2"}
 
 [base:file]
-PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-1]"}
+PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-2]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-2]"}
 
 [base:link]
-link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-1]"}
-pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2-2","group":"[GROUP-1]","user":"[USER-1]"}
+link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-2]"}
+pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2-2","group":"[GROUP-1]","user":"[USER-2]"}
 
 [base:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-base={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-global={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+base={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+global={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 [tablespace/2:file]
-tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-tablespace2c.txt={"checksum":"dfcb8679956b734706cf87259d50c88f83e80e66","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
+tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+tablespace2c.txt={"checksum":"dfcb8679956b734706cf87259d50c88f83e80e66","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
 
 [tablespace/2:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.info
 ---------------------------------------------------------------
@@ -3342,7 +3367,7 @@ full backup
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -3466,7 +3491,7 @@ db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common-2
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
-db-user=[USER-1]
+db-user=[USER-2]
 
 [global:backup]
 archive-copy=y
@@ -3516,28 +3541,28 @@ base={"path":"[TEST_PATH]/db/common-2"}
 tablespace/2={"link":"2","path":"[TEST_PATH]/db/tablespace/ts2-2"}
 
 [base:file]
-PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-base/base1.txt={"checksum":"7579ada0808d7f98087a0a586d0df9de009cdc33","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-1]"}
+PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+base/base1.txt={"checksum":"7579ada0808d7f98087a0a586d0df9de009cdc33","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-2]"}
 
 [base:link]
-link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-1]"}
-pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2-2","group":"[GROUP-1]","user":"[USER-1]"}
+link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-2]"}
+pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2-2","group":"[GROUP-1]","user":"[USER-2]"}
 
 [base:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-base={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-global={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+base={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+global={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 [tablespace/2:file]
-tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-tablespace2c.txt={"checksum":"dfcb8679956b734706cf87259d50c88f83e80e66","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
+tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+tablespace2c.txt={"checksum":"dfcb8679956b734706cf87259d50c88f83e80e66","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
 
 [tablespace/2:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.info
 ---------------------------------------------------------------
@@ -3593,7 +3618,7 @@ diff backup (add files)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = backup
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/backrest
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no vagrant@127.0.0.1 '[BACKREST_BIN] --command=backup --config=[TEST_PATH]/db/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = db, strStanza = db
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [undef], strPathType = backup:cluster
@@ -3713,7 +3738,7 @@ db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common-2
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
-db-user=[USER-1]
+db-user=[USER-2]
 
 [global:backup]
 archive-copy=y
@@ -3764,29 +3789,29 @@ base={"path":"[TEST_PATH]/db/common-2"}
 tablespace/2={"link":"2","path":"[TEST_PATH]/db/tablespace/ts2-2"}
 
 [base:file]
-PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-base/base1.txt={"checksum":"7579ada0808d7f98087a0a586d0df9de009cdc33","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-base/base2.txt={"checksum":"cafac3c59553f2cfde41ce2e62e7662295f108c0","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-3]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-1]"}
+PG_VERSION={"checksum":"e1f7a3a299f62225cba076fc6d3d6e677f303482","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+badchecksum.txt={"checksum":"f927212cd08d11a42a666b2f04235398e9ceeb51","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+base/base1.txt={"checksum":"7579ada0808d7f98087a0a586d0df9de009cdc33","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+base/base2.txt={"checksum":"cafac3c59553f2cfde41ce2e62e7662295f108c0","group":"[GROUP-1]","mode":"0600","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+global/pg_control={"checksum":"56fe5780b8dca9705e0c22032a83828860a21235","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-3]","size":[SIZE],"timestamp":[TIMESTAMP-2],"user":"[USER-2]"}
 
 [base:link]
-link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-1]"}
-pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2-2","group":"[GROUP-1]","user":"[USER-1]"}
+link-test={"destination":"/test","group":"[GROUP-1]","user":"[USER-2]"}
+pg_tblspc/2={"destination":"[TEST_PATH]/db/tablespace/ts2-2","group":"[GROUP-1]","user":"[USER-2]"}
 
 [base:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-base={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-global={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
-pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+base={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+global={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+path-test={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
+pg_tblspc={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 [tablespace/2:file]
-tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
-tablespace2c.txt={"checksum":"dfcb8679956b734706cf87259d50c88f83e80e66","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-1]"}
+tablespace2.txt={"checksum":"dc7f76e43c46101b47acc55ae4d593a9e6983578","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
+tablespace2c.txt={"checksum":"dfcb8679956b734706cf87259d50c88f83e80e66","group":"[GROUP-1]","mode":"0600","reference":"[BACKUP-FULL-3]","size":[SIZE],"timestamp":[TIMESTAMP-1],"user":"[USER-2]"}
 
 [tablespace/2:path]
-.={"group":"[GROUP-1]","mode":"0700","user":"[USER-1]"}
+.={"group":"[GROUP-1]","mode":"0700","user":"[USER-2]"}
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.info
 ---------------------------------------------------------------
@@ -3838,7 +3863,7 @@ restore delta (no tablespace remap)
 DEBUG:     Common:::Lock::lockAquire(): bFailOnNoLock = <true>, bRemote = <false>, iProcessIdx = [undef], strLockType = restore
 DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = [TEST_PATH]/local
 DEBUG:     Common:::Lock::lockAquire=>: bResult = true
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=restore --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-2]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=restore --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote, strHost = 127.0.0.1, strUser = [USER-1]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no backrest@127.0.0.1 '[BACKREST_BIN] --command=restore --config=[TEST_PATH]/backrest/pg_backrest.conf --db-port=[PORT-1] --db-socket-path=[TEST_PATH]/db --repo-remote-path=[TEST_PATH]/backrest --stanza=db remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = backup, strStanza = db
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2/postmaster.pid, strPathType = db:absolute
@@ -3923,14 +3948,14 @@ DEBUG:     File->hashSize=>: iSize = 3, strHash = e1f7a3a299f62225cba076fc6d3d6e
  INFO: restore file [TEST_PATH]/db/common-2/PG_VERSION - exists and matches backup (3B, 0%) checksum e1f7a3a299f62225cba076fc6d3d6e677f303482
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2/pg_tblspc/2/[TS_PATH-1]/tablespace2c.txt, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
-DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-2], strDestinationFile = [TEST_PATH]/db/common-2/pg_tblspc/2/[TS_PATH-1]/tablespace2c.txt, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-FULL-3]/pg_tblspc/2/tablespace2c.txt, strSourcePathType = backup:cluster, strUser = [USER-1]
-DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common-2/pg_tblspc/2/[TS_PATH-1]/tablespace2c.txt.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-1]
+DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-2], strDestinationFile = [TEST_PATH]/db/common-2/pg_tblspc/2/[TS_PATH-1]/tablespace2c.txt, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-FULL-3]/pg_tblspc/2/tablespace2c.txt, strSourcePathType = backup:cluster, strUser = [USER-2]
+DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common-2/pg_tblspc/2/[TS_PATH-1]/tablespace2c.txt.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-2]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common-2/pg_tblspc/2/[TS_PATH-1]/tablespace2c.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common-2/pg_tblspc/2/[TS_PATH-1]/tablespace2c.txt.backrest.tmp, strSourcePathType = absolute
  INFO: restore file [TEST_PATH]/db/common-2/pg_tblspc/2/[TS_PATH-1]/tablespace2c.txt (12B, 0%) checksum dfcb8679956b734706cf87259d50c88f83e80e66
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2/pg_tblspc/2/[TS_PATH-1]/tablespace2.txt, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
-DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-2], strDestinationFile = [TEST_PATH]/db/common-2/pg_tblspc/2/[TS_PATH-1]/tablespace2.txt, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-FULL-3]/pg_tblspc/2/tablespace2.txt, strSourcePathType = backup:cluster, strUser = [USER-1]
-DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common-2/pg_tblspc/2/[TS_PATH-1]/tablespace2.txt.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-1]
+DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-2], strDestinationFile = [TEST_PATH]/db/common-2/pg_tblspc/2/[TS_PATH-1]/tablespace2.txt, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-FULL-3]/pg_tblspc/2/tablespace2.txt, strSourcePathType = backup:cluster, strUser = [USER-2]
+DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common-2/pg_tblspc/2/[TS_PATH-1]/tablespace2.txt.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-2]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common-2/pg_tblspc/2/[TS_PATH-1]/tablespace2.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common-2/pg_tblspc/2/[TS_PATH-1]/tablespace2.txt.backrest.tmp, strSourcePathType = absolute
  INFO: restore file [TEST_PATH]/db/common-2/pg_tblspc/2/[TS_PATH-1]/tablespace2.txt (7B, 0%) checksum dc7f76e43c46101b47acc55ae4d593a9e6983578
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2/recovery.conf, strPathType = db:absolute
@@ -3941,8 +3966,8 @@ DEBUG:     File->remove=>: bRemoved = true
  INFO: restore global/pg_control (copied last to ensure aborted restores cannot be started)
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2/global/pg_control, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
-DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = [TEST_PATH]/db/common-2/global/pg_control, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-FULL-3]/global/pg_control, strSourcePathType = backup:cluster, strUser = [USER-1]
-DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common-2/global/pg_control.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-1]
+DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = [TEST_PATH]/db/common-2/global/pg_control, strDestinationPathType = db:absolute, strGroup = [GROUP-1], strMode = 0600, strSourceFile = [BACKUP-FULL-3]/global/pg_control, strSourcePathType = backup:cluster, strUser = [USER-2]
+DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common-2/global/pg_control.backrest.tmp, strGroup = [GROUP-1], strPathType = absolute, strUser = [USER-2]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common-2/global/pg_control, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common-2/global/pg_control.backrest.tmp, strSourcePathType = absolute
  INFO: restore file [TEST_PATH]/db/common-2/global/pg_control (8KB, 100%) checksum 56fe5780b8dca9705e0c22032a83828860a21235
 DEBUG:     File->remove(): bIgnoreMissing = false, bTemp = [undef], strPath = [TEST_PATH]/db/common-2/backup.manifest, strPathType = db:absolute
@@ -3955,7 +3980,7 @@ info
 > [BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf info
 ------------------------------------------------------------------------------------------------------------------------------------
 DEBUG:     info start: --backup-host=127.0.0.1 --backup-user=backrest --cmd-remote=[BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf --config-remote=[TEST_PATH]/backrest/pg_backrest.conf --log-level-console=debug --log-level-file=trace --repo-path=[TEST_PATH]/local --repo-remote-path=[TEST_PATH]/backrest
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest remote, strHost = 127.0.0.1, strUser = [USER-2]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest remote, strHost = 127.0.0.1, strUser = [USER-1]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no backrest@127.0.0.1 '[BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = backup, strStanza = [undef]
 DEBUG:     Info->stanzaList(): oFile = [object], strStanza = [undef]
@@ -3976,7 +4001,7 @@ info
 > [BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf info --output=json
 ------------------------------------------------------------------------------------------------------------------------------------
 DEBUG:     info start: --backup-host=127.0.0.1 --backup-user=backrest --cmd-remote=[BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf --config-remote=[TEST_PATH]/backrest/pg_backrest.conf --log-level-console=debug --log-level-file=trace --output=json --repo-path=[TEST_PATH]/local --repo-remote-path=[TEST_PATH]/backrest
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest remote, strHost = 127.0.0.1, strUser = [USER-2]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest remote, strHost = 127.0.0.1, strUser = [USER-1]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no backrest@127.0.0.1 '[BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = backup, strStanza = [undef]
 DEBUG:     Info->stanzaList(): oFile = [object], strStanza = [undef]
@@ -4294,7 +4319,7 @@ info bogus
 > [BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf --stanza=bogus info
 ------------------------------------------------------------------------------------------------------------------------------------
 DEBUG:     info start: --backup-host=127.0.0.1 --backup-user=backrest --cmd-remote=[BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf --config-remote=[TEST_PATH]/backrest/pg_backrest.conf --log-level-console=debug --log-level-file=trace --repo-path=[TEST_PATH]/local --repo-remote-path=[TEST_PATH]/backrest --stanza=bogus
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest --stanza=bogus remote, strHost = 127.0.0.1, strUser = [USER-2]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest --stanza=bogus remote, strHost = 127.0.0.1, strUser = [USER-1]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no backrest@127.0.0.1 '[BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest --stanza=bogus remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = backup, strStanza = bogus
 DEBUG:     Info->stanzaList(): oFile = [object], strStanza = bogus
@@ -4308,7 +4333,7 @@ info bogus
 > [BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf --stanza=bogus info --output=json
 ------------------------------------------------------------------------------------------------------------------------------------
 DEBUG:     info start: --backup-host=127.0.0.1 --backup-user=backrest --cmd-remote=[BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf --config-remote=[TEST_PATH]/backrest/pg_backrest.conf --log-level-console=debug --log-level-file=trace --output=json --repo-path=[TEST_PATH]/local --repo-remote-path=[TEST_PATH]/backrest --stanza=bogus
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest --stanza=bogus remote, strHost = 127.0.0.1, strUser = [USER-2]
+DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest --stanza=bogus remote, strHost = 127.0.0.1, strUser = [USER-1]
 DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no backrest@127.0.0.1 '[BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest --stanza=bogus remote', strName = remote
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = backup, strStanza = bogus
 DEBUG:     Info->stanzaList(): oFile = [object], strStanza = bogus
@@ -4327,28 +4352,23 @@ DEBUG:     Exit::exitSafe(): iExitCode = 0, strSignal = [undef]
 DEBUG:     info stop
 DEBUG:     Common:::Lock::lockRelease(): bFailOnNoLock = false
 
-info
-> [BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf info
+> ls [TEST_PATH]/backrest/backup/db/backup.history
 ------------------------------------------------------------------------------------------------------------------------------------
-DEBUG:     info start: --backup-host=127.0.0.1 --backup-user=backrest --cmd-remote=[BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf --config-remote=[TEST_PATH]/backrest/pg_backrest.conf --log-level-console=debug --log-level-file=trace --repo-path=[TEST_PATH]/local --repo-remote-path=[TEST_PATH]/backrest
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest remote, strHost = 127.0.0.1, strUser = [USER-2]
-DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no backrest@127.0.0.1 '[BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest remote', strName = remote
-DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = backup, strStanza = [undef]
-DEBUG:     Info->stanzaList(): oFile = [object], strStanza = [undef]
-No stanzas exist in [TEST_PATH]/backrest.
-DEBUG:     Exit::exitSafe(): iExitCode = 0, strSignal = [undef]
-DEBUG:     info stop
-DEBUG:     Common:::Lock::lockRelease(): bFailOnNoLock = false
-
-info
-> [BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf info --output=json
-------------------------------------------------------------------------------------------------------------------------------------
-DEBUG:     info start: --backup-host=127.0.0.1 --backup-user=backrest --cmd-remote=[BACKREST_BIN] --config=[TEST_PATH]/db/pg_backrest.conf --config-remote=[TEST_PATH]/backrest/pg_backrest.conf --log-level-console=debug --log-level-file=trace --output=json --repo-path=[TEST_PATH]/local --repo-remote-path=[TEST_PATH]/backrest
-DEBUG:     Protocol::RemoteMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = [BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest remote, strHost = 127.0.0.1, strUser = [USER-2]
-DEBUG:     Protocol::CommonMaster->new(): iBufferMax = 4194304, iCompressLevel = 6, iCompressLevelNetwork = 3, iProtocolTimeout = 1830, strCommand = ssh -o Compression=no -o PasswordAuthentication=no backrest@127.0.0.1 '[BACKREST_BIN] --command=info --config=[TEST_PATH]/backrest/pg_backrest.conf --repo-remote-path=[TEST_PATH]/backrest remote', strName = remote
-DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = backup, strStanza = [undef]
-DEBUG:     Info->stanzaList(): oFile = [object], strStanza = [undef]
-[]
-DEBUG:     Exit::exitSafe(): iExitCode = 0, strSignal = [undef]
-DEBUG:     info stop
-DEBUG:     Common:::Lock::lockRelease(): bFailOnNoLock = false
+[BACKUP-DIFF-2].manifest
+[BACKUP-DIFF-2].manifest.gz
+[BACKUP-INCR-3].manifest
+[BACKUP-INCR-3].manifest.gz
+[BACKUP-INCR-4].manifest
+[BACKUP-INCR-4].manifest.gz
+[BACKUP-DIFF-3].manifest
+[BACKUP-DIFF-3].manifest.gz
+[BACKUP-INCR-5].manifest
+[BACKUP-INCR-5].manifest.gz
+[BACKUP-DIFF-4].manifest
+[BACKUP-DIFF-4].manifest.gz
+[BACKUP-FULL-2].manifest
+[BACKUP-FULL-2].manifest.gz
+[BACKUP-DIFF-5].manifest
+[BACKUP-DIFF-5].manifest.gz
+[BACKUP-FULL-3].manifest
+[BACKUP-FULL-3].manifest.gz
