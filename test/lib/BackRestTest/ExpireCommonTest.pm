@@ -108,6 +108,7 @@ sub stanzaCreate
 
     $strBackupClusterPath .= "/${strStanza}";
     BackRestTestCommon_PathCreate($strBackupClusterPath, undef, true);
+    BackRestTestCommon_PathCreate("${strBackupClusterPath}/" . PATH_MANIFEST, undef, true);
 
     $$oStanza{strBackupClusterPath} = $strBackupClusterPath;
 
@@ -185,7 +186,7 @@ sub backupCreate
     my $strBackupClusterSetPath .= "$$oStanza{strBackupClusterPath}/${strBackupLabel}";
     BackRestTestCommon_PathCreate($strBackupClusterSetPath);
 
-    my $oManifest = new BackRest::Manifest("$strBackupClusterSetPath/" . FILE_MANIFEST, false);
+    my $oManifest = new BackRest::Manifest("$$oStanza{strBackupClusterPath}/" . PATH_MANIFEST . "/${strBackupLabel}.manifest", false);
 
     # Store information about the backup into the backup section
     $oManifest->set(MANIFEST_SECTION_BACKUP, MANIFEST_KEY_LABEL, undef, $strBackupLabel);
@@ -371,7 +372,9 @@ sub supplementalLog
         $self->{oLogTest}->supplementalAdd(BackRestTestCommon_RepoPathGet() .
                                            "/backup/${strStanza}/backup.info", undef, $$oStanza{strBackupDescription});
 
-        executeTest('ls ' . BackRestTestCommon_RepoPathGet() . "/backup/${strStanza} | grep -v \"backup.info\"",
+        executeTest('ls ' . BackRestTestCommon_RepoPathGet() . "/backup/${strStanza} | grep -v \"backup.*\"",
+                    {oLogTest => $self->{oLogTest}});
+        executeTest('ls ' . BackRestTestCommon_RepoPathGet() . "/backup/${strStanza}/" . PATH_MANIFEST,
                     {oLogTest => $self->{oLogTest}});
         executeTest('ls -R ' . BackRestTestCommon_RepoPathGet() . "/archive/${strStanza} | grep -v \"archive.info\"",
                     {oLogTest => $self->{oLogTest}});

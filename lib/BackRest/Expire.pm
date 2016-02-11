@@ -180,6 +180,7 @@ sub process
 
                 foreach $strPath ($oBackupInfo->list('^' . $stryPath[$iFullIdx] . '.*'))
                 {
+                    $oFile->remove(PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strPath}.manifest");
                     $oBackupInfo->delete($strPath);
 
                     if ($strPath ne $stryPath[$iFullIdx])
@@ -219,6 +220,7 @@ sub process
                     # Remove all differential and incremental backups before the oldest valid differential
                     if ($strPath lt $stryPath[$iDiffIdx + 1])
                     {
+                        $oFile->remove(PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strPath}.manifest");
                         $oBackupInfo->delete($strPath);
 
                         if ($strPath ne $stryPath[$iDiffIdx])

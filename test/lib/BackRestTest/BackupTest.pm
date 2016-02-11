@@ -924,6 +924,11 @@ sub BackRestTestBackup_Test
                                                 $iThreadMax);               # thread-max
             }
 
+            # Backup Info (with no stanzas)
+            #-----------------------------------------------------------------------------------------------------------------------
+            BackRestTestBackup_Info(undef, undef, false);
+            BackRestTestBackup_Info(undef, INFO_OUTPUT_JSON, false);
+
             # Full backup
             #-----------------------------------------------------------------------------------------------------------------------
             my $strType = 'full';
@@ -1037,8 +1042,10 @@ sub BackRestTestBackup_Test
             BackRestTestCommon_PathMove(BackRestTestCommon_RepoPathGet() . "/backup/${strStanza}/${strFullBackup}",
                                         $strTmpPath, $bRemote);
 
-            $oFile->copy(PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strFullBackup}.manifest.gz",
-                         PATH_BACKUP_TMP, FILE_MANIFEST, true);
+            my $strManifestFile = PATH_MANIFEST . "/${strFullBackup}.manifest";
+            $oFile->copy(PATH_BACKUP_CLUSTER, "${strManifestFile}.gz", PATH_BACKUP_TMP, FILE_MANIFEST, true);
+            BackRestTestCommon_PathRemove($oFile->pathGet(PATH_BACKUP_CLUSTER, "${strManifestFile}.gz"), $bRemote);
+            BackRestTestCommon_PathRemove($oFile->pathGet(PATH_BACKUP_CLUSTER, "${strManifestFile}"), $bRemote);
 
             my $oMungeManifest = BackRestTestCommon_manifestLoad("$strTmpPath/backup.manifest", $bRemote);
             $oMungeManifest->remove('base:file', 'PG_VERSION', 'checksum');
@@ -1215,8 +1222,10 @@ sub BackRestTestBackup_Test
             BackRestTestCommon_PathMove(BackRestTestCommon_RepoPathGet() . "/backup/${strStanza}/${strBackup}",
                                         $strTmpPath, $bRemote);
 
-            $oFile->copy(PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strBackup}.manifest.gz",
-                         PATH_BACKUP_TMP, FILE_MANIFEST, true);
+            $strManifestFile = PATH_MANIFEST . "/${strBackup}.manifest";
+            $oFile->copy(PATH_BACKUP_CLUSTER, "${strManifestFile}.gz", PATH_BACKUP_TMP, FILE_MANIFEST, true);
+            BackRestTestCommon_PathRemove($oFile->pathGet(PATH_BACKUP_CLUSTER, "${strManifestFile}.gz"), $bRemote);
+            BackRestTestCommon_PathRemove($oFile->pathGet(PATH_BACKUP_CLUSTER, "${strManifestFile}"), $bRemote);
 
             $oMungeManifest = BackRestTestCommon_manifestLoad("$strTmpPath/backup.manifest", $bRemote);
             $oMungeManifest->set('base:file', 'badchecksum.txt', 'checksum', 'bogus');
@@ -1240,6 +1249,11 @@ sub BackRestTestBackup_Test
             BackRestTestCommon_PathMove(BackRestTestCommon_RepoPathGet() . "/backup/${strStanza}/${strBackup}",
                                         $strTmpPath, $bRemote);
 
+            $strManifestFile = PATH_MANIFEST . "/${strBackup}.manifest";
+            $oFile->copy(PATH_BACKUP_CLUSTER, "${strManifestFile}.gz", PATH_BACKUP_TMP, FILE_MANIFEST, true);
+            BackRestTestCommon_PathRemove($oFile->pathGet(PATH_BACKUP_CLUSTER, "${strManifestFile}.gz"), $bRemote);
+            BackRestTestCommon_PathRemove($oFile->pathGet(PATH_BACKUP_CLUSTER, "${strManifestFile}"), $bRemote);
+
             $strBackup = BackRestTestBackup_BackupSynthetic($strType, $strStanza, \%oManifest, 'cannot resume - new diff',
                                                             {strTest => TEST_BACKUP_NORESUME});
 
@@ -1251,6 +1265,11 @@ sub BackRestTestBackup_Test
 
             BackRestTestCommon_PathMove(BackRestTestCommon_RepoPathGet() . "/backup/${strStanza}/${strBackup}",
                                         $strTmpPath, $bRemote);
+
+            $strManifestFile = PATH_MANIFEST . "/${strBackup}.manifest";
+            $oFile->copy(PATH_BACKUP_CLUSTER, "${strManifestFile}.gz", PATH_BACKUP_TMP, FILE_MANIFEST, true);
+            BackRestTestCommon_PathRemove($oFile->pathGet(PATH_BACKUP_CLUSTER, "${strManifestFile}.gz"), $bRemote);
+            BackRestTestCommon_PathRemove($oFile->pathGet(PATH_BACKUP_CLUSTER, "${strManifestFile}"), $bRemote);
 
             $strBackup = BackRestTestBackup_BackupSynthetic($strType, $strStanza, \%oManifest, 'cannot resume - disabled',
                                                             {strTest => TEST_BACKUP_NORESUME, strOptionalParam => '--no-resume'});
@@ -1416,13 +1435,13 @@ sub BackRestTestBackup_Test
             BackRestTestBackup_Info('bogus', undef, false);
             BackRestTestBackup_Info('bogus', INFO_OUTPUT_JSON, false);
 
-            # Backup Info (with no stanzas)
+            # Dump out manifest path at the end to verify expiration worked correctly.
             #-----------------------------------------------------------------------------------------------------------------------
-            executeTest('rm -rf ' . BackRestTestCommon_RepoPathGet . '/backup/*',
-                        {bRemote => $bRemote});
-
-            BackRestTestBackup_Info(undef, undef, false);
-            BackRestTestBackup_Info(undef, INFO_OUTPUT_JSON, false);
+            if ($bNeutralTest)
+            {
+                executeTest('ls ' . BackRestTestCommon_RepoPathGet() . "/backup/${strStanza}/" . PATH_MANIFEST,
+                            {oLogTest => $oLogTest, bRemote => $bRemote});
+            }
         }
         }
         }
