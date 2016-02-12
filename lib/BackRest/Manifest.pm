@@ -99,6 +99,8 @@ use constant MANIFEST_KEY_START_STOP                                => 'option-s
     push @EXPORT, qw(MANIFEST_KEY_START_STOP);
 
 # Information about the database that was backed up
+use constant MANIFEST_KEY_DB_ID                                     => 'db-id';
+    push @EXPORT, qw(MANIFEST_KEY_DB_ID);
 use constant MANIFEST_KEY_SYSTEM_ID                                 => 'db-system-id';
     push @EXPORT, qw(MANIFEST_KEY_SYSTEM_ID);
 use constant MANIFEST_KEY_CATALOG                                   => 'db-catalog-version';
@@ -185,23 +187,6 @@ sub save
         (
             OP_MANIFEST_SAVE
         );
-
-    # !!! Add section comments here
-    # $self->commentSet(MANIFEST_SECTION_BACKUP_INFO,
-    #     #################################################################################
-    #     "Information about the backup:\n" .
-    #     "    backup-size       = total size of original files.\n" .
-    #     "    backup-size-delta = difference in total file size from the prior backup.\n".
-    #     "                        backup-size-delta will be equal to backup-size when\n" .
-    #     "                        backup-type = full, otherwise this is not possible\n" .
-    #     "                        unless option-start-stop = true.\n" .
-    #     "\n" .
-    #     "Human-readable output:\n" .
-    #     "    backup-repo-size       = " . fileSizeFormat($lBackupRepoSize) . "\n" .
-    #     "    backup-repo-size-delta = " . fileSizeFormat($lBackupRepoSizeDelta) . "\n" .
-    #     "    backup-size            = " . fileSizeFormat($lBackupSize) . "\n" .
-    #     "    backup-size-delta      = " . fileSizeFormat($lBackupSizeDelta)
-    #     );
 
     # Call inherited save
     $self->SUPER::save();
@@ -338,7 +323,8 @@ sub valid
     }
     elsif ($strSection eq MANIFEST_SECTION_BACKUP_DB)
     {
-        if ($strKey eq MANIFEST_KEY_CATALOG ||
+        if ($strKey eq MANIFEST_KEY_DB_ID ||
+            $strKey eq MANIFEST_KEY_CATALOG ||
             $strKey eq MANIFEST_KEY_CONTROL ||
             $strKey eq MANIFEST_KEY_SYSTEM_ID ||
             $strKey eq MANIFEST_KEY_DB_VERSION)

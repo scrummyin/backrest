@@ -43,6 +43,7 @@ DEBUG:     File->exists=>: bExists = false
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
 DEBUG:     Db->info(): oFile = [object], strDbPath = [TEST_PATH]/db/common
 DEBUG:     Db->info=>: fDbVersion = 9.3, iCatalogVersion = 201306121, iControlVersion = 937, ullDbSysId = 6156904820763115222
+DEBUG:     BackupInfo->check=>: iDbHistoryId = 1
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common/postmaster.pid, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
 DEBUG:     Manifest->build(): bNoStartStop = true, oFile = [object], oLastManifest = [undef], oTablespaceMapRef = [undef], strDbClusterPath = [TEST_PATH]/db/common, strLevel = [undef]
@@ -175,6 +176,7 @@ backup-type="full"
 [backup:db]
 db-catalog-version=201306121
 db-control-version=937
+db-id=1
 db-system-id=6156904820763115222
 db-version="9.3"
 
@@ -321,6 +323,7 @@ DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_P
 DEBUG:     BackupInfo->delete(): strBackupLabel = [BACKUP-FULL-1]
 DEBUG:     Db->info(): oFile = [object], strDbPath = [TEST_PATH]/db/common
 DEBUG:     Db->info=>: fDbVersion = 9.3, iCatalogVersion = 201306121, iControlVersion = 937, ullDbSysId = 6156904820763115222
+DEBUG:     BackupInfo->check=>: iDbHistoryId = 1
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common/postmaster.pid, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
 DEBUG:     Manifest->build(): bNoStartStop = true, oFile = [object], oLastManifest = [undef], oTablespaceMapRef = [undef], strDbClusterPath = [TEST_PATH]/db/common, strLevel = [undef]
@@ -456,6 +459,7 @@ backup-type="full"
 [backup:db]
 db-catalog-version=201306121
 db-control-version=937
+db-id=1
 db-system-id=6156904820763115222
 db-version="9.3"
 
@@ -789,6 +793,7 @@ DEBUG:     BackupInfo->last=>: strBackup = [BACKUP-FULL-2]
  INFO: last backup label = [BACKUP-FULL-2], version = [VERSION-1]
 DEBUG:     Db->info(): oFile = [object], strDbPath = [TEST_PATH]/db/common
 DEBUG:     Db->info=>: fDbVersion = 9.3, iCatalogVersion = 201306121, iControlVersion = 937, ullDbSysId = 6156904820763115222
+DEBUG:     BackupInfo->check=>: iDbHistoryId = 1
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common/postmaster.pid, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
 DEBUG:     Manifest->build(): bNoStartStop = true, oFile = [object], oLastManifest = [object], oTablespaceMapRef = [undef], strDbClusterPath = [TEST_PATH]/db/common, strLevel = [undef]
@@ -930,6 +935,7 @@ backup-type="incr"
 [backup:db]
 db-catalog-version=201306121
 db-control-version=937
+db-id=1
 db-system-id=6156904820763115222
 db-version="9.3"
 
@@ -1018,6 +1024,7 @@ DEBUG:     BackupInfo->last=>: strBackup = [BACKUP-FULL-2]
  INFO: last backup label = [BACKUP-FULL-2], version = [VERSION-1]
 DEBUG:     Db->info(): oFile = [object], strDbPath = [TEST_PATH]/db/common
 DEBUG:     Db->info=>: fDbVersion = 9.3, iCatalogVersion = 201306121, iControlVersion = 937, ullDbSysId = 6156904820763115222
+DEBUG:     BackupInfo->check=>: iDbHistoryId = 1
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common/postmaster.pid, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
 DEBUG:     Manifest->build(): bNoStartStop = true, oFile = [object], oLastManifest = [object], oTablespaceMapRef = [undef], strDbClusterPath = [TEST_PATH]/db/common, strLevel = [undef]
@@ -1179,6 +1186,7 @@ backup-type="incr"
 [backup:db]
 db-catalog-version=201306121
 db-control-version=937
+db-id=1
 db-system-id=6156904820763115222
 db-version="9.3"
 
@@ -1276,6 +1284,7 @@ DEBUG:     BackupInfo->last=>: strBackup = [BACKUP-FULL-2]
  INFO: last backup label = [BACKUP-FULL-2], version = [VERSION-1]
 DEBUG:     Db->info(): oFile = [object], strDbPath = [TEST_PATH]/db/common
 DEBUG:     Db->info=>: fDbVersion = 9.3, iCatalogVersion = 201306121, iControlVersion = 937, ullDbSysId = 6156904820763115222
+DEBUG:     BackupInfo->check=>: iDbHistoryId = 1
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common/postmaster.pid, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
 DEBUG:     Manifest->build(): bNoStartStop = true, oFile = [object], oLastManifest = [object], oTablespaceMapRef = [undef], strDbClusterPath = [TEST_PATH]/db/common, strLevel = [undef]
@@ -1426,6 +1435,7 @@ backup-type="diff"
 [backup:db]
 db-catalog-version=201306121
 db-control-version=937
+db-id=1
 db-system-id=6156904820763115222
 db-version="9.3"
 
@@ -1524,6 +1534,7 @@ DEBUG:     BackupInfo->last=>: strBackup = [BACKUP-FULL-2]
  INFO: last backup label = [BACKUP-FULL-2], version = [VERSION-1]
 DEBUG:     Db->info(): oFile = [object], strDbPath = [TEST_PATH]/db/common
 DEBUG:     Db->info=>: fDbVersion = 9.3, iCatalogVersion = 201306121, iControlVersion = 937, ullDbSysId = 6156904820763115222
+DEBUG:     BackupInfo->check=>: iDbHistoryId = 1
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common/postmaster.pid, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
 DEBUG:     Manifest->build(): bNoStartStop = true, oFile = [object], oLastManifest = [object], oTablespaceMapRef = [undef], strDbClusterPath = [TEST_PATH]/db/common, strLevel = [undef]
@@ -1674,6 +1685,7 @@ backup-type="diff"
 [backup:db]
 db-catalog-version=201306121
 db-control-version=937
+db-id=1
 db-system-id=6156904820763115222
 db-version="9.3"
 
@@ -2029,6 +2041,7 @@ DEBUG:     BackupInfo->last=>: strBackup = [BACKUP-DIFF-2]
  INFO: last backup label = [BACKUP-DIFF-2], version = [VERSION-1]
 DEBUG:     Db->info(): oFile = [object], strDbPath = [TEST_PATH]/db/common-2
 DEBUG:     Db->info=>: fDbVersion = 9.3, iCatalogVersion = 201306121, iControlVersion = 937, ullDbSysId = 6156904820763115222
+DEBUG:     BackupInfo->check=>: iDbHistoryId = 1
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2/postmaster.pid, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
 DEBUG:     Manifest->build(): bNoStartStop = true, oFile = [object], oLastManifest = [object], oTablespaceMapRef = [undef], strDbClusterPath = [TEST_PATH]/db/common-2, strLevel = [undef]
@@ -2169,6 +2182,7 @@ backup-type="incr"
 [backup:db]
 db-catalog-version=201306121
 db-control-version=937
+db-id=1
 db-system-id=6156904820763115222
 db-version="9.3"
 
@@ -2262,6 +2276,7 @@ DEBUG:     BackupInfo->last=>: strBackup = [BACKUP-INCR-3]
  INFO: last backup label = [BACKUP-INCR-3], version = [VERSION-1]
 DEBUG:     Db->info(): oFile = [object], strDbPath = [TEST_PATH]/db/common-2
 DEBUG:     Db->info=>: fDbVersion = 9.3, iCatalogVersion = 201306121, iControlVersion = 937, ullDbSysId = 6156904820763115222
+DEBUG:     BackupInfo->check=>: iDbHistoryId = 1
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2/postmaster.pid, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
 DEBUG:     Manifest->build(): bNoStartStop = true, oFile = [object], oLastManifest = [object], oTablespaceMapRef = [undef], strDbClusterPath = [TEST_PATH]/db/common-2, strLevel = [undef]
@@ -2404,6 +2419,7 @@ backup-type="incr"
 [backup:db]
 db-catalog-version=201306121
 db-control-version=937
+db-id=1
 db-system-id=6156904820763115222
 db-version="9.3"
 
@@ -2499,6 +2515,7 @@ DEBUG:     BackupInfo->last=>: strBackup = [BACKUP-FULL-2]
  INFO: last backup label = [BACKUP-FULL-2], version = [VERSION-1]
 DEBUG:     Db->info(): oFile = [object], strDbPath = [TEST_PATH]/db/common-2
 DEBUG:     Db->info=>: fDbVersion = 9.3, iCatalogVersion = 201306121, iControlVersion = 937, ullDbSysId = 6156904820763115222
+DEBUG:     BackupInfo->check=>: iDbHistoryId = 1
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2/postmaster.pid, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
 DEBUG:     Manifest->build(): bNoStartStop = true, oFile = [object], oLastManifest = [object], oTablespaceMapRef = [undef], strDbClusterPath = [TEST_PATH]/db/common-2, strLevel = [undef]
@@ -2646,6 +2663,7 @@ backup-type="diff"
 [backup:db]
 db-catalog-version=201306121
 db-control-version=937
+db-id=1
 db-system-id=6156904820763115222
 db-version="9.3"
 
@@ -2743,6 +2761,7 @@ DEBUG:     BackupInfo->last=>: strBackup = [BACKUP-DIFF-3]
  INFO: last backup label = [BACKUP-DIFF-3], version = [VERSION-1]
 DEBUG:     Db->info(): oFile = [object], strDbPath = [TEST_PATH]/db/common-2
 DEBUG:     Db->info=>: fDbVersion = 9.3, iCatalogVersion = 201306121, iControlVersion = 937, ullDbSysId = 6156904820763115222
+DEBUG:     BackupInfo->check=>: iDbHistoryId = 1
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2/postmaster.pid, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
 DEBUG:     Manifest->build(): bNoStartStop = true, oFile = [object], oLastManifest = [object], oTablespaceMapRef = [undef], strDbClusterPath = [TEST_PATH]/db/common-2, strLevel = [undef]
@@ -2889,6 +2908,7 @@ backup-type="incr"
 [backup:db]
 db-catalog-version=201306121
 db-control-version=937
+db-id=1
 db-system-id=6156904820763115222
 db-version="9.3"
 
@@ -2988,6 +3008,7 @@ DEBUG:     BackupInfo->last=>: strBackup = [BACKUP-FULL-2]
  INFO: last backup label = [BACKUP-FULL-2], version = [VERSION-1]
 DEBUG:     Db->info(): oFile = [object], strDbPath = [TEST_PATH]/db/common-2
 DEBUG:     Db->info=>: fDbVersion = 9.3, iCatalogVersion = 201306121, iControlVersion = 937, ullDbSysId = 6156904820763115222
+DEBUG:     BackupInfo->check=>: iDbHistoryId = 1
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2/postmaster.pid, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
 DEBUG:     Manifest->build(): bNoStartStop = true, oFile = [object], oLastManifest = [object], oTablespaceMapRef = [undef], strDbClusterPath = [TEST_PATH]/db/common-2, strLevel = [undef]
@@ -3135,6 +3156,7 @@ backup-type="diff"
 [backup:db]
 db-catalog-version=201306121
 db-control-version=937
+db-id=1
 db-system-id=6156904820763115222
 db-version="9.3"
 
@@ -3227,6 +3249,7 @@ DEBUG:     File->exists=>: bExists = true
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
 DEBUG:     Db->info(): oFile = [object], strDbPath = [TEST_PATH]/db/common-2
 DEBUG:     Db->info=>: fDbVersion = 9.3, iCatalogVersion = 201306121, iControlVersion = 937, ullDbSysId = 6156904820763115222
+DEBUG:     BackupInfo->check=>: iDbHistoryId = 1
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2/postmaster.pid, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
 DEBUG:     Manifest->build(): bNoStartStop = true, oFile = [object], oLastManifest = [undef], oTablespaceMapRef = [undef], strDbClusterPath = [TEST_PATH]/db/common-2, strLevel = [undef]
@@ -3376,6 +3399,7 @@ backup-type="full"
 [backup:db]
 db-catalog-version=201306121
 db-control-version=937
+db-id=1
 db-system-id=6156904820763115222
 db-version="9.3"
 
@@ -3484,6 +3508,7 @@ DEBUG:     BackupInfo->last=>: strBackup = [BACKUP-FULL-3]
  INFO: last backup label = [BACKUP-FULL-3], version = [VERSION-1]
 DEBUG:     Db->info(): oFile = [object], strDbPath = [TEST_PATH]/db/common-2
 DEBUG:     Db->info=>: fDbVersion = 9.3, iCatalogVersion = 201306121, iControlVersion = 937, ullDbSysId = 6156904820763115222
+DEBUG:     BackupInfo->check=>: iDbHistoryId = 1
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2/postmaster.pid, strPathType = db:absolute
 DEBUG:     File->exists=>: bExists = false
 DEBUG:     Manifest->build(): bNoStartStop = true, oFile = [object], oLastManifest = [object], oTablespaceMapRef = [undef], strDbClusterPath = [TEST_PATH]/db/common-2, strLevel = [undef]
@@ -3636,6 +3661,7 @@ backup-type="diff"
 [backup:db]
 db-catalog-version=201306121
 db-control-version=937
+db-id=1
 db-system-id=6156904820763115222
 db-version="9.3"
 

@@ -649,8 +649,9 @@ sub process
     my ($fDbVersion, $iControlVersion, $iCatalogVersion, $ullDbSysId) =
         $self->{oDb}->info($self->{oFile}, optionGet(OPTION_DB_PATH));
 
-    $oBackupInfo->check($fDbVersion, $iControlVersion, $iCatalogVersion, $ullDbSysId);
+    my $iDbHistoryId = $oBackupInfo->check($fDbVersion, $iControlVersion, $iCatalogVersion, $ullDbSysId);
 
+    $oBackupManifest->numericSet(MANIFEST_SECTION_BACKUP_DB, MANIFEST_KEY_DB_ID, undef, $iDbHistoryId);
     $oBackupManifest->set(MANIFEST_SECTION_BACKUP_DB, MANIFEST_KEY_DB_VERSION, undef, $fDbVersion);
     $oBackupManifest->numericSet(MANIFEST_SECTION_BACKUP_DB, MANIFEST_KEY_CONTROL, undef, $iControlVersion);
     $oBackupManifest->numericSet(MANIFEST_SECTION_BACKUP_DB, MANIFEST_KEY_CATALOG, undef, $iCatalogVersion);

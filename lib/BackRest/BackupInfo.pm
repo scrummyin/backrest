@@ -85,7 +85,7 @@ use constant INFO_BACKUP_KEY_FORMAT                                 => INI_KEY_F
     push @EXPORT, qw(INFO_BACKUP_KEY_FORMAT);
 use constant INFO_BACKUP_KEY_HARDLINK                               => MANIFEST_KEY_HARDLINK;
     push @EXPORT, qw(INFO_BACKUP_KEY_HARDLINK);
-use constant INFO_BACKUP_KEY_HISTORY_ID                             => 'db-id';
+use constant INFO_BACKUP_KEY_HISTORY_ID                             => MANIFEST_KEY_DB_ID;
     push @EXPORT, qw(INFO_BACKUP_KEY_HISTORY_ID);
 use constant INFO_BACKUP_KEY_LABEL                                  => MANIFEST_KEY_LABEL;
     push @EXPORT, qw(INFO_BACKUP_KEY_LABEL);
@@ -211,22 +211,23 @@ sub check
             {name => 'ullDbSysId', trace => true}
         );
 
+    # Initialize history id
+    my $iDbHistoryId = 1;
+
     if (!$self->test(INFO_BACKUP_SECTION_DB))
     {
-        my $iHistoryId = 1;
-
         # Fill db section
         $self->numericSet(INFO_BACKUP_SECTION_DB, INFO_BACKUP_KEY_CATALOG, undef, $iCatalogVersion);
         $self->numericSet(INFO_BACKUP_SECTION_DB, INFO_BACKUP_KEY_CONTROL, undef, $iControlVersion);
         $self->numericSet(INFO_BACKUP_SECTION_DB, INFO_BACKUP_KEY_SYSTEM_ID, undef, $ullDbSysId);
         $self->set(INFO_BACKUP_SECTION_DB, INFO_BACKUP_KEY_DB_VERSION, undef, $strDbVersion);
-        $self->numericSet(INFO_BACKUP_SECTION_DB, INFO_BACKUP_KEY_HISTORY_ID, undef, $iHistoryId);
+        $self->numericSet(INFO_BACKUP_SECTION_DB, INFO_BACKUP_KEY_HISTORY_ID, undef, $iDbHistoryId);
 
         # Fill db history
-        $self->numericSet(INFO_BACKUP_SECTION_DB_HISTORY, $iHistoryId, INFO_BACKUP_KEY_CATALOG, $iCatalogVersion);
-        $self->numericSet(INFO_BACKUP_SECTION_DB_HISTORY, $iHistoryId, INFO_BACKUP_KEY_CONTROL,  $iControlVersion);
-        $self->numericSet(INFO_BACKUP_SECTION_DB_HISTORY, $iHistoryId, INFO_BACKUP_KEY_SYSTEM_ID, $ullDbSysId);
-        $self->set(INFO_BACKUP_SECTION_DB_HISTORY, $iHistoryId, INFO_BACKUP_KEY_DB_VERSION, $strDbVersion);
+        $self->numericSet(INFO_BACKUP_SECTION_DB_HISTORY, $iDbHistoryId, INFO_BACKUP_KEY_CATALOG, $iCatalogVersion);
+        $self->numericSet(INFO_BACKUP_SECTION_DB_HISTORY, $iDbHistoryId, INFO_BACKUP_KEY_CONTROL,  $iControlVersion);
+        $self->numericSet(INFO_BACKUP_SECTION_DB_HISTORY, $iDbHistoryId, INFO_BACKUP_KEY_SYSTEM_ID, $ullDbSysId);
+        $self->set(INFO_BACKUP_SECTION_DB_HISTORY, $iDbHistoryId, INFO_BACKUP_KEY_DB_VERSION, $strDbVersion);
     }
     else
     {
@@ -248,10 +249,16 @@ sub check
                                 $self->get(INFO_BACKUP_SECTION_DB, INFO_BACKUP_KEY_CATALOG) .
                                 "\nHINT: this may be a symptom of database or repository corruption!", ERROR_BACKUP_MISMATCH);
         }
+
+        $iDbHistoryId = $self->numericGet(INFO_BACKUP_SECTION_DB, INFO_BACKUP_KEY_HISTORY_ID);
     }
 
     # Return from function and log return values if any
-    return logDebugReturn($strOperation);
+    return logDebugReturn
+    (
+        $strOperation,
+        {name => 'iDbHistoryId', value => $iDbHistoryId}
+    );
 }
 
 ####################################################################################################################################
