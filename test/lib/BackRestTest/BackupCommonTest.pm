@@ -1010,7 +1010,7 @@ sub BackRestTestBackup_BackupBegin
     $oExecuteBackup = new BackRestTest::Common::ExecuteTest(
         ($bBackupRemote ? BackRestTestCommon_CommandMainAbsGet() : BackRestTestCommon_CommandMainGet()) .
         ' --config=' . ($bBackupRemote ? BackRestTestCommon_RepoPathGet() : BackRestTestCommon_DbPathGet()) . '/pg_backrest.conf' .
-        ($bBackupSynthetic ? " --no-start-stop" : '') .
+        ($bBackupSynthetic ? " --no-online" : '') .
         (defined($$oParam{strOptionalParam}) ? " $$oParam{strOptionalParam}" : '') .
         ($strBackupType ne 'incr' ? " --type=${strBackupType}" : '') .
         " --stanza=${strBackupStanza} backup" .
@@ -1194,8 +1194,7 @@ sub BackRestTestBackup_BackupCompare
     # Change mode on the backup path so it can be read
     if ($bRemote)
     {
-        executeTest('chmod 750 ' . BackRestTestCommon_RepoPathGet(),
-                    {bRemote => true});
+        executeTest('chmod 750 ' . BackRestTestCommon_RepoPathGet(), {bRemote => true});
     }
 
     my %oActualManifest;
@@ -1221,8 +1220,7 @@ sub BackRestTestBackup_BackupCompare
     # Change mode on the backup path back before unit tests continue
     if ($bRemote)
     {
-        executeTest('chmod 700 ' . BackRestTestCommon_RepoPathGet(),
-                    {bRemote => true});
+        executeTest('chmod 700 ' . BackRestTestCommon_RepoPathGet(), {bRemote => true});
     }
 
     $oFile->remove(PATH_ABSOLUTE, "${strTestPath}/expected.manifest");
@@ -1258,8 +1256,9 @@ sub BackRestTestBackup_ManifestMunge
     # Change mode on the backup path so it can be read/written
     if ($bRemote)
     {
-        executeTest('chmod 750 ' . BackRestTestCommon_RepoPathGet(), {bRemote => true});
-        executeTest('chmod 770 ' . $oFile->pathGet(PATH_BACKUP_CLUSTER, $strManifestFile), {bRemote => true});
+        executeTest('chmod 750 ' . BackRestTestCommon_RepoPathGet() .
+                    ' && chmod 770 ' . $oFile->pathGet(PATH_BACKUP_CLUSTER, $strManifestFile),
+                    {bRemote => true});
     }
 
     # Read the manifest
@@ -1306,8 +1305,9 @@ sub BackRestTestBackup_ManifestMunge
     # Change mode on the backup path back before unit tests continue
     if ($bRemote)
     {
-        executeTest('chmod 750 ' . $oFile->pathGet(PATH_BACKUP_CLUSTER, $strManifestFile), {bRemote => true});
-        executeTest('chmod 700 ' . BackRestTestCommon_RepoPathGet(), {bRemote => true});
+        executeTest('chmod 750 ' . $oFile->pathGet(PATH_BACKUP_CLUSTER, $strManifestFile) .
+                    ' && chmod 700 ' . BackRestTestCommon_RepoPathGet(),
+                    {bRemote => true});
     }
 }
 
@@ -1500,7 +1500,7 @@ sub BackRestTestBackup_RestoreCompare
     my $oTablespaceMapRef = undef;
     $oActualManifest->build($oFile,
         ${$oExpectedManifestRef}{&MANIFEST_SECTION_BACKUP_PATH}{&MANIFEST_KEY_BASE}{&MANIFEST_SUBKEY_PATH},
-        $oLastManifest, true, $oTablespaceMap);
+        $oLastManifest, false, $oTablespaceMap);
 
     # Generate checksums for all files if required
     # Also fudge size if this is a synthetic test - sizes may change during backup.
@@ -1545,8 +1545,8 @@ sub BackRestTestBackup_RestoreCompare
                           ${$oExpectedManifestRef}{&MANIFEST_SECTION_BACKUP_OPTION}{&MANIFEST_KEY_COMPRESS});
     $oActualManifest->set(MANIFEST_SECTION_BACKUP_OPTION, MANIFEST_KEY_HARDLINK, undef,
                           ${$oExpectedManifestRef}{&MANIFEST_SECTION_BACKUP_OPTION}{&MANIFEST_KEY_HARDLINK});
-    $oActualManifest->set(MANIFEST_SECTION_BACKUP_OPTION, MANIFEST_KEY_START_STOP, undef,
-                          ${$oExpectedManifestRef}{&MANIFEST_SECTION_BACKUP_OPTION}{&MANIFEST_KEY_START_STOP});
+    $oActualManifest->set(MANIFEST_SECTION_BACKUP_OPTION, MANIFEST_KEY_ONLINE, undef,
+                          ${$oExpectedManifestRef}{&MANIFEST_SECTION_BACKUP_OPTION}{&MANIFEST_KEY_ONLINE});
 
     $oActualManifest->set(MANIFEST_SECTION_BACKUP_DB, MANIFEST_KEY_DB_VERSION, undef,
                           ${$oExpectedManifestRef}{&MANIFEST_SECTION_BACKUP_DB}{&MANIFEST_KEY_DB_VERSION});

@@ -401,11 +401,26 @@ sub processManifest
             {
                 my $lFileSize = $oBackupManifest->numericGet($strSectionFile, $strFile, MANIFEST_SUBKEY_SIZE);
 
-                # Setup variables needed for threaded copy
+                # Increment file total
                 $lFileTotal++;
-                $lSizeTotal += $lFileSize;
 
-                my $strFileKey = sprintf("%016d-${strFile}", $lFileSize);
+                my $strFileKey;
+
+                # Certain files are not copied until the end
+                if ($strPathKey eq MANIFEST_KEY_BASE && $strFile eq FILE_PG_CONTROL)
+                {
+                    $strFileKey = $strFile;
+                    $oFileCopyMap{$strPathKey}{$strFileKey}{skip} = true;
+                }
+                # Else continue normally
+                else
+                {
+                    $strFileKey = sprintf("%016d-${strFile}", $lFileSize);
+                    $oFileCopyMap{$strPathKey}{$strFileKey}{skip} = false;
+
+                    # Add file size to total size
+                    $lSizeTotal += $lFileSize;
+                }
 
                 $oFileCopyMap{$strPathKey}{$strFileKey}{db_file} = $strBackupSourceFile;
                 $oFileCopyMap{$strPathKey}{$strFileKey}{file_section} = $strSectionFile;
@@ -420,13 +435,20 @@ sub processManifest
         }
     }
 
+    # pg_control should always be in the backup (unless this is an offline backup)
+    if (!defined($oFileCopyMap{&MANIFEST_KEY_BASE}{&FILE_PG_CONTROL}) && optionGet(OPTION_ONLINE))
+    {
+        confess &log(ERROR, "global/pg_control must be present in all online backups\n" .
+                     'HINT: Is something wrong with the clock or filesystem timestamps?', ERROR_FILE_MISSING);
+    }
+
     # If there are no files to backup then we'll exit with a warning unless in test mode.  The other way this could happen is if
-    # the database is down and backup is called with --no-start-stop twice in a row.
+    # the database is down and backup is called with --no-online twice in a row.
     if ($lFileTotal == 0)
     {
         if (!optionGet(OPTION_TEST))
         {
-            confess &log(ERROR, "no files have changed since the last backup - this seems unlikely");
+            confess &log(ERROR, "no files have changed since the last backup - this seems unlikely", ERROR_FILE_MISSING);
         }
     }
     else
@@ -445,7 +467,8 @@ sub processManifest
         my $lManifestSaveCurrent = 0;
         my $lManifestSaveSize = int($lSizeTotal / 100);
 
-        if ($lManifestSaveSize < optionGet(OPTION_MANIFEST_SAVE_THRESHOLD))
+        if (optionSource(OPTION_MANIFEST_SAVE_THRESHOLD) ne SOURCE_DEFAULT ||
+            $lManifestSaveSize < optionGet(OPTION_MANIFEST_SAVE_THRESHOLD))
         {
             $lManifestSaveSize = optionGet(OPTION_MANIFEST_SAVE_THRESHOLD);
         }
@@ -464,6 +487,9 @@ sub processManifest
             foreach my $strFileKey (sort {$b cmp $a} (keys(%{$oFileCopyMap{$strPathKey}})))
             {
                 my $oFileCopy = $oFileCopyMap{$strPathKey}{$strFileKey};
+
+                # Skip files marked to be copied later
+                next if $$oFileCopy{skip};
 
                 if (optionGet(OPTION_THREAD_MAX) > 1)
                 {
@@ -535,6 +561,23 @@ sub processManifest
             }
             while (!$bDone);
         }
+    }
+
+    # Copy pg_control last - this is required for backups taken during recovery
+    my $oFileCopy = $oFileCopyMap{&MANIFEST_KEY_BASE}{&FILE_PG_CONTROL};
+
+    if (defined($oFileCopy))
+    {
+        my ($bCopied, $lSizeCurrent, $lCopySize, $strCopyChecksum) =
+            backupFile($self->{oFile}, $$oFileCopy{db_file}, $$oFileCopy{backup_file}, $bCompress,
+                       $$oFileCopy{checksum}, $$oFileCopy{modification_time},
+                       $$oFileCopy{size});
+
+
+        backupManifestUpdate($oBackupManifest, $$oFileCopy{file_section}, $$oFileCopy{file},
+                             $bCopied, $lCopySize, $strCopyChecksum);
+
+        $lSizeTotal += $$oFileCopy{size};
     }
 
     # Return from function and log return values if any
@@ -638,12 +681,12 @@ sub process
     $oBackupManifest->numericSet(MANIFEST_SECTION_BACKUP, MANIFEST_KEY_TIMESTAMP_START, undef, $lTimestampStart);
     $oBackupManifest->boolSet(MANIFEST_SECTION_BACKUP_OPTION, MANIFEST_KEY_COMPRESS, undef, $bCompress);
     $oBackupManifest->boolSet(MANIFEST_SECTION_BACKUP_OPTION, MANIFEST_KEY_HARDLINK, undef, $bHardLink);
-    $oBackupManifest->boolSet(MANIFEST_SECTION_BACKUP_OPTION, MANIFEST_KEY_START_STOP, undef, !optionGet(OPTION_NO_START_STOP));
+    $oBackupManifest->boolSet(MANIFEST_SECTION_BACKUP_OPTION, MANIFEST_KEY_ONLINE, undef, optionGet(OPTION_ONLINE));
     $oBackupManifest->boolSet(MANIFEST_SECTION_BACKUP_OPTION, MANIFEST_KEY_ARCHIVE_COPY, undef,
-                              optionGet(OPTION_NO_START_STOP) ||
+                              !optionGet(OPTION_ONLINE) ||
                               (optionGet(OPTION_BACKUP_ARCHIVE_CHECK) && optionGet(OPTION_BACKUP_ARCHIVE_COPY)));
     $oBackupManifest->boolSet(MANIFEST_SECTION_BACKUP_OPTION, MANIFEST_KEY_ARCHIVE_CHECK, undef,
-                              optionGet(OPTION_NO_START_STOP) || optionGet(OPTION_BACKUP_ARCHIVE_CHECK));
+                              !optionGet(OPTION_ONLINE) || optionGet(OPTION_BACKUP_ARCHIVE_CHECK));
 
     # Database info
     my ($fDbVersion, $iControlVersion, $iCatalogVersion, $ullDbSysId) =
@@ -657,24 +700,24 @@ sub process
     $oBackupManifest->numericSet(MANIFEST_SECTION_BACKUP_DB, MANIFEST_KEY_CATALOG, undef, $iCatalogVersion);
     $oBackupManifest->numericSet(MANIFEST_SECTION_BACKUP_DB, MANIFEST_KEY_SYSTEM_ID, undef, $ullDbSysId);
 
-    # Start backup (unless no-start-stop is set)
+    # Start backup (unless --no-online is set)
     my $strArchiveStart;
     my $oTablespaceMap;
 
     # Don't start the backup but do check if PostgreSQL is running
-    if (optionGet(OPTION_NO_START_STOP))
+    if (!optionGet(OPTION_ONLINE))
     {
         if ($self->{oFile}->exists(PATH_DB_ABSOLUTE, optionGet(OPTION_DB_PATH) . '/' . FILE_POSTMASTER_PID))
         {
             if (optionGet(OPTION_FORCE))
             {
-                &log(WARN, '--no-start-stop passed and ' . FILE_POSTMASTER_PID . ' exists but --force was passed so backup will ' .
+                &log(WARN, '--no-online passed and ' . FILE_POSTMASTER_PID . ' exists but --force was passed so backup will ' .
                            'continue though it looks like the postmaster is running and the backup will probably not be ' .
                            'consistent');
             }
             else
             {
-                confess &log(ERROR, '--no-start-stop passed but ' . FILE_POSTMASTER_PID . ' exists - looks like the postmaster is ' .
+                confess &log(ERROR, '--no-online passed but ' . FILE_POSTMASTER_PID . ' exists - looks like the postmaster is ' .
                             'running. Shutdown the postmaster and try again, or use --force.', ERROR_POSTMASTER_RUNNING);
             }
         }
@@ -694,11 +737,11 @@ sub process
         &log(INFO, "archive start: ${strArchiveStart}");
 
         # Build the backup manifest
-        $oTablespaceMap = optionGet(OPTION_NO_START_STOP) ? undef : $self->{oDb}->tablespaceMapGet();
+        $oTablespaceMap = $self->{oDb}->tablespaceMapGet();
     }
 
     # Buid the manifest
-    $oBackupManifest->build($self->{oFile}, optionGet(OPTION_DB_PATH), $oLastManifest, optionGet(OPTION_NO_START_STOP),
+    $oBackupManifest->build($self->{oFile}, optionGet(OPTION_DB_PATH), $oLastManifest, optionGet(OPTION_ONLINE),
                             $oTablespaceMap);
     &log(TEST, TEST_MANIFEST_BUILD);
 
@@ -821,10 +864,10 @@ sub process
     my $lBackupSizeTotal = $self->processManifest($strType, $bCompress, $bHardLink, $oBackupManifest);
     &log(INFO, "${strType} backup size = " . fileSizeFormat($lBackupSizeTotal));
 
-    # Stop backup (unless no-start-stop is set)
+    # Stop backup (unless --no-online is set)
     my $strArchiveStop;
 
-    if (!optionGet(OPTION_NO_START_STOP))
+    if (optionGet(OPTION_ONLINE))
     {
         my $strTimestampDbStop;
         ($strArchiveStop, $strTimestampDbStop) = $self->{oDb}->backupStop();
@@ -835,9 +878,9 @@ sub process
     }
 
     # If archive logs are required to complete the backup, then check them.  This is the default, but can be overridden if the
-    # archive logs are going to a different server.  Be careful here because there is no way to verify that the backup will be
-    # consistent - at least not here.
-    if (!optionGet(OPTION_NO_START_STOP) && optionGet(OPTION_BACKUP_ARCHIVE_CHECK))
+    # archive logs are going to a different server.  Be careful of this option because there is no way to verify that the backup
+    # will be consistent - at least not here.
+    if (optionGet(OPTION_ONLINE) && optionGet(OPTION_BACKUP_ARCHIVE_CHECK))
     {
         # Save the backup manifest a second time - before getting archive logs in case that fails
         $oBackupManifest->save();
