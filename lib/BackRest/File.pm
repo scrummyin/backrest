@@ -881,27 +881,7 @@ sub exists
     # Run locally
     else
     {
-        # Stat the file/path to determine if it exists
-        my $oStat = lstat($strPathOp);
-
-        # Evaluate error
-        if (!defined($oStat))
-        {
-            # If the error is not entry missing, then throw error
-            if (!$!{ENOENT})
-            {
-                if ($strPathType eq PATH_ABSOLUTE)
-                {
-                    confess &log(ERROR, $!, COMMAND_ERR_FILE_READ);
-                }
-                else
-                {
-                    confess &log(ERROR, $!); #, COMMAND_ERR_FILE_READ);
-                }
-            }
-
-            $bExists = false;
-        }
+        $bExists = fileExists($strPathOp);
     }
 
     # Return from function and log return values if any
@@ -1250,52 +1230,7 @@ sub list
     # Run locally
     else
     {
-        my $hPath;
-
-        if (!opendir($hPath, $strPathOp))
-        {
-            my $strError = "${strPathOp} could not be read: " . $!;
-            my $iErrorCode = COMMAND_ERR_PATH_READ;
-
-            if (!$self->exists($strPathType, $strPath))
-            {
-                # If ignore missing is set then return an empty array
-                if ($bIgnoreMissing)
-                {
-                    return @stryFileList;
-                }
-
-                $strError = "${strPathOp} does not exist";
-                $iErrorCode = COMMAND_ERR_PATH_MISSING;
-            }
-
-            if ($strPathType eq PATH_ABSOLUTE)
-            {
-                confess &log(ERROR, $strError, $iErrorCode);
-            }
-
-            confess &log(ERROR, $strError);
-        }
-
-        @stryFileList = grep(!/^(\.)|(\.\.)$/i, readdir($hPath));
-
-        close($hPath);
-
-        if (defined($strExpression))
-        {
-            @stryFileList = grep(/$strExpression/i, @stryFileList);
-        }
-
-        # Reverse sort
-        if ($strSortOrder eq 'reverse')
-        {
-            @stryFileList = sort {$b cmp $a} @stryFileList;
-        }
-        # Normal sort
-        else
-        {
-            @stryFileList = sort @stryFileList;
-        }
+        @stryFileList = fileList($strPathOp, $strExpression, $strSortOrder, $bIgnoreMissing);
     }
 
     # Return from function and log return values if any
