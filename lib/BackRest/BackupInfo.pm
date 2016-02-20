@@ -20,6 +20,7 @@ use BackRest::Common::Ini;
 use BackRest::Common::Log;
 use BackRest::Config::Config;
 use BackRest::File;
+use BackRest::FileCommon;
 use BackRest::Manifest;
 
 ####################################################################################################################################
@@ -129,7 +130,7 @@ sub new
 
     # Build the backup info path/file name
     my $strBackupInfoFile = "${strBackupClusterPath}/" . FILE_BACKUP_INFO;
-    my $bExists = -e $strBackupInfoFile ? true : false;
+    my $bExists = fileExists($strBackupInfoFile);
 
     # Init object and store variables
     my $self = $class->SUPER::new($strBackupInfoFile, $bExists);
@@ -170,10 +171,36 @@ sub validate
             OP_INFO_BACKUP_NEW
         );
 
+    # Check all files in manifest path
+    my $strManifestPath = "$self->{strBackupClusterPath}/" . PATH_MANIFEST;
+    my $strPattern = backupRegExpGet(true, true, true, false) . '\.manifest';
+
+    foreach my $strFile (fileList($strManifestPath, undef, undef, true))
+    {
+        # All valid manifests should match this pattern
+        if ($strFile =~ "^${strPattern}(\\.gz){0,1}\$")
+        {
+            # Now check if this is a current manifest.  If so, then a compressed history manifest should also be present.  If not
+            # then the backup cannnot be considered complete and should be removed.
+            if ($strFile =~ "^${strPattern}\$")
+            {
+                if (!fileExists("${strManifestPath}/${strFile}.gz"))
+                {
+                    confess "GOT HERE MISSING HISTORY ${strFile}";
+                }
+            }
+        }
+        # Otherwise the file is junk or a leftover temp file and should be removed
+        else
+        {
+            confess 'GOT HERE ' . $strFile . ' ' . $strPattern;
+        }
+    }
+
     # Remove backups that no longer exist on disk
     foreach my $strBackup ($self->keys(INFO_BACKUP_SECTION_BACKUP_CURRENT))
     {
-        if (!-e "$self->{strBackupClusterPath}/${strBackup}")
+        if (!fileExists("$self->{strBackupClusterPath}/${strBackup}"))
         {
             &log(WARN, "backup ${strBackup} is missing from the repository - removed from " . FILE_BACKUP_INFO);
             $self->delete($strBackup);

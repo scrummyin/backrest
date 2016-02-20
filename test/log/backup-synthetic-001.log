@@ -49,6 +49,14 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db
 DEBUG:     FileCommon::fileExists=>: bExists = false
 DEBUG:     File->exists=>: bExists = false
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = false
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest
+DEBUG:     FileCommon::fileExists=>: bExists = false
+DEBUG:     FileCommon::fileList=>: stryFileList = ()
 DEBUG:     Db->info(): oFile = [object], strDbPath = [TEST_PATH]/db/common
 DEBUG:     Db->info=>: fDbVersion = 9.3, iCatalogVersion = 201306121, iControlVersion = 937, ullDbSysId = 6156904820763115222
 DEBUG:     BackupInfo->check=>: iDbHistoryId = 1
@@ -110,7 +118,17 @@ DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPat
  INFO: expire start: --no-compress --config=[TEST_PATH]/db/pg_backrest.conf --log-level-console=debug --log-level-file=trace --repo-path=[TEST_PATH]/backrest --stanza=db
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = none, strStanza = db
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-1].manifest, [BACKUP-FULL-1].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-1].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-1]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     File->list(): bIgnoreMissing = <false>, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [undef], strPathType = backup:cluster, strSortOrder = reverse
 DEBUG:     FileCommon::fileList(): bIgnoreMissing = false, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [TEST_PATH]/backrest/backup/db, strSortOrder = reverse
@@ -240,6 +258,16 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-1].manifest, [BACKUP-FULL-1].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-1].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-1]
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     Db->info(): oFile = [object], strDbPath = [TEST_PATH]/db/common
 DEBUG:     Db->info=>: fDbVersion = 9.3, iCatalogVersion = 201306121, iControlVersion = 937, ullDbSysId = 6156904820763115222
 DEBUG:     BackupInfo->check=>: iDbHistoryId = 1
@@ -343,6 +371,16 @@ DEBUG:     FileCommon::fileList=>: stryFileList = (db)
 DEBUG:     File->list=>: stryFileList = (db)
 DEBUG:     Info->backupList(): oFile = [object], strStanza = db
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-1].manifest, [BACKUP-FULL-1].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-1].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-1]
+DEBUG:     FileCommon::fileExists=>: bExists = true
 stanza db
    status: ok
    oldest backup label: [BACKUP-FULL-1]
@@ -365,6 +403,16 @@ DEBUG:     FileCommon::fileList=>: stryFileList = (db)
 DEBUG:     File->list=>: stryFileList = (db)
 DEBUG:     Info->backupList(): oFile = [object], strStanza = db
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-1].manifest, [BACKUP-FULL-1].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-1].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-1]
+DEBUG:     FileCommon::fileExists=>: bExists = true
 [
    {
        "backup" : [
@@ -430,6 +478,14 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ()
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-1]
+DEBUG:     FileCommon::fileExists=>: bExists = false
  WARN: backup [BACKUP-FULL-1] is missing from the repository - removed from backup.info
 DEBUG:     BackupInfo->delete(): strBackupLabel = [BACKUP-FULL-1]
 DEBUG:     Db->info(): oFile = [object], strDbPath = [TEST_PATH]/db/common
@@ -491,7 +547,17 @@ DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPat
  INFO: expire start: --no-compress --config=[TEST_PATH]/db/pg_backrest.conf --log-level-console=debug --log-level-file=trace --repo-path=[TEST_PATH]/backrest --stanza=db
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = none, strStanza = db
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     File->list(): bIgnoreMissing = <false>, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [undef], strPathType = backup:cluster, strSortOrder = reverse
 DEBUG:     FileCommon::fileList(): bIgnoreMissing = false, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [TEST_PATH]/backrest/backup/db, strSortOrder = reverse
@@ -629,6 +695,8 @@ DEBUG:     File->exists=>: bExists = true
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = <false>, lModificationTime = [undef], strDestinationFile = [TEST_PATH]/db/common/backup.info, strDestinationPathType = db:absolute, strGroup = [undef], strMode = <0640>, strSourceFile = backup.info, strSourcePathType = backup:cluster, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common/backup.info, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common/backup.info.backrest.tmp, strSourcePathType = absolute
 DEBUG:     BackupInfo->new(): bValidate = false, strBackupClusterPath = [TEST_PATH]/db/common
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/db/common/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->remove(): bIgnoreMissing = false, bTemp = [undef], strPath = [TEST_PATH]/db/common/backup.info, strPathType = db:absolute
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     BackupInfo->current(): strBackup = [BACKUP-FULL-2]
@@ -766,8 +834,18 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     BackupInfo->last(): strType = incr
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     BackupInfo->list(): strFilter = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strOrder = reverse
 DEBUG:     BackupInfo->list=>: stryBackup = ([BACKUP-FULL-2])
@@ -795,8 +873,18 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     BackupInfo->last(): strType = incr
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     BackupInfo->list(): strFilter = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strOrder = reverse
 DEBUG:     BackupInfo->list=>: stryBackup = ([BACKUP-FULL-2])
@@ -824,8 +912,18 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     BackupInfo->last(): strType = incr
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     BackupInfo->list(): strFilter = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strOrder = reverse
 DEBUG:     BackupInfo->list=>: stryBackup = ([BACKUP-FULL-2])
@@ -853,8 +951,18 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     BackupInfo->last(): strType = incr
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     BackupInfo->list(): strFilter = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strOrder = reverse
 DEBUG:     BackupInfo->list=>: stryBackup = ([BACKUP-FULL-2])
@@ -906,8 +1014,18 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     BackupInfo->last(): strType = incr
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     BackupInfo->list(): strFilter = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strOrder = reverse
 DEBUG:     BackupInfo->list=>: stryBackup = ([BACKUP-FULL-2])
@@ -968,7 +1086,21 @@ DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPat
  INFO: expire start: --no-compress --config=[TEST_PATH]/db/pg_backrest.conf --log-level-console=debug --log-level-file=trace --repo-path=[TEST_PATH]/backrest --stanza=db
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = none, strStanza = db
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz, [BACKUP-INCR-1].manifest, [BACKUP-INCR-1].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-1].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-1]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     File->list(): bIgnoreMissing = <false>, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [undef], strPathType = backup:cluster, strSortOrder = reverse
 DEBUG:     FileCommon::fileList(): bIgnoreMissing = false, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [TEST_PATH]/backrest/backup/db, strSortOrder = reverse
@@ -1104,10 +1236,22 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-1]
+DEBUG:     FileCommon::fileExists=>: bExists = false
  WARN: backup [BACKUP-INCR-1] is missing from the repository - removed from backup.info
 DEBUG:     BackupInfo->delete(): strBackupLabel = [BACKUP-INCR-1]
 DEBUG:     BackupInfo->last(): strType = incr
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     BackupInfo->list(): strFilter = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strOrder = reverse
 DEBUG:     BackupInfo->list=>: stryBackup = ([BACKUP-FULL-2])
@@ -1183,7 +1327,21 @@ DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPat
  INFO: expire start: --no-compress --config=[TEST_PATH]/db/pg_backrest.conf --log-level-console=debug --log-level-file=trace --repo-path=[TEST_PATH]/backrest --stanza=db
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = none, strStanza = db
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz, [BACKUP-INCR-2].manifest, [BACKUP-INCR-2].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     File->list(): bIgnoreMissing = <false>, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [undef], strPathType = backup:cluster, strSortOrder = reverse
 DEBUG:     FileCommon::fileList(): bIgnoreMissing = false, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [TEST_PATH]/backrest/backup/db, strSortOrder = reverse
@@ -1328,10 +1486,22 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-2]
+DEBUG:     FileCommon::fileExists=>: bExists = false
  WARN: backup [BACKUP-INCR-2] is missing from the repository - removed from backup.info
 DEBUG:     BackupInfo->delete(): strBackupLabel = [BACKUP-INCR-2]
 DEBUG:     BackupInfo->last(): strType = full
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = false, bFull = true, bIncremental = false
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = false, bFull = true, bIncremental = false
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F$
 DEBUG:     BackupInfo->list(): strFilter = ^[0-9]{8}\-[0-9]{6}F$, strOrder = reverse
 DEBUG:     BackupInfo->list=>: stryBackup = ([BACKUP-FULL-2])
@@ -1404,7 +1574,21 @@ DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPat
  INFO: expire start: --no-compress --config=[TEST_PATH]/db/pg_backrest.conf --log-level-console=debug --log-level-file=trace --repo-path=[TEST_PATH]/backrest --stanza=db
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = none, strStanza = db
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz, [BACKUP-DIFF-1].manifest, [BACKUP-DIFF-1].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-1].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-1]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     File->list(): bIgnoreMissing = <false>, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [undef], strPathType = backup:cluster, strSortOrder = reverse
 DEBUG:     FileCommon::fileList(): bIgnoreMissing = false, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [TEST_PATH]/backrest/backup/db, strSortOrder = reverse
@@ -1550,10 +1734,22 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-1]
+DEBUG:     FileCommon::fileExists=>: bExists = false
  WARN: backup [BACKUP-DIFF-1] is missing from the repository - removed from backup.info
 DEBUG:     BackupInfo->delete(): strBackupLabel = [BACKUP-DIFF-1]
 DEBUG:     BackupInfo->last(): strType = full
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = false, bFull = true, bIncremental = false
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = false, bFull = true, bIncremental = false
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F$
 DEBUG:     BackupInfo->list(): strFilter = ^[0-9]{8}\-[0-9]{6}F$, strOrder = reverse
 DEBUG:     BackupInfo->list=>: stryBackup = ([BACKUP-FULL-2])
@@ -1626,7 +1822,21 @@ DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPat
  INFO: expire start: --no-compress --config=[TEST_PATH]/db/pg_backrest.conf --log-level-console=debug --log-level-file=trace --repo-path=[TEST_PATH]/backrest --stanza=db
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = none, strStanza = db
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz, [BACKUP-DIFF-2].manifest, [BACKUP-DIFF-2].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     File->list(): bIgnoreMissing = <false>, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [undef], strPathType = backup:cluster, strSortOrder = reverse
 DEBUG:     FileCommon::fileList(): bIgnoreMissing = false, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [TEST_PATH]/backrest/backup/db, strSortOrder = reverse
@@ -1778,6 +1988,8 @@ DEBUG:     File->exists=>: bExists = true
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = <false>, lModificationTime = [undef], strDestinationFile = [TEST_PATH]/db/common/backup.info, strDestinationPathType = db:absolute, strGroup = [undef], strMode = <0640>, strSourceFile = backup.info, strSourcePathType = backup:cluster, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common/backup.info, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common/backup.info.backrest.tmp, strSourcePathType = absolute
 DEBUG:     BackupInfo->new(): bValidate = false, strBackupClusterPath = [TEST_PATH]/db/common
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/db/common/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->remove(): bIgnoreMissing = false, bTemp = [undef], strPath = [TEST_PATH]/db/common/backup.info, strPathType = db:absolute
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     BackupInfo->current(): strBackup = [BACKUP-DIFF-2]
@@ -1826,6 +2038,8 @@ DEBUG:     File->exists=>: bExists = true
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = <false>, lModificationTime = [undef], strDestinationFile = [TEST_PATH]/db/common/backup.info, strDestinationPathType = db:absolute, strGroup = [undef], strMode = <0640>, strSourceFile = backup.info, strSourcePathType = backup:cluster, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common/backup.info, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common/backup.info.backrest.tmp, strSourcePathType = absolute
 DEBUG:     BackupInfo->new(): bValidate = false, strBackupClusterPath = [TEST_PATH]/db/common
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/db/common/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->remove(): bIgnoreMissing = false, bTemp = [undef], strPath = [TEST_PATH]/db/common/backup.info, strPathType = db:absolute
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     BackupInfo->current(): strBackup = [BACKUP-DIFF-2]
@@ -1861,6 +2075,8 @@ DEBUG:     File->exists=>: bExists = true
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = <false>, lModificationTime = [undef], strDestinationFile = [TEST_PATH]/db/common/backup.info, strDestinationPathType = db:absolute, strGroup = [undef], strMode = <0640>, strSourceFile = backup.info, strSourcePathType = backup:cluster, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common/backup.info, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common/backup.info.backrest.tmp, strSourcePathType = absolute
 DEBUG:     BackupInfo->new(): bValidate = false, strBackupClusterPath = [TEST_PATH]/db/common
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/db/common/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->remove(): bIgnoreMissing = false, bTemp = [undef], strPath = [TEST_PATH]/db/common/backup.info, strPathType = db:absolute
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     BackupInfo->current(): strBackup = [BACKUP-DIFF-2]
@@ -1896,6 +2112,8 @@ DEBUG:     File->exists=>: bExists = true
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = <false>, lModificationTime = [undef], strDestinationFile = [TEST_PATH]/db/common-2/backup.info, strDestinationPathType = db:absolute, strGroup = [undef], strMode = <0640>, strSourceFile = backup.info, strSourcePathType = backup:cluster, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common-2/backup.info, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common-2/backup.info.backrest.tmp, strSourcePathType = absolute
 DEBUG:     BackupInfo->new(): bValidate = false, strBackupClusterPath = [TEST_PATH]/db/common-2
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/db/common-2/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->remove(): bIgnoreMissing = false, bTemp = [undef], strPath = [TEST_PATH]/db/common-2/backup.info, strPathType = db:absolute
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     BackupInfo->current(): strBackup = [BACKUP-DIFF-2]
@@ -2095,8 +2313,22 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz, [BACKUP-DIFF-2].manifest, [BACKUP-DIFF-2].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     BackupInfo->last(): strType = incr
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     BackupInfo->list(): strFilter = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strOrder = reverse
 DEBUG:     BackupInfo->list=>: stryBackup = ([BACKUP-DIFF-2], [BACKUP-FULL-2])
@@ -2164,7 +2396,25 @@ DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPat
  INFO: expire start: --no-compress --config=[TEST_PATH]/db/pg_backrest.conf --log-level-console=debug --log-level-file=trace --repo-path=[TEST_PATH]/backrest --stanza=db
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = none, strStanza = db
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz, [BACKUP-DIFF-2].manifest, [BACKUP-DIFF-2].manifest.gz, [BACKUP-INCR-3].manifest, [BACKUP-INCR-3].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     File->list(): bIgnoreMissing = <false>, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [undef], strPathType = backup:cluster, strSortOrder = reverse
 DEBUG:     FileCommon::fileList(): bIgnoreMissing = false, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [TEST_PATH]/backrest/backup/db, strSortOrder = reverse
@@ -2309,8 +2559,26 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz, [BACKUP-DIFF-2].manifest, [BACKUP-DIFF-2].manifest.gz, [BACKUP-INCR-3].manifest, [BACKUP-INCR-3].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     BackupInfo->last(): strType = incr
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     BackupInfo->list(): strFilter = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strOrder = reverse
 DEBUG:     BackupInfo->list=>: stryBackup = ([BACKUP-INCR-3], [BACKUP-DIFF-2], [BACKUP-FULL-2])
@@ -2371,7 +2639,29 @@ DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPat
  INFO: expire start: --no-compress --config=[TEST_PATH]/db/pg_backrest.conf --log-level-console=debug --log-level-file=trace --repo-path=[TEST_PATH]/backrest --stanza=db
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = none, strStanza = db
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz, [BACKUP-DIFF-2].manifest, [BACKUP-DIFF-2].manifest.gz, [BACKUP-INCR-3].manifest, [BACKUP-INCR-3].manifest.gz, [BACKUP-INCR-4].manifest, [BACKUP-INCR-4].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-4].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-4]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     File->list(): bIgnoreMissing = <false>, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [undef], strPathType = backup:cluster, strSortOrder = reverse
 DEBUG:     FileCommon::fileList(): bIgnoreMissing = false, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [TEST_PATH]/backrest/backup/db, strSortOrder = reverse
@@ -2520,8 +2810,30 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz, [BACKUP-DIFF-2].manifest, [BACKUP-DIFF-2].manifest.gz, [BACKUP-INCR-3].manifest, [BACKUP-INCR-3].manifest.gz, [BACKUP-INCR-4].manifest, [BACKUP-INCR-4].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-4].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-4]
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     BackupInfo->last(): strType = full
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = false, bFull = true, bIncremental = false
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = false, bFull = true, bIncremental = false
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F$
 DEBUG:     BackupInfo->list(): strFilter = ^[0-9]{8}\-[0-9]{6}F$, strOrder = reverse
 DEBUG:     BackupInfo->list=>: stryBackup = ([BACKUP-FULL-2])
@@ -2595,7 +2907,33 @@ DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPat
  INFO: expire start: --no-compress --config=[TEST_PATH]/db/pg_backrest.conf --log-level-console=debug --log-level-file=trace --repo-path=[TEST_PATH]/backrest --stanza=db
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = none, strStanza = db
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz, [BACKUP-DIFF-2].manifest, [BACKUP-DIFF-2].manifest.gz, [BACKUP-INCR-3].manifest, [BACKUP-INCR-3].manifest.gz, [BACKUP-INCR-4].manifest, [BACKUP-INCR-4].manifest.gz, [BACKUP-DIFF-3].manifest, [BACKUP-DIFF-3].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-4].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-4]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     File->list(): bIgnoreMissing = <false>, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [undef], strPathType = backup:cluster, strSortOrder = reverse
 DEBUG:     FileCommon::fileList(): bIgnoreMissing = false, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [TEST_PATH]/backrest/backup/db, strSortOrder = reverse
@@ -2748,8 +3086,34 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz, [BACKUP-DIFF-2].manifest, [BACKUP-DIFF-2].manifest.gz, [BACKUP-INCR-3].manifest, [BACKUP-INCR-3].manifest.gz, [BACKUP-INCR-4].manifest, [BACKUP-INCR-4].manifest.gz, [BACKUP-DIFF-3].manifest, [BACKUP-DIFF-3].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-4].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-4]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     BackupInfo->last(): strType = incr
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     BackupInfo->list(): strFilter = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strOrder = reverse
 DEBUG:     BackupInfo->list=>: stryBackup = ([BACKUP-DIFF-3], [BACKUP-INCR-4], [BACKUP-INCR-3], [BACKUP-DIFF-2], [BACKUP-FULL-2])
@@ -2803,7 +3167,37 @@ DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPat
  INFO: expire start: --no-compress --config=[TEST_PATH]/db/pg_backrest.conf --log-level-console=debug --log-level-file=trace --repo-path=[TEST_PATH]/backrest --stanza=db
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = none, strStanza = db
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz, [BACKUP-DIFF-2].manifest, [BACKUP-DIFF-2].manifest.gz, [BACKUP-INCR-3].manifest, [BACKUP-INCR-3].manifest.gz, [BACKUP-INCR-4].manifest, [BACKUP-INCR-4].manifest.gz, [BACKUP-DIFF-3].manifest, [BACKUP-DIFF-3].manifest.gz, [BACKUP-INCR-5].manifest, [BACKUP-INCR-5].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-4].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-5].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-4]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-5]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     File->list(): bIgnoreMissing = <false>, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [undef], strPathType = backup:cluster, strSortOrder = reverse
 DEBUG:     FileCommon::fileList(): bIgnoreMissing = false, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [TEST_PATH]/backrest/backup/db, strSortOrder = reverse
@@ -2960,8 +3354,38 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz, [BACKUP-DIFF-2].manifest, [BACKUP-DIFF-2].manifest.gz, [BACKUP-INCR-3].manifest, [BACKUP-INCR-3].manifest.gz, [BACKUP-INCR-4].manifest, [BACKUP-INCR-4].manifest.gz, [BACKUP-DIFF-3].manifest, [BACKUP-DIFF-3].manifest.gz, [BACKUP-INCR-5].manifest, [BACKUP-INCR-5].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-4].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-5].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-4]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-5]
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     BackupInfo->last(): strType = full
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = false, bFull = true, bIncremental = false
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = false, bFull = true, bIncremental = false
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F$
 DEBUG:     BackupInfo->list(): strFilter = ^[0-9]{8}\-[0-9]{6}F$, strOrder = reverse
 DEBUG:     BackupInfo->list=>: stryBackup = ([BACKUP-FULL-2])
@@ -3026,7 +3450,41 @@ DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPat
  INFO: expire start: --no-compress --config=[TEST_PATH]/db/pg_backrest.conf --log-level-console=debug --log-level-file=trace --repo-path=[TEST_PATH]/backrest --stanza=db
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = none, strStanza = db
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz, [BACKUP-DIFF-2].manifest, [BACKUP-DIFF-2].manifest.gz, [BACKUP-INCR-3].manifest, [BACKUP-INCR-3].manifest.gz, [BACKUP-INCR-4].manifest, [BACKUP-INCR-4].manifest.gz, [BACKUP-DIFF-3].manifest, [BACKUP-DIFF-3].manifest.gz, [BACKUP-INCR-5].manifest, [BACKUP-INCR-5].manifest.gz, [BACKUP-DIFF-4].manifest, [BACKUP-DIFF-4].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-4].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-5].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-4].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-4]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-5]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-4]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     File->list(): bIgnoreMissing = <false>, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [undef], strPathType = backup:cluster, strSortOrder = reverse
 DEBUG:     FileCommon::fileList(): bIgnoreMissing = false, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [TEST_PATH]/backrest/backup/db, strSortOrder = reverse
@@ -3185,6 +3643,40 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz, [BACKUP-DIFF-2].manifest, [BACKUP-DIFF-2].manifest.gz, [BACKUP-INCR-3].manifest, [BACKUP-INCR-3].manifest.gz, [BACKUP-INCR-4].manifest, [BACKUP-INCR-4].manifest.gz, [BACKUP-DIFF-3].manifest, [BACKUP-DIFF-3].manifest.gz, [BACKUP-INCR-5].manifest, [BACKUP-INCR-5].manifest.gz, [BACKUP-DIFF-4].manifest, [BACKUP-DIFF-4].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-4].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-5].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-4].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-4]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-5]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-4]
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     Db->info(): oFile = [object], strDbPath = [TEST_PATH]/db/common-2
 DEBUG:     Db->info=>: fDbVersion = 9.3, iCatalogVersion = 201306121, iControlVersion = 937, ullDbSysId = 6156904820763115222
 DEBUG:     BackupInfo->check=>: iDbHistoryId = 1
@@ -3253,7 +3745,45 @@ DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPat
  INFO: expire start: --no-compress --config=[TEST_PATH]/db/pg_backrest.conf --log-level-console=debug --log-level-file=trace --repo-path=[TEST_PATH]/backrest --stanza=db
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = none, strStanza = db
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest, [BACKUP-FULL-2].manifest.gz, [BACKUP-DIFF-2].manifest, [BACKUP-DIFF-2].manifest.gz, [BACKUP-INCR-3].manifest, [BACKUP-INCR-3].manifest.gz, [BACKUP-INCR-4].manifest, [BACKUP-INCR-4].manifest.gz, [BACKUP-DIFF-3].manifest, [BACKUP-DIFF-3].manifest.gz, [BACKUP-INCR-5].manifest, [BACKUP-INCR-5].manifest.gz, [BACKUP-DIFF-4].manifest, [BACKUP-DIFF-4].manifest.gz, [BACKUP-FULL-3].manifest, [BACKUP-FULL-3].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-2].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-4].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-5].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-4].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-2]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-4]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-INCR-5]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-4]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     File->list(): bIgnoreMissing = <false>, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [undef], strPathType = backup:cluster, strSortOrder = reverse
 DEBUG:     FileCommon::fileList(): bIgnoreMissing = false, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [TEST_PATH]/backrest/backup/db, strSortOrder = reverse
@@ -3429,8 +3959,18 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest.gz, [BACKUP-DIFF-2].manifest.gz, [BACKUP-INCR-3].manifest.gz, [BACKUP-INCR-4].manifest.gz, [BACKUP-DIFF-3].manifest.gz, [BACKUP-INCR-5].manifest.gz, [BACKUP-DIFF-4].manifest.gz, [BACKUP-FULL-3].manifest, [BACKUP-FULL-3].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     BackupInfo->last(): strType = full
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = false, bFull = true, bIncremental = false
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = false, bFull = true, bIncremental = false
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F$
 DEBUG:     BackupInfo->list(): strFilter = ^[0-9]{8}\-[0-9]{6}F$, strOrder = reverse
 DEBUG:     BackupInfo->list=>: stryBackup = ([BACKUP-FULL-3])
@@ -3491,7 +4031,21 @@ DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPat
  INFO: expire start: --no-compress --config=[TEST_PATH]/db/pg_backrest.conf --log-level-console=debug --log-level-file=trace --repo-path=[TEST_PATH]/backrest --stanza=db
 DEBUG:     File->new(): iThreadIdx = [undef], oProtocol = [object], strBackupPath = [TEST_PATH]/backrest, strDefaultFileMode = <0640>, strDefaultPathMode = <0750>, strRemote = none, strStanza = db
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest.gz, [BACKUP-DIFF-2].manifest.gz, [BACKUP-INCR-3].manifest.gz, [BACKUP-INCR-4].manifest.gz, [BACKUP-DIFF-3].manifest.gz, [BACKUP-INCR-5].manifest.gz, [BACKUP-DIFF-4].manifest.gz, [BACKUP-FULL-3].manifest, [BACKUP-FULL-3].manifest.gz, [BACKUP-DIFF-5].manifest, [BACKUP-DIFF-5].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-5].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-5]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     File->list(): bIgnoreMissing = <false>, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [undef], strPathType = backup:cluster, strSortOrder = reverse
 DEBUG:     FileCommon::fileList(): bIgnoreMissing = false, strExpression = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strPath = [TEST_PATH]/backrest/backup/db, strSortOrder = reverse
@@ -3648,10 +4202,12 @@ DEBUG:     File->exists=>: bExists = true
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = <false>, lModificationTime = [undef], strDestinationFile = [TEST_PATH]/db/common-2/backup.info, strDestinationPathType = db:absolute, strGroup = [undef], strMode = <0640>, strSourceFile = backup.info, strSourcePathType = backup:cluster, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common-2/backup.info, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common-2/backup.info.backrest.tmp, strSourcePathType = absolute
 DEBUG:     BackupInfo->new(): bValidate = false, strBackupClusterPath = [TEST_PATH]/db/common-2
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/db/common-2/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->remove(): bIgnoreMissing = false, bTemp = [undef], strPath = [TEST_PATH]/db/common-2/backup.info, strPathType = db:absolute
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     BackupInfo->last(): strType = incr
-DEBUG:     BackupCommon::backupRegExpGet(): bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
 DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$
 DEBUG:     BackupInfo->list(): strFilter = ^[0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}$, strOrder = reverse
 DEBUG:     BackupInfo->list=>: stryBackup = ([BACKUP-DIFF-5], [BACKUP-FULL-3])
@@ -3801,8 +4357,30 @@ DEBUG:     FileCommon::fileList=>: stryFileList = (db, db_empty)
 DEBUG:     File->list=>: stryFileList = (db, db_empty)
 DEBUG:     Info->backupList(): oFile = [object], strStanza = db
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest.gz, [BACKUP-DIFF-2].manifest.gz, [BACKUP-INCR-3].manifest.gz, [BACKUP-INCR-4].manifest.gz, [BACKUP-DIFF-3].manifest.gz, [BACKUP-INCR-5].manifest.gz, [BACKUP-DIFF-4].manifest.gz, [BACKUP-FULL-3].manifest, [BACKUP-FULL-3].manifest.gz, [BACKUP-DIFF-5].manifest, [BACKUP-DIFF-5].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-5].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-5]
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     Info->backupList(): oFile = [object], strStanza = db_empty
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db_empty
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db_empty/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = false
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db_empty/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db_empty/backup.manifest
+DEBUG:     FileCommon::fileExists=>: bExists = false
+DEBUG:     FileCommon::fileList=>: stryFileList = ()
 stanza db
    status: ok
    oldest backup label: [BACKUP-FULL-3]
@@ -3828,8 +4406,30 @@ DEBUG:     FileCommon::fileList=>: stryFileList = (db, db_empty)
 DEBUG:     File->list=>: stryFileList = (db, db_empty)
 DEBUG:     Info->backupList(): oFile = [object], strStanza = db
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileList=>: stryFileList = ([BACKUP-FULL-2].manifest.gz, [BACKUP-DIFF-2].manifest.gz, [BACKUP-INCR-3].manifest.gz, [BACKUP-INCR-4].manifest.gz, [BACKUP-DIFF-3].manifest.gz, [BACKUP-INCR-5].manifest.gz, [BACKUP-DIFF-4].manifest.gz, [BACKUP-FULL-3].manifest, [BACKUP-FULL-3].manifest.gz, [BACKUP-DIFF-5].manifest, [BACKUP-DIFF-5].manifest.gz)
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-3].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-5].manifest.gz
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-3]
+DEBUG:     FileCommon::fileExists=>: bExists = true
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-DIFF-5]
+DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     Info->backupList(): oFile = [object], strStanza = db_empty
 DEBUG:     BackupInfo->new(): bValidate = <true>, strBackupClusterPath = [TEST_PATH]/backrest/backup/db_empty
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db_empty/backup.info
+DEBUG:     FileCommon::fileExists=>: bExists = false
+DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = false, bDifferential = true, bFull = true, bIncremental = true
+DEBUG:     BackupCommon::backupRegExpGet=>: strRegExp = [0-9]{8}\-[0-9]{6}F(\_[0-9]{8}\-[0-9]{6}(D|I)){0,1}
+DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = [undef], strPath = [TEST_PATH]/backrest/backup/db_empty/backup.manifest, strSortOrder = <forward>
+DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db_empty/backup.manifest
+DEBUG:     FileCommon::fileExists=>: bExists = false
+DEBUG:     FileCommon::fileList=>: stryFileList = ()
 [
    {
        "backup" : [
