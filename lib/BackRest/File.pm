@@ -929,29 +929,7 @@ sub remove
     # Run locally
     else
     {
-        if (unlink($strPathOp) != 1)
-        {
-            $bRemoved = false;
-
-            my $strError = "${strPathOp} could not be removed: " . $!;
-            my $iErrorCode = COMMAND_ERR_PATH_READ;
-
-            if (!$self->exists($strPathType, $strPath))
-            {
-                $strError = "${strPathOp} does not exist";
-                $iErrorCode = COMMAND_ERR_PATH_MISSING;
-            }
-
-            if (!($iErrorCode == COMMAND_ERR_PATH_MISSING && $bIgnoreMissing))
-            {
-                if ($strPathType eq PATH_ABSOLUTE)
-                {
-                    confess &log(ERROR, $strError, $iErrorCode);
-                }
-
-                confess &log(ERROR, $strError);
-            }
-        }
+        $bRemoved = fileRemove($strPathOp, $bIgnoreMissing);
     }
 
     # Return from function and log return values if any
