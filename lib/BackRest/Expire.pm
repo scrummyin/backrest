@@ -147,7 +147,6 @@ sub process
             OP_EXPIRE_PROCESS
         );
 
-    my $strPath;
     my @stryPath;
 
     my $oFile = $self->{oFile};
@@ -178,7 +177,7 @@ sub process
             {
                 my @stryRemoveList;
 
-                foreach $strPath ($oBackupInfo->list('^' . $stryPath[$iFullIdx] . '.*'))
+                foreach my $strPath ($oBackupInfo->list('^' . $stryPath[$iFullIdx] . '.*'))
                 {
                     $oFile->remove(PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strPath}.manifest");
                     $oBackupInfo->delete($strPath);
@@ -213,7 +212,7 @@ sub process
                 # Get a list of all differential and incremental backups
                 my @stryRemoveList;
 
-                foreach $strPath ($oBackupInfo->list(backupRegExpGet(false, true, true)))
+                foreach my $strPath ($oBackupInfo->list(backupRegExpGet(false, true, true)))
                 {
                     logDebugMisc($strOperation, "checking ${strPath} for differential expiration");
 
@@ -351,7 +350,7 @@ sub process
                     }
 
                     # Get all major archive paths (timeline and first 64 bits of LSN)
-                    foreach $strPath ($oFile->list(PATH_BACKUP_ARCHIVE, $strArchiveId, "^[0-F]{16}\$"))
+                    foreach my $strPath ($oFile->list(PATH_BACKUP_ARCHIVE, $strArchiveId, "^[0-F]{16}\$"))
                     {
                         logDebugMisc($strOperation, "found major WAL path: ${strPath}");
                         $bRemove = true;
