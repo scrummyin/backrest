@@ -26,6 +26,7 @@ use constant OP_FILE_COMMON                                         => 'FileComm
 use constant OP_FILE_COMMON_EXISTS                                  => OP_FILE_COMMON . '::fileExists';
 use constant OP_FILE_COMMON_LIST                                    => OP_FILE_COMMON . '::fileList';
 use constant OP_FILE_COMMON_PATH_SYNC                               => OP_FILE_COMMON . '::filePathSync';
+use constant OP_FILE_COMMON_REMOVE                                  => OP_FILE_COMMON . '::fileCommonRemove';
 use constant OP_FILE_COMMON_STRING_READ                             => OP_FILE_COMMON . '::fileStringRead';
 use constant OP_FILE_COMMON_STRING_WRITE                            => OP_FILE_COMMON . '::fileStringWrite';
 
@@ -192,6 +193,58 @@ sub filePathSync
 }
 
 push @EXPORT, qw(filePathSync);
+
+####################################################################################################################################
+# fileRemove
+#
+# Remove a file from the file system.
+####################################################################################################################################
+sub fileRemove
+{
+    # Assign function parameters, defaults, and log debug info
+    my
+    (
+        $strOperation,
+        $strPath,
+        $bIgnoreMissing
+    ) =
+        logDebugParam
+        (
+            OP_FILE_COMMON_REMOVE, \@_,
+            {name => 'strPath'},
+            {name => 'bIgnoreMissing', default => false}
+        );
+
+    # Working variables
+    my $bRemoved = true;
+
+    # Remove the file
+    if (unlink($strPath) != 1)
+    {
+        $bRemoved = false;
+        my $strError = $!;
+
+        # If path exists then throw the error
+        if (fileExists($strPath))
+        {
+            confess &log(ERROR, "unable to remove ${strPath}" . (defined($strError) ? ": $strError" : ''), ERROR_FILE_OPEN);
+        }
+        # Else throw an error unless missing paths are ignored
+        elsif (!$bIgnoreMissing)
+        {
+            confess &log(ERROR, "${strPath} does not exist", ERROR_FILE_MISSING);
+        }
+    }
+
+    # Return from function and log return values if any
+    return logDebugReturn
+    (
+        $strOperation,
+        {name => 'bRemoved', value => $bRemoved}
+    );
+}
+
+push @EXPORT, qw(fileRemove);
 
 ####################################################################################################################################
 # fileStringRead
