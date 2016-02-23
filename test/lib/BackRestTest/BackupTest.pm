@@ -1206,6 +1206,15 @@ sub BackRestTestBackup_Test
             #-----------------------------------------------------------------------------------------------------------------------
             $strType = 'incr';
 
+            if ($bNeutralTest)
+            {
+                my $strManifestPath = BackRestTestCommon_RepoPathGet() . "/backup/${strStanza}/" . PATH_MANIFEST;
+
+                # These files will be removed with a warning
+                BackRestTestCommon_FileCreate("${strManifestPath}/${strFullBackup}.manifest.temp", 'JUNK');
+                BackRestTestCommon_FileCreate("${strManifestPath}/bogus.file", 'JUNK');
+            }
+
             # Add tablespace 1
             BackRestTestBackup_ManifestTablespaceCreate(\%oManifest, 1);
 

@@ -177,14 +177,16 @@ sub validate
 
     foreach my $strFile (fileList($strManifestPath, undef, undef, true))
     {
+        my $strFilePath = "${strManifestPath}/${strFile}";
+
         # All valid manifests should match this pattern
         if ($strFile =~ "^${strPattern}(\\.gz){0,1}\$")
         {
             # Now check if this is a current manifest.  If so, then a compressed history manifest should also be present.  If not
-            # then the backup cannnot be considered complete and should be removed.
+            # then the backup must be considered incomplete and removed.
             if ($strFile =~ "^${strPattern}\$")
             {
-                if (!fileExists("${strManifestPath}/${strFile}.gz"))
+                if (!fileExists("${strFilePath}.gz"))
                 {
                     confess "GOT HERE MISSING HISTORY ${strFile}";
                 }
@@ -193,7 +195,8 @@ sub validate
         # Otherwise the file is junk or a leftover temp file and should be removed
         else
         {
-            confess 'GOT HERE ' . $strFile . ' ' . $strPattern;
+            &log(WARN, "remove invalid file in manifest path: ${strFilePath}");
+            fileRemove($strFilePath);
         }
     }
 
