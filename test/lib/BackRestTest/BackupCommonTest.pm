@@ -1197,22 +1197,32 @@ sub BackRestTestBackup_BackupCompare
         executeTest('chmod 750 ' . BackRestTestCommon_RepoPathGet(), {bRemote => true});
     }
 
-    my %oActualManifest;
-    iniLoad($oFile->pathGet(PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strBackup}.manifest"), \%oActualManifest);
+    my $oActualManifest = new BackRest::Common::Ini($oFile->pathGet(PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strBackup}.manifest"));
 
     ${$oExpectedManifestRef}{&MANIFEST_SECTION_BACKUP}{&MANIFEST_KEY_TIMESTAMP_START} =
-        $oActualManifest{&MANIFEST_SECTION_BACKUP}{&MANIFEST_KEY_TIMESTAMP_START};
+        $oActualManifest->get(MANIFEST_SECTION_BACKUP, &MANIFEST_KEY_TIMESTAMP_START);
     ${$oExpectedManifestRef}{&MANIFEST_SECTION_BACKUP}{&MANIFEST_KEY_TIMESTAMP_STOP} =
-        $oActualManifest{&MANIFEST_SECTION_BACKUP}{&MANIFEST_KEY_TIMESTAMP_STOP};
+        $oActualManifest->get(MANIFEST_SECTION_BACKUP, MANIFEST_KEY_TIMESTAMP_STOP);
     ${$oExpectedManifestRef}{&MANIFEST_SECTION_BACKUP}{&MANIFEST_KEY_TIMESTAMP_COPY_START} =
-        $oActualManifest{&MANIFEST_SECTION_BACKUP}{&MANIFEST_KEY_TIMESTAMP_COPY_START};
+        $oActualManifest->get(MANIFEST_SECTION_BACKUP, MANIFEST_KEY_TIMESTAMP_COPY_START);
     ${$oExpectedManifestRef}{&INI_SECTION_BACKREST}{&INI_KEY_CHECKSUM} =
-        $oActualManifest{&INI_SECTION_BACKREST}{&INI_KEY_CHECKSUM};
+        $oActualManifest->get(INI_SECTION_BACKREST, INI_KEY_CHECKSUM);
     ${$oExpectedManifestRef}{&INI_SECTION_BACKREST}{&INI_KEY_FORMAT} = BACKREST_FORMAT + 0;
+
+    foreach my $strPathKey ($oActualManifest->keys(MANIFEST_SECTION_BACKUP_PATH))
+    {
+        my $strFileSection = "${strPathKey}:" . MANIFEST_FILE;
+        # my $strPath = $oBackupManifest->pathGet($strPathKey);
+
+        foreach my $strFileKey ($oActualManifest->keys($strFileSection))
+        {
+            $oActualManifest->remove($strFileSection, $strFileKey, MANIFEST_SUBKEY_REPO_SIZE);
+        }
+    }
 
     my $strTestPath = BackRestTestCommon_TestPathGet();
 
-    iniSave("${strTestPath}/actual.manifest", \%oActualManifest);
+    iniSave("${strTestPath}/actual.manifest", $oActualManifest->{oContent});
     iniSave("${strTestPath}/expected.manifest", $oExpectedManifestRef);
 
     executeTest("diff ${strTestPath}/expected.manifest ${strTestPath}/actual.manifest");

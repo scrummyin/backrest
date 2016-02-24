@@ -26,7 +26,8 @@ use constant OP_FILE_COMMON                                         => 'FileComm
 use constant OP_FILE_COMMON_EXISTS                                  => OP_FILE_COMMON . '::fileExists';
 use constant OP_FILE_COMMON_LIST                                    => OP_FILE_COMMON . '::fileList';
 use constant OP_FILE_COMMON_PATH_SYNC                               => OP_FILE_COMMON . '::filePathSync';
-use constant OP_FILE_COMMON_REMOVE                                  => OP_FILE_COMMON . '::fileCommonRemove';
+use constant OP_FILE_COMMON_REMOVE                                  => OP_FILE_COMMON . '::fileRemove';
+use constant OP_FILE_COMMON_STAT                                    => OP_FILE_COMMON . '::fileStat';
 use constant OP_FILE_COMMON_STRING_READ                             => OP_FILE_COMMON . '::fileStringRead';
 use constant OP_FILE_COMMON_STRING_WRITE                            => OP_FILE_COMMON . '::fileStringWrite';
 

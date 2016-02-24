@@ -461,6 +461,7 @@ sub processManifest
         my $lSizeCurrent = 0;       # Running total of bytes copied
         my $bCopied;                # Was the file copied?
         my $lCopySize;              # Size reported by copy
+        my $lRepoSize;              # Size of file in repository
         my $strCopyChecksum;        # Checksum reported by copy
 
         # Determine how often the manifest will be saved
@@ -498,14 +499,14 @@ sub processManifest
                 else
                 {
                     # Backup the file
-                    ($bCopied, $lSizeCurrent, $lCopySize, $strCopyChecksum) =
+                    ($bCopied, $lSizeCurrent, $lCopySize, $lRepoSize, $strCopyChecksum) =
                         backupFile($self->{oFile}, $$oFileCopy{db_file}, $$oFileCopy{backup_file}, $bCompress,
                                    $$oFileCopy{checksum}, $$oFileCopy{modification_time},
                                    $$oFileCopy{size}, $lSizeTotal, $lSizeCurrent);
 
                     $lManifestSaveCurrent = backupManifestUpdate($oBackupManifest, $$oFileCopy{file_section}, $$oFileCopy{file},
-                                                                 $bCopied, $lCopySize, $strCopyChecksum, $lManifestSaveSize,
-                                                                 $lManifestSaveCurrent);
+                                                                 $bCopied, $lCopySize, $lRepoSize, $strCopyChecksum,
+                                                                 $lManifestSaveSize, $lManifestSaveCurrent);
                 }
             }
         }
@@ -552,8 +553,8 @@ sub processManifest
                                 ", copied = $$oMessage{copied}");
 
                     $lManifestSaveCurrent = backupManifestUpdate($oBackupManifest, $$oMessage{file_section}, $$oMessage{file},
-                                                          $$oMessage{copied}, $$oMessage{size}, $$oMessage{checksum},
-                                                          $lManifestSaveSize, $lManifestSaveCurrent);
+                                                          $$oMessage{copied}, $$oMessage{size}, $$oMessage{repo_size},
+                                                          $$oMessage{checksum}, $lManifestSaveSize, $lManifestSaveCurrent);
                 }
 
                 # Keep the protocol layer from timing out
@@ -568,14 +569,14 @@ sub processManifest
 
     if (defined($oFileCopy))
     {
-        my ($bCopied, $lSizeCurrent, $lCopySize, $strCopyChecksum) =
+        my ($bCopied, $lSizeCurrent, $lCopySize, $lRepoSize, $strCopyChecksum) =
             backupFile($self->{oFile}, $$oFileCopy{db_file}, $$oFileCopy{backup_file}, $bCompress,
                        $$oFileCopy{checksum}, $$oFileCopy{modification_time},
                        $$oFileCopy{size});
 
 
         backupManifestUpdate($oBackupManifest, $$oFileCopy{file_section}, $$oFileCopy{file},
-                             $bCopied, $lCopySize, $strCopyChecksum);
+                             $bCopied, $lCopySize, $lRepoSize, $strCopyChecksum);
 
         $lSizeTotal += $$oFileCopy{size};
     }
@@ -970,7 +971,7 @@ sub process
     $self->{oFile}->linkCreate(PATH_BACKUP_CLUSTER, $strBackupLabel, PATH_BACKUP_CLUSTER, "latest", undef, true);
 
     # Save backup info
-    $oBackupInfo->add($self->{oFile}, $oBackupManifest);
+    $oBackupInfo->add($oBackupManifest);
 
     # Return from function and log return values if any
     return logDebugReturn

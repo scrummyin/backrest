@@ -121,7 +121,7 @@ sub threadGroupThread
                     my $oResult = {};
 
                     # Backup the file
-                    ($$oResult{copied}, $lSizeCurrent, $$oResult{size}, $$oResult{checksum}) =
+                    ($$oResult{copied}, $lSizeCurrent, $$oResult{size}, $$oResult{repo_size}, $$oResult{checksum}) =
                         backupFile($oFile, $$oMessage{db_file}, $$oMessage{backup_file}, $$oCommand{param}{compress},
                                    $$oMessage{checksum}, $$oMessage{modification_time},
                                    $$oMessage{size}, 0, 0);

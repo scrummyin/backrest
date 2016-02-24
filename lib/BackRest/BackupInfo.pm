@@ -64,13 +64,13 @@ use constant INFO_BACKUP_KEY_ARCHIVE_START                          => MANIFEST_
     push @EXPORT, qw(INFO_BACKUP_KEY_ARCHIVE_START);
 use constant INFO_BACKUP_KEY_ARCHIVE_STOP                           => MANIFEST_KEY_ARCHIVE_STOP;
     push @EXPORT, qw(INFO_BACKUP_KEY_ARCHIVE_STOP);
-use constant INFO_BACKUP_KEY_BACKUP_REPO_SIZE                       => 'backup-info-repo-size';
+use constant INFO_BACKUP_KEY_BACKUP_REPO_SIZE                       => MANIFEST_KEY_BACKUP_REPO_SIZE;
     push @EXPORT, qw(INFO_BACKUP_KEY_BACKUP_REPO_SIZE);
-use constant INFO_BACKUP_KEY_BACKUP_REPO_SIZE_DELTA                 => 'backup-info-repo-size-delta';
+use constant INFO_BACKUP_KEY_BACKUP_REPO_SIZE_DELTA                 => MANIFEST_KEY_BACKUP_REPO_SIZE_DELTA;
     push @EXPORT, qw(INFO_BACKUP_KEY_BACKUP_REPO_SIZE_DELTA);
-use constant INFO_BACKUP_KEY_BACKUP_SIZE                            => 'backup-info-size';
+use constant INFO_BACKUP_KEY_BACKUP_SIZE                            => MANIFEST_KEY_BACKUP_SIZE;
     push @EXPORT, qw(INFO_BACKUP_KEY_BACKUP_SIZE);
-use constant INFO_BACKUP_KEY_BACKUP_SIZE_DELTA                      => 'backup-info-size-delta';
+use constant INFO_BACKUP_KEY_BACKUP_SIZE_DELTA                      => MANIFEST_KEY_BACKUP_SIZE_DELTA;
     push @EXPORT, qw(INFO_BACKUP_KEY_BACKUP_SIZE_DELTA);
 use constant INFO_BACKUP_KEY_CATALOG                                => MANIFEST_KEY_CATALOG;
     push @EXPORT, qw(INFO_BACKUP_KEY_CATALOG);
@@ -193,7 +193,7 @@ sub validate
                     if (!$self->current($strBackup))
                     {
                         my $oManifest = BackRest::Manifest->new($strFilePath)
-                        $self->add($oManifest);
+                        # $self->add($oManifest);
                     }
                 }
                 else
@@ -317,72 +317,85 @@ sub add
     my
     (
         $strOperation,
-        $oFile,
         $oBackupManifest
     ) =
         logDebugParam
         (
             OP_INFO_BACKUP_ADD, \@_,
-            {name => 'oFile', trace => true},
             {name => 'oBackupManifest', trace => true}
         );
 
     # Get the backup label
     my $strBackupLabel = $oBackupManifest->get(MANIFEST_SECTION_BACKUP, MANIFEST_KEY_LABEL);
 
-    # Calculate backup sizes and references
-    my $lBackupSize = 0;
-    my $lBackupSizeDelta = 0;
-    my $lBackupRepoSize = 0;
-    my $lBackupRepoSizeDelta = 0;
-    my $oReferenceHash = undef;
-
-    my $bCompress = $oBackupManifest->get(MANIFEST_SECTION_BACKUP_OPTION, MANIFEST_KEY_COMPRESS);
-
-    foreach my $strPathKey ($oBackupManifest->keys(MANIFEST_SECTION_BACKUP_PATH))
-    {
-        my $strFileSection = "${strPathKey}:" . MANIFEST_FILE;
-        my $strPath = $oBackupManifest->pathGet($strPathKey);
-
-        foreach my $strFileKey ($oBackupManifest->keys($strFileSection))
-        {
-            my $lFileSize = $oBackupManifest->get($strFileSection, $strFileKey, MANIFEST_SUBKEY_SIZE);
-            my $strFileReference = $oBackupManifest->get($strFileSection, $strFileKey, MANIFEST_SUBKEY_REFERENCE, false);
-
-            my $strFile = $oFile->pathGet(PATH_BACKUP_CLUSTER,
-                                           (defined($strFileReference) ? "${strFileReference}" : $strBackupLabel) .
-                                           "/${strPath}${strFileKey}" .
-                                           ($bCompress ? '.' . $oFile->{strCompressExtension} : ''));
-
-            my $oStat = lstat($strFile);
-
-            # Check for errors in stat
-            defined($oStat)
-                or confess &log(ERROR, "unable to lstat ${strFile}");
-
-            $lBackupSize += $lFileSize;
-            $lBackupRepoSize += $oStat->size;
-
-            if (defined($strFileReference))
-            {
-                $$oReferenceHash{$strFileReference} = true;
-            }
-            else
-            {
-                $lBackupSizeDelta += $lFileSize;
-                $lBackupRepoSizeDelta += $oStat->size;
-            }
-        }
-    }
-
-    # Set backup size info
-    $self->numericSet(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_BACKUP_SIZE, $lBackupSize);
-    $self->numericSet(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_BACKUP_SIZE_DELTA, $lBackupSizeDelta);
-    $self->numericSet(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_BACKUP_REPO_SIZE, $lBackupRepoSize);
-    $self->numericSet(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_BACKUP_REPO_SIZE_DELTA,
-        $lBackupRepoSizeDelta);
+    # # Calculate backup sizes and references
+    # my $lBackupSize = 0;
+    # my $lBackupSizeDelta = 0;
+    # my $lBackupRepoSize = 0;
+    # my $lBackupRepoSizeDelta = 0;
+    # # my $oReferenceHash = undef;
+    #
+    # # my $bCompress = $oBackupManifest->get(MANIFEST_SECTION_BACKUP_OPTION, MANIFEST_KEY_COMPRESS);
+    #
+    # foreach my $strPathKey ($oBackupManifest->keys(MANIFEST_SECTION_BACKUP_PATH))
+    # {
+    #     my $strFileSection = "${strPathKey}:" . MANIFEST_FILE;
+    #     my $strPath = $oBackupManifest->pathGet($strPathKey);
+    #
+    #     foreach my $strFileKey ($oBackupManifest->keys($strFileSection))
+    #     {
+    #         my $lFileSize = $oBackupManifest->get($strFileSection, $strFileKey, MANIFEST_SUBKEY_SIZE);
+    #         my $strFileReference = $oBackupManifest->get($strFileSection, $strFileKey, MANIFEST_SUBKEY_REFERENCE, false);
+    #
+    #         # my $strFile = $oFile->pathGet(PATH_BACKUP_CLUSTER,
+    #         #                                (defined($strFileReference) ? "${strFileReference}" : $strBackupLabel) .
+    #         #                                "/${strPath}${strFileKey}" .
+    #         #                                ($bCompress ? '.' . $oFile->{strCompressExtension} : ''));
+    #         #
+    #         # my $oStat = lstat($strFile);
+    #         #
+    #         # # Check for errors in stat
+    #         # defined($oStat)
+    #         #     or confess &log(ERROR, "unable to lstat ${strFile}");
+    #
+    #         $lBackupSize += $lFileSize;
+    #
+    #         # Temporary until compressed size is back in
+    #         $lBackupRepoSize += $lFileSize;
+    #         # $lBackupRepoSize += $oStat->size;
+    #
+    #         if (defined($strFileReference))
+    #         {
+    #             $$oReferenceHash{$strFileReference} = true;
+    #         }
+    #         else
+    #         {
+    #             $lBackupSizeDelta += $lFileSize;
+    #             # $lBackupRepoSizeDelta += $oStat->size;
+    #         }
+    #     }
+    # }
+    #
+    # # Set backup size info
+    # $self->numericSet(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_BACKUP_SIZE, $lBackupSize);
+    # $self->numericSet(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_BACKUP_SIZE_DELTA, $lBackupSizeDelta);
+    # $self->numericSet(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_BACKUP_REPO_SIZE, $lBackupRepoSize);
+    # $self->numericSet(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_BACKUP_REPO_SIZE_DELTA,
+    #     $lBackupRepoSizeDelta);
+    # # $self->numericSet(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_BACKUP_REPO_SIZE, $lBackupRepoSize);
+    # # $self->numericSet(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_BACKUP_REPO_SIZE_DELTA,
+    # #     $lBackupRepoSizeDelta);
 
     # Store information about the backup into the backup section
+    # $self->numericSet(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_BACKUP_SIZE,
+    #     $oBackupManifest->numericGet(MANIFEST_SECTION_BACKUP_INFO, MANIFEST_KEY_BACKUP_SIZE));
+    # $self->numericSet(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_BACKUP_SIZE_DELTA,
+    #     $oBackupManifest->numericGet(MANIFEST_SECTION_BACKUP_INFO, MANIFEST_KEY_BACKUP_SIZE_DELTA));
+    # $self->numericSet(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_BACKUP_REPO_SIZE,
+    #     $oBackupManifest->numericGet(MANIFEST_SECTION_BACKUP_INFO, MANIFEST_KEY_BACKUP_REPO_SIZE));
+    # $self->numericSet(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_BACKUP_REPO_SIZE_DELTA,
+    #     $oBackupManifest->numericGet(MANIFEST_SECTION_BACKUP_INFO, MANIFEST_KEY_BACKUP_REPO_SIZE_DELTA));
+
     $self->boolSet(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_ARCHIVE_CHECK,
         $oBackupManifest->boolGet(MANIFEST_SECTION_BACKUP_OPTION, MANIFEST_KEY_ARCHIVE_CHECK));
     $self->boolSet(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_ARCHIVE_COPY,
@@ -412,12 +425,12 @@ sub add
 
     if (!$oBackupManifest->test(MANIFEST_SECTION_BACKUP, MANIFEST_KEY_TYPE, undef, BACKUP_TYPE_FULL))
     {
-        my @stryReference = sort(keys(%$oReferenceHash));
+        # my @stryReference = sort(keys(%$oReferenceHash));
 
         $self->set(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_PRIOR,
             $oBackupManifest->get(MANIFEST_SECTION_BACKUP, MANIFEST_KEY_PRIOR));
-        $self->set(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_REFERENCE,
-                   \@stryReference);
+        # $self->set(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel, INFO_BACKUP_KEY_REFERENCE,
+        #            \@stryReference);
     }
 
     # Copy backup info to the history

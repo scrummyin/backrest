@@ -124,6 +124,7 @@ sub backupFile
         {name => 'bCopyResult', value => $bCopyResult, trace => true},
         {name => 'lSizeCurrent', value => $lSizeCurrent, trace => true},
         {name => 'lCopySize', value => $lCopySize, trace => true},
+        {name => 'lRepoSize', value => 0, trace => true},
         {name => 'strCopyChecksum', value => $strCopyChecksum, trace => true}
     );
 }
@@ -144,6 +145,7 @@ sub backupManifestUpdate
         $strFile,
         $bCopied,
         $lSize,
+        $lRepoSize,
         $strChecksum,
         $lManifestSaveSize,
         $lManifestSaveCurrent
@@ -155,8 +157,9 @@ sub backupManifestUpdate
             {name => 'strSection', trace => true},
             {name => 'strFile', trace => true},
             {name => 'bCopied', trace => true},
-            {name => 'lSize', required => false, trace => true},
-            {name => 'strChecksum', required => false, trace => true},
+            {name => 'lSize', trace => true},
+            {name => 'lRepoSize', trace => true},
+            {name => 'strChecksum', trace => true},
             {name => 'lManifestSaveSize', required => false, trace => true},
             {name => 'lManifestSaveCurrent', required => false, trace => true}
         );
@@ -164,7 +167,12 @@ sub backupManifestUpdate
     # If copy was successful store the checksum and size
     if ($bCopied)
     {
-        $oManifest->set($strSection, $strFile, MANIFEST_SUBKEY_SIZE, $lSize + 0);
+        $oManifest->numericSet($strSection, $strFile, MANIFEST_SUBKEY_SIZE, $lSize);
+
+        if ($lRepoSize != $lSize)
+        {
+            $oManifest->numericSet($strSection, $strFile, MANIFEST_SUBKEY_REPO_SIZE, $lRepoSize);
+        }
 
         if ($lSize > 0)
         {

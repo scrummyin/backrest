@@ -129,6 +129,8 @@ use constant MANIFEST_SUBKEY_PATH                                   => 'path';
     push @EXPORT, qw(MANIFEST_SUBKEY_PATH);
 use constant MANIFEST_SUBKEY_REFERENCE                              => 'reference';
     push @EXPORT, qw(MANIFEST_SUBKEY_REFERENCE);
+use constant MANIFEST_SUBKEY_REPO_SIZE                              => 'repo-size';
+    push @EXPORT, qw(MANIFEST_SUBKEY_REPO_SIZE);
 use constant MANIFEST_SUBKEY_SIZE                                   => 'size';
     push @EXPORT, qw(MANIFEST_SUBKEY_SIZE);
 use constant MANIFEST_SUBKEY_USER                                   => 'user';
@@ -293,6 +295,7 @@ sub valid
                 $strSubKey eq MANIFEST_SUBKEY_FUTURE ||
                 $strSubKey eq MANIFEST_SUBKEY_TIMESTAMP ||
                 $strSubKey eq MANIFEST_SUBKEY_REFERENCE ||
+                $strSubKey eq MANIFEST_SUBKEY_REPO_SIZE ||
                 $strSubKey eq MANIFEST_SUBKEY_SIZE))
         {
             return true;
@@ -618,6 +621,12 @@ sub build
                         {
                             $self->set($strSection, $strName, MANIFEST_SUBKEY_CHECKSUM,
                                        $oLastManifest->get($strSection, $strName, MANIFEST_SUBKEY_CHECKSUM));
+                        }
+
+                        if ($oLastManifest->test($strSection, $strName, MANIFEST_SUBKEY_REPO_SIZE))
+                        {
+                            $self->set($strSection, $strName, MANIFEST_SUBKEY_REPO_SIZE,
+                                       $oLastManifest->get($strSection, $strName, MANIFEST_SUBKEY_REPO_SIZE));
                         }
                     }
                 }
