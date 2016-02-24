@@ -1239,8 +1239,9 @@ sub BackRestTestBackup_Test
 
             $strManifestFile = PATH_MANIFEST . "/${strBackup}.manifest";
             $oFile->copy(PATH_BACKUP_CLUSTER, "${strManifestFile}.gz", PATH_BACKUP_TMP, FILE_MANIFEST, true);
+
+            # Remove only the history file - the main manifest file will be removed in the code
             BackRestTestCommon_PathRemove($oFile->pathGet(PATH_BACKUP_CLUSTER, "${strManifestFile}.gz"), $bRemote);
-            BackRestTestCommon_PathRemove($oFile->pathGet(PATH_BACKUP_CLUSTER, "${strManifestFile}"), $bRemote);
 
             $oMungeManifest = BackRestTestCommon_manifestLoad("$strTmpPath/backup.manifest", $bRemote);
             $oMungeManifest->set('base:file', 'badchecksum.txt', 'checksum', 'bogus');

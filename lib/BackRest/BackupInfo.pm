@@ -178,17 +178,30 @@ sub validate
     foreach my $strFile (fileList($strManifestPath, undef, undef, true))
     {
         my $strFilePath = "${strManifestPath}/${strFile}";
+        my $strBackup = (split('\.', $strFile))[0];
 
         # All valid manifests should match this pattern
         if ($strFile =~ "^${strPattern}(\\.gz){0,1}\$")
         {
-            # Now check if this is a current manifest.  If so, then a compressed history manifest should also be present.  If not
-            # then the backup must be considered incomplete and removed.
+            # Now check if this is a current manifest.
             if ($strFile =~ "^${strPattern}\$")
             {
-                if (!fileExists("${strFilePath}.gz"))
+                # A compressed history file for the manifest must exist
+                if (fileExists("${strFilePath}.gz"))
                 {
-                    confess "GOT HERE MISSING HISTORY ${strFile}";
+                    # Make sure the manifest is in backup.info
+                    if (!$self->current($strBackup))
+                    {
+                        my $oManifest = BackRest::Manifest->new($strFilePath)
+                        $self->add($oManifest);
+                    }
+                }
+                else
+                # Else this backup must be considered incomplete and removed
+                {
+                    &log(WARN, "remove backup missing compressed history file in manifest path: ${strFilePath}");
+                    fileRemove($strFilePath);
+                    $self->delete($strBackup);
                 }
             }
         }
@@ -314,7 +327,7 @@ sub add
             {name => 'oBackupManifest', trace => true}
         );
 
-    # !!! How best to log these follow-on cases?
+    # Get the backup label
     my $strBackupLabel = $oBackupManifest->get(MANIFEST_SECTION_BACKUP, MANIFEST_KEY_LABEL);
 
     # Calculate backup sizes and references
