@@ -246,6 +246,46 @@ sub fileRemove
 
 push @EXPORT, qw(fileRemove);
 
+
+####################################################################################################################################
+# fileStat
+#
+# Stat a file.
+####################################################################################################################################
+sub fileStat
+{
+    # Assign function parameters, defaults, and log debug info
+    my
+    (
+        $strOperation,
+        $strFile
+    ) =
+        logDebugParam
+        (
+            OP_FILE_COMMON_STAT, \@_,
+            {name => 'strFile', required => true}
+        );
+
+    # Stat the file/path to determine if it exists
+    my $oStat = lstat($strFile);
+
+    # Evaluate error
+    if (!defined($oStat))
+    {
+        my $strError = $!;
+        confess &log(ERROR, "unable to read ${strFile}" . (defined($strError) ? ": $strError" : ''), ERROR_FILE_OPEN);
+    }
+
+    # Return from function and log return values if any
+    return logDebugReturn
+    (
+        $strOperation,
+        {name => 'oStat', value => $oStat}
+    );
+}
+
+push @EXPORT, qw(fileStat);
+
 ####################################################################################################################################
 # fileStringRead
 #
