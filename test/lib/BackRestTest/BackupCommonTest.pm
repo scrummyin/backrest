@@ -1212,11 +1212,14 @@ sub BackRestTestBackup_BackupCompare
     foreach my $strPathKey ($oActualManifest->keys(MANIFEST_SECTION_BACKUP_PATH))
     {
         my $strFileSection = "${strPathKey}:" . MANIFEST_FILE;
-        # my $strPath = $oBackupManifest->pathGet($strPathKey);
 
         foreach my $strFileKey ($oActualManifest->keys($strFileSection))
         {
-            $oActualManifest->remove($strFileSection, $strFileKey, MANIFEST_SUBKEY_REPO_SIZE);
+            if ($oActualManifest->test($strFileSection, $strFileKey, MANIFEST_SUBKEY_REPO_SIZE))
+            {
+                ${$oExpectedManifestRef}{$strFileSection}{$strFileKey}{&MANIFEST_SUBKEY_REPO_SIZE} =
+                    $oActualManifest->get($strFileSection, $strFileKey, MANIFEST_SUBKEY_REPO_SIZE);
+            }
         }
     }
 
@@ -1535,6 +1538,12 @@ sub BackRestTestBackup_RestoreCompare
                 {
                     $oActualManifest->set($strSection, $strName, MANIFEST_SUBKEY_SIZE,
                                           ${$oExpectedManifestRef}{$strSection}{$strName}{size});
+                }
+
+                if (defined(${$oExpectedManifestRef}{$strSection}{$strName}{&MANIFEST_SUBKEY_REPO_SIZE}))
+                {
+                    $oActualManifest->numericSet($strSection, $strName, MANIFEST_SUBKEY_REPO_SIZE,
+                        ${$oExpectedManifestRef}{$strSection}{$strName}{&MANIFEST_SUBKEY_REPO_SIZE});
                 }
 
                 if ($oActualManifest->get($strSection, $strName, MANIFEST_SUBKEY_SIZE) != 0)

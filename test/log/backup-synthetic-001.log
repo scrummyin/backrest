@@ -83,14 +83,20 @@ DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPat
 DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPath = pg_tblspc, strPathType = backup:tmp
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = base/base1.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/common/base/base1.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/base/base1.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/base/base1.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common/base/base1.txt (4B, 57%) checksum a3b357a3e395e43fcfb19bb13f3c1b5179279593
 DEBUG:     BackupFile::backupManifestUpdate: save manifest: lManifestSaveCurrent = 4, lManifestSaveSize = 3
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = PG_VERSION, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/common/PG_VERSION, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/PG_VERSION, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/PG_VERSION
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common/PG_VERSION (3B, 100%) checksum e1f7a3a299f62225cba076fc6d3d6e677f303482
 DEBUG:     BackupFile::backupManifestUpdate: save manifest: lManifestSaveCurrent = 3, lManifestSaveSize = 3
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-2], strDestinationFile = global/pg_control, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/common/global/pg_control, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/global/pg_control, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/global/pg_control
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common/global/pg_control (8KB) checksum 56fe5780b8dca9705e0c22032a83828860a21235
 DEBUG:     Backup->processManifest=>: lSizeTotal = 8199
  INFO: full backup size = 8KB
@@ -107,10 +113,10 @@ DEBUG:     Backup->process: move [TEST_PATH]/backrest/temp/db.tmp to [TEST_PATH]
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = [BACKUP-FULL-1], strDestinationPathType = backup:cluster, strSourceFile = [undef], strSourcePathType = backup:tmp
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = backup.manifest/[BACKUP-FULL-1].manifest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-FULL-1]/backup.manifest, strSourcePathType = backup:cluster
 DEBUG:     File->remove(): bIgnoreMissing = <true>, bTemp = [undef], strPath = latest, strPathType = backup:cluster
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/latest
 DEBUG:     FileCommon::fileExists=>: bExists = false
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = false
+DEBUG:     FileCommon::fileRemove=>: bRemoved = false
 DEBUG:     File->remove=>: bRemoved = false
 DEBUG:     File->linkCreate(): bHard = <false>, bPathCreate = <true>, bRelative = true, strDestinationFile = latest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-FULL-1], strSourcePathType = backup:cluster
 DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPath = [TEST_PATH]/backrest/backup/db, strPathType = backup:absolute
@@ -531,12 +537,18 @@ DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPat
 DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPath = pg_tblspc, strPathType = backup:tmp
 DEBUG:     File->hashSize(): bCompressed = false, strFile = base/base1.txt, strHashType = <sha1>, strPathType = backup:tmp
 DEBUG:     File->hashSize=>: iSize = 4, strHash = a3b357a3e395e43fcfb19bb13f3c1b5179279593
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/base/base1.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: checksum resumed file [TEST_PATH]/db/common/base/base1.txt (4B, 57%) checksum a3b357a3e395e43fcfb19bb13f3c1b5179279593
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = PG_VERSION, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/common/PG_VERSION, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/PG_VERSION, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/PG_VERSION
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common/PG_VERSION (3B, 100%) checksum e1f7a3a299f62225cba076fc6d3d6e677f303482
 DEBUG:     File->hashSize(): bCompressed = false, strFile = global/pg_control, strHashType = <sha1>, strPathType = backup:tmp
 DEBUG:     File->hashSize=>: iSize = 8192, strHash = 56fe5780b8dca9705e0c22032a83828860a21235
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/global/pg_control
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: checksum resumed file [TEST_PATH]/db/common/global/pg_control (8KB) checksum 56fe5780b8dca9705e0c22032a83828860a21235
 DEBUG:     Backup->processManifest=>: lSizeTotal = 8199
  INFO: full backup size = 8KB
@@ -548,8 +560,8 @@ DEBUG:     Backup->process: move [TEST_PATH]/backrest/temp/db.tmp to [TEST_PATH]
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = [BACKUP-FULL-2], strDestinationPathType = backup:cluster, strSourceFile = [undef], strSourcePathType = backup:tmp
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = backup.manifest/[BACKUP-FULL-2].manifest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-FULL-2]/backup.manifest, strSourcePathType = backup:cluster
 DEBUG:     File->remove(): bIgnoreMissing = <true>, bTemp = [undef], strPath = latest, strPathType = backup:cluster
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     File->linkCreate(): bHard = <false>, bPathCreate = <true>, bRelative = true, strDestinationFile = latest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-FULL-2], strSourcePathType = backup:cluster
 DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPath = [TEST_PATH]/backrest/backup/db, strPathType = backup:absolute
@@ -710,8 +722,8 @@ DEBUG:     BackupInfo->new(): bValidate = false, strBackupClusterPath = [TEST_PA
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/db/common/backup.info
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->remove(): bIgnoreMissing = false, bTemp = [undef], strPath = [TEST_PATH]/db/common/backup.info, strPathType = db:absolute
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = false, strPath = [TEST_PATH]/db/common/backup.info
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = false, strPath = [TEST_PATH]/db/common/backup.info
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     BackupInfo->current(): strBackup = [BACKUP-FULL-2]
 DEBUG:     BackupInfo->current=>: bTest = true
@@ -723,8 +735,8 @@ DEBUG:     File->exists=>: bExists = true
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = <false>, lModificationTime = [undef], strDestinationFile = [TEST_PATH]/db/common/backup.manifest, strDestinationPathType = db:absolute, strGroup = [undef], strMode = <0640>, strSourceFile = backup.manifest/[BACKUP-FULL-2].manifest, strSourcePathType = backup:cluster, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common/backup.manifest, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common/backup.manifest.backrest.tmp, strSourcePathType = absolute
 DEBUG:     File->remove(): bIgnoreMissing = <true>, bTemp = [undef], strPath = [TEST_PATH]/db/common/global/pg_control, strPathType = db:absolute
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/db/common/global/pg_control
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/db/common/global/pg_control
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
  INFO: check/clean db path [TEST_PATH]/db/common
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common, strPathType = db:absolute
@@ -799,8 +811,8 @@ DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common/global/pg_control.back
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common/global/pg_control, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common/global/pg_control.backrest.tmp, strSourcePathType = absolute
  INFO: restore file [TEST_PATH]/db/common/global/pg_control (8KB, 100%) checksum 56fe5780b8dca9705e0c22032a83828860a21235
 DEBUG:     File->remove(): bIgnoreMissing = false, bTemp = [undef], strPath = [TEST_PATH]/db/common/backup.manifest, strPathType = db:absolute
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = false, strPath = [TEST_PATH]/db/common/backup.manifest
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = false, strPath = [TEST_PATH]/db/common/backup.manifest
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     Exit::exitSafe(): iExitCode = 0, strSignal = [undef]
  INFO: restore stop
@@ -1051,11 +1063,11 @@ DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     BackupInfo->current(): strBackup = [BACKUP-FULL-2]
 DEBUG:     BackupInfo->current=>: bTest = true
  WARN: remove invalid file in manifest path: [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.temp
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = <false>, strPath = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.temp
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = <false>, strPath = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest.temp
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
  WARN: remove invalid file in manifest path: [TEST_PATH]/backrest/backup/db/backup.manifest/bogus.file
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = <false>, strPath = [TEST_PATH]/backrest/backup/db/backup.manifest/bogus.file
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = <false>, strPath = [TEST_PATH]/backrest/backup/db/backup.manifest/bogus.file
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     BackupInfo->last(): strType = incr
@@ -1094,6 +1106,8 @@ DEBUG:     Backup->processManifest: reference [TEST_PATH]/db/common/base/base1.t
 DEBUG:     Backup->processManifest: reference [TEST_PATH]/db/common/global/pg_control to [BACKUP-FULL-2]
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = badchecksum.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/common/badchecksum.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/badchecksum.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/badchecksum.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common/badchecksum.txt (11B, 61%) checksum f927212cd08d11a42a666b2f04235398e9ceeb51
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = pg_tblspc/1/tablespace1.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/tablespace/ts1/[TS_PATH-1]/tablespace1.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/1/tablespace1.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
@@ -1102,6 +1116,8 @@ DEBUG:     File->exists(): strPath = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/1
 DEBUG:     FileCommon::fileExists=>: bExists = false
 DEBUG:     File->exists=>: bExists = false
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/1/tablespace1.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/tablespace/ts1/[TS_PATH-1]/tablespace1.txt (7B, 100%) checksum d85de07d6421d90aa9191c11c889bfde43680f0f
 DEBUG:     Backup->processManifest=>: lSizeTotal = 18
  INFO: incr backup size = 18B
@@ -1113,8 +1129,8 @@ DEBUG:     Backup->process: move [TEST_PATH]/backrest/temp/db.tmp to [TEST_PATH]
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = [BACKUP-INCR-1], strDestinationPathType = backup:cluster, strSourceFile = [undef], strSourcePathType = backup:tmp
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = backup.manifest/[BACKUP-INCR-1].manifest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-INCR-1]/backup.manifest, strSourcePathType = backup:cluster
 DEBUG:     File->remove(): bIgnoreMissing = <true>, bTemp = [undef], strPath = latest, strPathType = backup:cluster
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     File->linkCreate(): bHard = <false>, bPathCreate = <true>, bRelative = true, strDestinationFile = latest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-INCR-1], strSourcePathType = backup:cluster
 DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPath = [TEST_PATH]/backrest/backup/db, strPathType = backup:absolute
@@ -1289,8 +1305,8 @@ DEBUG:     BackupInfo->current=>: bTest = true
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-1].manifest.gz
 DEBUG:     FileCommon::fileExists=>: bExists = false
  WARN: remove backup missing compressed history file in manifest path: [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-1].manifest
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = <false>, strPath = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-1].manifest
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = <false>, strPath = [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-1].manifest
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     BackupInfo->delete(): strBackupLabel = [BACKUP-INCR-1]
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/backup/db/[BACKUP-FULL-2]
 DEBUG:     FileCommon::fileExists=>: bExists = true
@@ -1342,9 +1358,13 @@ DEBUG:     File->hashSize=>: iSize = 11, strHash = f927212cd08d11a42a666b2f04235
  WARN: resumed backup file badchecksum.txt should have checksum bogus but actually has checksum f927212cd08d11a42a666b2f04235398e9ceeb51.  The file will be recopied and backup will continue but this may be an issue unless the backup temp path is known to be corrupted.
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = badchecksum.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/common/badchecksum.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/badchecksum.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/badchecksum.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common/badchecksum.txt (11B, 44%) checksum f927212cd08d11a42a666b2f04235398e9ceeb51
 DEBUG:     File->hashSize(): bCompressed = false, strFile = pg_tblspc/1/tablespace1.txt, strHashType = <sha1>, strPathType = backup:tmp
 DEBUG:     File->hashSize=>: iSize = 7, strHash = d85de07d6421d90aa9191c11c889bfde43680f0f
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/1/tablespace1.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: checksum resumed file [TEST_PATH]/db/tablespace/ts1/[TS_PATH-1]/tablespace1.txt (7B, 72%) checksum d85de07d6421d90aa9191c11c889bfde43680f0f
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = pg_tblspc/2/tablespace2.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/tablespace/ts2/[TS_PATH-1]/tablespace2.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
@@ -1353,6 +1373,8 @@ DEBUG:     File->exists(): strPath = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2
 DEBUG:     FileCommon::fileExists=>: bExists = false
 DEBUG:     File->exists=>: bExists = false
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/tablespace/ts2/[TS_PATH-1]/tablespace2.txt (7B, 100%) checksum dc7f76e43c46101b47acc55ae4d593a9e6983578
 DEBUG:     Backup->processManifest=>: lSizeTotal = 25
  INFO: incr backup size = 25B
@@ -1364,8 +1386,8 @@ DEBUG:     Backup->process: move [TEST_PATH]/backrest/temp/db.tmp to [TEST_PATH]
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = [BACKUP-INCR-2], strDestinationPathType = backup:cluster, strSourceFile = [undef], strSourcePathType = backup:tmp
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = backup.manifest/[BACKUP-INCR-2].manifest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-INCR-2]/backup.manifest, strSourcePathType = backup:cluster
 DEBUG:     File->remove(): bIgnoreMissing = <true>, bTemp = [undef], strPath = latest, strPathType = backup:cluster
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     File->linkCreate(): bHard = <false>, bPathCreate = <true>, bRelative = true, strDestinationFile = latest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-INCR-2], strSourcePathType = backup:cluster
 DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPath = [TEST_PATH]/backrest/backup/db, strPathType = backup:absolute
@@ -1592,6 +1614,8 @@ DEBUG:     Backup->processManifest: reference [TEST_PATH]/db/common/base/base1.t
 DEBUG:     Backup->processManifest: reference [TEST_PATH]/db/common/global/pg_control to [BACKUP-FULL-2]
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = badchecksum.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/common/badchecksum.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/badchecksum.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/badchecksum.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common/badchecksum.txt (11B, 44%) checksum f927212cd08d11a42a666b2f04235398e9ceeb51
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = pg_tblspc/1/tablespace1.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/tablespace/ts1/[TS_PATH-1]/tablespace1.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/1/tablespace1.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
@@ -1600,6 +1624,8 @@ DEBUG:     File->exists(): strPath = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/1
 DEBUG:     FileCommon::fileExists=>: bExists = false
 DEBUG:     File->exists=>: bExists = false
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/1/tablespace1.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/tablespace/ts1/[TS_PATH-1]/tablespace1.txt (7B, 72%) checksum d85de07d6421d90aa9191c11c889bfde43680f0f
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = pg_tblspc/2/tablespace2.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/tablespace/ts2/[TS_PATH-1]/tablespace2.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
@@ -1608,6 +1634,8 @@ DEBUG:     File->exists(): strPath = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2
 DEBUG:     FileCommon::fileExists=>: bExists = false
 DEBUG:     File->exists=>: bExists = false
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/tablespace/ts2/[TS_PATH-1]/tablespace2.txt (7B, 100%) checksum dc7f76e43c46101b47acc55ae4d593a9e6983578
 DEBUG:     Backup->processManifest=>: lSizeTotal = 25
  INFO: diff backup size = 25B
@@ -1619,8 +1647,8 @@ DEBUG:     Backup->process: move [TEST_PATH]/backrest/temp/db.tmp to [TEST_PATH]
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = [BACKUP-DIFF-1], strDestinationPathType = backup:cluster, strSourceFile = [undef], strSourcePathType = backup:tmp
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = backup.manifest/[BACKUP-DIFF-1].manifest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-DIFF-1]/backup.manifest, strSourcePathType = backup:cluster
 DEBUG:     File->remove(): bIgnoreMissing = <true>, bTemp = [undef], strPath = latest, strPathType = backup:cluster
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     File->linkCreate(): bHard = <false>, bPathCreate = <true>, bRelative = true, strDestinationFile = latest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-DIFF-1], strSourcePathType = backup:cluster
 DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPath = [TEST_PATH]/backrest/backup/db, strPathType = backup:absolute
@@ -1848,6 +1876,8 @@ DEBUG:     Backup->processManifest: reference [TEST_PATH]/db/common/base/base1.t
 DEBUG:     Backup->processManifest: reference [TEST_PATH]/db/common/global/pg_control to [BACKUP-FULL-2]
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = badchecksum.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/common/badchecksum.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/badchecksum.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/badchecksum.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common/badchecksum.txt (11B, 44%) checksum f927212cd08d11a42a666b2f04235398e9ceeb51
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = pg_tblspc/1/tablespace1.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/tablespace/ts1/[TS_PATH-1]/tablespace1.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/1/tablespace1.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
@@ -1856,6 +1886,8 @@ DEBUG:     File->exists(): strPath = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/1
 DEBUG:     FileCommon::fileExists=>: bExists = false
 DEBUG:     File->exists=>: bExists = false
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/1/tablespace1.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/tablespace/ts1/[TS_PATH-1]/tablespace1.txt (7B, 72%) checksum d85de07d6421d90aa9191c11c889bfde43680f0f
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = pg_tblspc/2/tablespace2.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/tablespace/ts2/[TS_PATH-1]/tablespace2.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
@@ -1864,6 +1896,8 @@ DEBUG:     File->exists(): strPath = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2
 DEBUG:     FileCommon::fileExists=>: bExists = false
 DEBUG:     File->exists=>: bExists = false
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/tablespace/ts2/[TS_PATH-1]/tablespace2.txt (7B, 100%) checksum dc7f76e43c46101b47acc55ae4d593a9e6983578
 DEBUG:     Backup->processManifest=>: lSizeTotal = 25
  INFO: diff backup size = 25B
@@ -1875,8 +1909,8 @@ DEBUG:     Backup->process: move [TEST_PATH]/backrest/temp/db.tmp to [TEST_PATH]
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = [BACKUP-DIFF-2], strDestinationPathType = backup:cluster, strSourceFile = [undef], strSourcePathType = backup:tmp
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = backup.manifest/[BACKUP-DIFF-2].manifest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-DIFF-2]/backup.manifest, strSourcePathType = backup:cluster
 DEBUG:     File->remove(): bIgnoreMissing = <true>, bTemp = [undef], strPath = latest, strPathType = backup:cluster
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     File->linkCreate(): bHard = <false>, bPathCreate = <true>, bRelative = true, strDestinationFile = latest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-DIFF-2], strSourcePathType = backup:cluster
 DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPath = [TEST_PATH]/backrest/backup/db, strPathType = backup:absolute
@@ -2057,8 +2091,8 @@ DEBUG:     BackupInfo->new(): bValidate = false, strBackupClusterPath = [TEST_PA
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/db/common/backup.info
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->remove(): bIgnoreMissing = false, bTemp = [undef], strPath = [TEST_PATH]/db/common/backup.info, strPathType = db:absolute
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = false, strPath = [TEST_PATH]/db/common/backup.info
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = false, strPath = [TEST_PATH]/db/common/backup.info
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     BackupInfo->current(): strBackup = [BACKUP-DIFF-2]
 DEBUG:     BackupInfo->current=>: bTest = true
@@ -2070,8 +2104,8 @@ DEBUG:     File->exists=>: bExists = true
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <false>, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = <false>, lModificationTime = [undef], strDestinationFile = [TEST_PATH]/db/common/backup.manifest, strDestinationPathType = db:absolute, strGroup = [undef], strMode = <0640>, strSourceFile = backup.manifest/[BACKUP-DIFF-2].manifest, strSourcePathType = backup:cluster, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common/backup.manifest, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common/backup.manifest.backrest.tmp, strSourcePathType = absolute
 DEBUG:     File->remove(): bIgnoreMissing = <true>, bTemp = [undef], strPath = [TEST_PATH]/db/common/global/pg_control, strPathType = db:absolute
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/db/common/global/pg_control
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/db/common/global/pg_control
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
  INFO: check/clean db path [TEST_PATH]/db/common
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common, strPathType = db:absolute
@@ -2111,8 +2145,8 @@ DEBUG:     BackupInfo->new(): bValidate = false, strBackupClusterPath = [TEST_PA
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/db/common/backup.info
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->remove(): bIgnoreMissing = false, bTemp = [undef], strPath = [TEST_PATH]/db/common/backup.info, strPathType = db:absolute
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = false, strPath = [TEST_PATH]/db/common/backup.info
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = false, strPath = [TEST_PATH]/db/common/backup.info
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     BackupInfo->current(): strBackup = [BACKUP-DIFF-2]
 DEBUG:     BackupInfo->current=>: bTest = true
@@ -2150,8 +2184,8 @@ DEBUG:     BackupInfo->new(): bValidate = false, strBackupClusterPath = [TEST_PA
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/db/common/backup.info
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->remove(): bIgnoreMissing = false, bTemp = [undef], strPath = [TEST_PATH]/db/common/backup.info, strPathType = db:absolute
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = false, strPath = [TEST_PATH]/db/common/backup.info
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = false, strPath = [TEST_PATH]/db/common/backup.info
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     BackupInfo->current(): strBackup = [BACKUP-DIFF-2]
 DEBUG:     BackupInfo->current=>: bTest = true
@@ -2189,8 +2223,8 @@ DEBUG:     BackupInfo->new(): bValidate = false, strBackupClusterPath = [TEST_PA
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/db/common-2/backup.info
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->remove(): bIgnoreMissing = false, bTemp = [undef], strPath = [TEST_PATH]/db/common-2/backup.info, strPathType = db:absolute
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = false, strPath = [TEST_PATH]/db/common-2/backup.info
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = false, strPath = [TEST_PATH]/db/common-2/backup.info
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     BackupInfo->current(): strBackup = [BACKUP-DIFF-2]
 DEBUG:     BackupInfo->current=>: bTest = true
@@ -2205,10 +2239,10 @@ DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [T
  INFO: remap tablespace 1 to [TEST_PATH]/db/tablespace/ts1-2
  INFO: remap tablespace 2 to [TEST_PATH]/db/tablespace/ts2-2
 DEBUG:     File->remove(): bIgnoreMissing = <true>, bTemp = [undef], strPath = [TEST_PATH]/db/common-2/global/pg_control, strPathType = db:absolute
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/db/common-2/global/pg_control
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/db/common-2/global/pg_control
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/db/common-2/global/pg_control
 DEBUG:     FileCommon::fileExists=>: bExists = false
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = false
+DEBUG:     FileCommon::fileRemove=>: bRemoved = false
 DEBUG:     File->remove=>: bRemoved = false
  INFO: check/clean db path [TEST_PATH]/db/common-2
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2, strPathType = db:absolute
@@ -2340,8 +2374,8 @@ DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common-2/global/pg_control.ba
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common-2/global/pg_control, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common-2/global/pg_control.backrest.tmp, strSourcePathType = absolute
  INFO: restore file [TEST_PATH]/db/common-2/global/pg_control (8KB, 100%) checksum 56fe5780b8dca9705e0c22032a83828860a21235
 DEBUG:     File->remove(): bIgnoreMissing = false, bTemp = [undef], strPath = [TEST_PATH]/db/common-2/backup.manifest, strPathType = db:absolute
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = false, strPath = [TEST_PATH]/db/common-2/backup.manifest
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = false, strPath = [TEST_PATH]/db/common-2/backup.manifest
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     Exit::exitSafe(): iExitCode = 0, strSignal = [undef]
  INFO: restore stop
@@ -2452,6 +2486,8 @@ DEBUG:     File->exists(): strPath = [TEST_PATH]/backrest/temp/db.tmp/base, strP
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/temp/db.tmp/base
 DEBUG:     FileCommon::fileExists=>: bExists = false
 DEBUG:     File->exists=>: bExists = false
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/base/base2.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common-2/base/base2.txt (5B, 38%) checksum 09b5e31766be1dba1ec27de82f975c1b6eea2a92
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = pg_tblspc/2/tablespace2b.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2b.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2b.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
@@ -2460,6 +2496,8 @@ DEBUG:     File->exists(): strPath = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2
 DEBUG:     FileCommon::fileExists=>: bExists = false
 DEBUG:     File->exists=>: bExists = false
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2b.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2b.txt (8B, 100%) checksum e324463005236d83e6e54795dbddd20a74533bf3
 DEBUG:     Backup->processManifest=>: lSizeTotal = 13
  INFO: incr backup size = 13B
@@ -2471,8 +2509,8 @@ DEBUG:     Backup->process: move [TEST_PATH]/backrest/temp/db.tmp to [TEST_PATH]
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = [BACKUP-INCR-3], strDestinationPathType = backup:cluster, strSourceFile = [undef], strSourcePathType = backup:tmp
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = backup.manifest/[BACKUP-INCR-3].manifest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-INCR-3]/backup.manifest, strSourcePathType = backup:cluster
 DEBUG:     File->remove(): bIgnoreMissing = <true>, bTemp = [undef], strPath = latest, strPathType = backup:cluster
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     File->linkCreate(): bHard = <false>, bPathCreate = <true>, bRelative = true, strDestinationFile = latest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-INCR-3], strSourcePathType = backup:cluster
 DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPath = [TEST_PATH]/backrest/backup/db, strPathType = backup:absolute
@@ -2717,6 +2755,8 @@ DEBUG:     File->exists(): strPath = [TEST_PATH]/backrest/temp/db.tmp/base, strP
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/temp/db.tmp/base
 DEBUG:     FileCommon::fileExists=>: bExists = false
 DEBUG:     File->exists=>: bExists = false
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/base/base1.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common-2/base/base1.txt (8B, 100%) checksum 9a53d532e27785e681766c98516a5e93f096a501
 DEBUG:     Backup->processManifest=>: lSizeTotal = 8
  INFO: incr backup size = 8B
@@ -2728,8 +2768,8 @@ DEBUG:     Backup->process: move [TEST_PATH]/backrest/temp/db.tmp to [TEST_PATH]
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = [BACKUP-INCR-4], strDestinationPathType = backup:cluster, strSourceFile = [undef], strSourcePathType = backup:tmp
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = backup.manifest/[BACKUP-INCR-4].manifest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-INCR-4]/backup.manifest, strSourcePathType = backup:cluster
 DEBUG:     File->remove(): bIgnoreMissing = <true>, bTemp = [undef], strPath = latest, strPathType = backup:cluster
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     File->linkCreate(): bHard = <false>, bPathCreate = <true>, bRelative = true, strDestinationFile = latest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-INCR-4], strSourcePathType = backup:cluster
 DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPath = [TEST_PATH]/backrest/backup/db, strPathType = backup:absolute
@@ -2981,6 +3021,8 @@ DEBUG:     Backup->processManifest: reference [TEST_PATH]/db/common-2/PG_VERSION
 DEBUG:     Backup->processManifest: reference [TEST_PATH]/db/common-2/global/pg_control to [BACKUP-FULL-2]
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = badchecksum.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/common-2/badchecksum.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/badchecksum.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/badchecksum.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common-2/badchecksum.txt (11B, 28%) checksum f927212cd08d11a42a666b2f04235398e9ceeb51
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = base/base1.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/common-2/base/base1.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/base/base1.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
@@ -2989,9 +3031,13 @@ DEBUG:     File->exists(): strPath = [TEST_PATH]/backrest/temp/db.tmp/base, strP
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/temp/db.tmp/base
 DEBUG:     FileCommon::fileExists=>: bExists = false
 DEBUG:     File->exists=>: bExists = false
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/base/base1.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common-2/base/base1.txt (8B, 48%) checksum 9a53d532e27785e681766c98516a5e93f096a501
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = base/base2.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/common-2/base/base2.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/base/base2.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/base/base2.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common-2/base/base2.txt (5B, 61%) checksum 09b5e31766be1dba1ec27de82f975c1b6eea2a92
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = pg_tblspc/2/tablespace2b.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2b.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2b.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
@@ -3000,9 +3046,13 @@ DEBUG:     File->exists(): strPath = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2
 DEBUG:     FileCommon::fileExists=>: bExists = false
 DEBUG:     File->exists=>: bExists = false
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2b.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2b.txt (8B, 82%) checksum e324463005236d83e6e54795dbddd20a74533bf3
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = pg_tblspc/2/tablespace2.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2.txt (7B, 100%) checksum dc7f76e43c46101b47acc55ae4d593a9e6983578
 DEBUG:     Backup->processManifest=>: lSizeTotal = 39
  INFO: diff backup size = 39B
@@ -3014,8 +3064,8 @@ DEBUG:     Backup->process: move [TEST_PATH]/backrest/temp/db.tmp to [TEST_PATH]
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = [BACKUP-DIFF-3], strDestinationPathType = backup:cluster, strSourceFile = [undef], strSourcePathType = backup:tmp
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = backup.manifest/[BACKUP-DIFF-3].manifest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-DIFF-3]/backup.manifest, strSourcePathType = backup:cluster
 DEBUG:     File->remove(): bIgnoreMissing = <true>, bTemp = [undef], strPath = latest, strPathType = backup:cluster
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     File->linkCreate(): bHard = <false>, bPathCreate = <true>, bRelative = true, strDestinationFile = latest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-DIFF-3], strSourcePathType = backup:cluster
 DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPath = [TEST_PATH]/backrest/backup/db, strPathType = backup:absolute
@@ -3296,8 +3346,8 @@ DEBUG:     Backup->process: move [TEST_PATH]/backrest/temp/db.tmp to [TEST_PATH]
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = [BACKUP-INCR-5], strDestinationPathType = backup:cluster, strSourceFile = [undef], strSourcePathType = backup:tmp
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = backup.manifest/[BACKUP-INCR-5].manifest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-INCR-5]/backup.manifest, strSourcePathType = backup:cluster
 DEBUG:     File->remove(): bIgnoreMissing = <true>, bTemp = [undef], strPath = latest, strPathType = backup:cluster
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     File->linkCreate(): bHard = <false>, bPathCreate = <true>, bRelative = true, strDestinationFile = latest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-INCR-5], strSourcePathType = backup:cluster
 DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPath = [TEST_PATH]/backrest/backup/db, strPathType = backup:absolute
@@ -3581,6 +3631,8 @@ DEBUG:     Backup->processManifest: reference [TEST_PATH]/db/common-2/PG_VERSION
 DEBUG:     Backup->processManifest: reference [TEST_PATH]/db/common-2/global/pg_control to [BACKUP-FULL-2]
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = badchecksum.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/common-2/badchecksum.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/badchecksum.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/badchecksum.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common-2/badchecksum.txt (11B, 35%) checksum f927212cd08d11a42a666b2f04235398e9ceeb51
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = base/base2.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/common-2/base/base2.txt, strSourcePathType = db:absolute, strUser = [undef]
  INFO: skip file removed by database: [TEST_PATH]/db/common-2/base/base2.txt
@@ -3591,9 +3643,13 @@ DEBUG:     File->exists(): strPath = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2
 DEBUG:     FileCommon::fileExists=>: bExists = false
 DEBUG:     File->exists=>: bExists = false
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2c.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2c.txt (12B, 77%) checksum dfcb8679956b734706cf87259d50c88f83e80e66
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = pg_tblspc/2/tablespace2.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2.txt (7B, 100%) checksum dc7f76e43c46101b47acc55ae4d593a9e6983578
 DEBUG:     Backup->processManifest=>: lSizeTotal = 31
  INFO: diff backup size = 31B
@@ -3605,8 +3661,8 @@ DEBUG:     Backup->process: move [TEST_PATH]/backrest/temp/db.tmp to [TEST_PATH]
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = [BACKUP-DIFF-4], strDestinationPathType = backup:cluster, strSourceFile = [undef], strSourcePathType = backup:tmp
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = backup.manifest/[BACKUP-DIFF-4].manifest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-DIFF-4]/backup.manifest, strSourcePathType = backup:cluster
 DEBUG:     File->remove(): bIgnoreMissing = <true>, bTemp = [undef], strPath = latest, strPathType = backup:cluster
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     File->linkCreate(): bHard = <false>, bPathCreate = <true>, bRelative = true, strDestinationFile = latest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-DIFF-4], strSourcePathType = backup:cluster
 DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPath = [TEST_PATH]/backrest/backup/db, strPathType = backup:absolute
@@ -3899,12 +3955,18 @@ DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPat
 DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPath = pg_tblspc, strPathType = backup:tmp
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = badchecksum.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/common-2/badchecksum.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/badchecksum.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/badchecksum.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common-2/badchecksum.txt (11B, 26%) checksum f927212cd08d11a42a666b2f04235398e9ceeb51
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = base/base1.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/common-2/base/base1.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/base/base1.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/base/base1.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common-2/base/base1.txt (9B, 47%) checksum 7579ada0808d7f98087a0a586d0df9de009cdc33
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = PG_VERSION, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/common-2/PG_VERSION, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/PG_VERSION, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/PG_VERSION
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common-2/PG_VERSION (3B, 54%) checksum e1f7a3a299f62225cba076fc6d3d6e677f303482
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = pg_tblspc/2/tablespace2c.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2c.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2c.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
@@ -3913,12 +3975,18 @@ DEBUG:     File->exists(): strPath = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2
 DEBUG:     FileCommon::fileExists=>: bExists = false
 DEBUG:     File->exists=>: bExists = false
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2c.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2c.txt (12B, 83%) checksum dfcb8679956b734706cf87259d50c88f83e80e66
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-1], strDestinationFile = pg_tblspc/2/tablespace2.txt, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2.txt, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2.txt, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/pg_tblspc/2/tablespace2.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/tablespace/ts2-2/[TS_PATH-1]/tablespace2.txt (7B, 100%) checksum dc7f76e43c46101b47acc55ae4d593a9e6983578
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = true, bSourceCompressed = false, lModificationTime = [MODIFICATION-TIME-2], strDestinationFile = global/pg_control, strDestinationPathType = backup:tmp, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/common-2/global/pg_control, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/temp/db.tmp/global/pg_control, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/temp/db.tmp/file.tmp, strSourcePathType = absolute
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/global/pg_control
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common-2/global/pg_control (8KB) checksum 56fe5780b8dca9705e0c22032a83828860a21235
 DEBUG:     Backup->processManifest=>: lSizeTotal = 8234
  INFO: full backup size = 8KB
@@ -3930,8 +3998,8 @@ DEBUG:     Backup->process: move [TEST_PATH]/backrest/temp/db.tmp to [TEST_PATH]
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = [BACKUP-FULL-3], strDestinationPathType = backup:cluster, strSourceFile = [undef], strSourcePathType = backup:tmp
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = backup.manifest/[BACKUP-FULL-3].manifest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-FULL-3]/backup.manifest, strSourcePathType = backup:cluster
 DEBUG:     File->remove(): bIgnoreMissing = <true>, bTemp = [undef], strPath = latest, strPathType = backup:cluster
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     File->linkCreate(): bHard = <false>, bPathCreate = <true>, bRelative = true, strDestinationFile = latest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-FULL-3], strSourcePathType = backup:cluster
 DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPath = [TEST_PATH]/backrest/backup/db, strPathType = backup:absolute
@@ -4225,6 +4293,8 @@ DEBUG:     File->exists(): strPath = [TEST_PATH]/backrest/temp/db.tmp/base, strP
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/temp/db.tmp/base
 DEBUG:     FileCommon::fileExists=>: bExists = false
 DEBUG:     File->exists=>: bExists = false
+DEBUG:     FileCommon::fileStat(): strFile = [TEST_PATH]/backrest/temp/db.tmp/base/base2.txt
+DEBUG:     FileCommon::fileStat=>: oStat = [object]
  INFO: backup file [TEST_PATH]/db/common-2/base/base2.txt (9B, 100%) checksum cafac3c59553f2cfde41ce2e62e7662295f108c0
 DEBUG:     Backup->processManifest=>: lSizeTotal = 9
  INFO: diff backup size = 9B
@@ -4236,8 +4306,8 @@ DEBUG:     Backup->process: move [TEST_PATH]/backrest/temp/db.tmp to [TEST_PATH]
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = [BACKUP-DIFF-5], strDestinationPathType = backup:cluster, strSourceFile = [undef], strSourcePathType = backup:tmp
 DEBUG:     File->move(): bDestinationPathCreate = <false>, strDestinationFile = backup.manifest/[BACKUP-DIFF-5].manifest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-DIFF-5]/backup.manifest, strSourcePathType = backup:cluster
 DEBUG:     File->remove(): bIgnoreMissing = <true>, bTemp = [undef], strPath = latest, strPathType = backup:cluster
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/backrest/backup/db/latest
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     File->linkCreate(): bHard = <false>, bPathCreate = <true>, bRelative = true, strDestinationFile = latest, strDestinationPathType = backup:cluster, strSourceFile = [BACKUP-DIFF-5], strSourcePathType = backup:cluster
 DEBUG:     File->pathCreate(): bIgnoreExists = <false>, strMode = <0750>, strPath = [TEST_PATH]/backrest/backup/db, strPathType = backup:absolute
@@ -4423,8 +4493,8 @@ DEBUG:     BackupInfo->new(): bValidate = false, strBackupClusterPath = [TEST_PA
 DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/db/common-2/backup.info
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->remove(): bIgnoreMissing = false, bTemp = [undef], strPath = [TEST_PATH]/db/common-2/backup.info, strPathType = db:absolute
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = false, strPath = [TEST_PATH]/db/common-2/backup.info
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = false, strPath = [TEST_PATH]/db/common-2/backup.info
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     BackupInfo->last(): strType = incr
 DEBUG:     BackupCommon::backupRegExpGet(): bAnchor = <true>, bDifferential = true, bFull = true, bIncremental = true
@@ -4441,8 +4511,8 @@ DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = <fals
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common-2/backup.manifest, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common-2/backup.manifest.backrest.tmp, strSourcePathType = absolute
  INFO: remap tablespace 2 to [TEST_PATH]/db/common-2/pg_tblspc/2
 DEBUG:     File->remove(): bIgnoreMissing = <true>, bTemp = [undef], strPath = [TEST_PATH]/db/common-2/global/pg_control, strPathType = db:absolute
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/db/common-2/global/pg_control
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/db/common-2/global/pg_control
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
  INFO: check/clean db path [TEST_PATH]/db/common-2
 DEBUG:     File->exists(): strPath = [TEST_PATH]/db/common-2, strPathType = db:absolute
@@ -4550,8 +4620,8 @@ DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/db/common-2/recovery.
 DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     File->remove(): bIgnoreMissing = <true>, bTemp = [undef], strPath = [TEST_PATH]/db/common-2/recovery.conf, strPathType = db:absolute
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/db/common-2/recovery.conf
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = true, strPath = [TEST_PATH]/db/common-2/recovery.conf
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
  INFO: wrote [TEST_PATH]/db/common-2/recovery.conf
  INFO: restore global/pg_control (copied last to ensure aborted restores cannot be started)
@@ -4564,8 +4634,8 @@ DEBUG:     File->owner(): strFile = [TEST_PATH]/db/common-2/global/pg_control.ba
 DEBUG:     File->move(): bDestinationPathCreate = false, strDestinationFile = [TEST_PATH]/db/common-2/global/pg_control, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/db/common-2/global/pg_control.backrest.tmp, strSourcePathType = absolute
  INFO: restore file [TEST_PATH]/db/common-2/global/pg_control (8KB, 100%) checksum 56fe5780b8dca9705e0c22032a83828860a21235
 DEBUG:     File->remove(): bIgnoreMissing = false, bTemp = [undef], strPath = [TEST_PATH]/db/common-2/backup.manifest, strPathType = db:absolute
-DEBUG:     FileCommon::fileCommonRemove(): bIgnoreMissing = false, strPath = [TEST_PATH]/db/common-2/backup.manifest
-DEBUG:     FileCommon::fileCommonRemove=>: bRemoved = true
+DEBUG:     FileCommon::fileRemove(): bIgnoreMissing = false, strPath = [TEST_PATH]/db/common-2/backup.manifest
+DEBUG:     FileCommon::fileRemove=>: bRemoved = true
 DEBUG:     File->remove=>: bRemoved = true
 DEBUG:     Exit::exitSafe(): iExitCode = 0, strSignal = [undef]
  INFO: restore stop

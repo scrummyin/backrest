@@ -18,6 +18,7 @@ use BackRest::Common::Exception;
 use BackRest::Common::Log;
 use BackRest::Common::String;
 use BackRest::File;
+use BackRest::FileCommon;
 use BackRest::Manifest;
 
 ####################################################################################################################################
@@ -64,6 +65,7 @@ sub backupFile
     my $bCopyResult = true;                         # Copy result
     my $strCopyChecksum;                            # Copy checksum
     my $lCopySize;                                  # Copy Size
+    my $lRepoSize;                                  # Repo size
 
     # Add the size of the current file to keep track of percent complete
     $lSizeCurrent += $lSizeFile;
@@ -71,11 +73,13 @@ sub backupFile
     # If checksum is defined then the file already exists but needs to be checked
     my $bCopy = true;
 
+    # Add compression suffix if needed
+    my $strDestinationFileOp = $strDestinationFile . ($bDestinationCompress ? '.' . $oFile->{strCompressExtension} : '');
+
     if (defined($strChecksum))
     {
         ($strCopyChecksum, $lCopySize) =
-            $oFile->hashSize(PATH_BACKUP_TMP, $strDestinationFile .
-                             ($bDestinationCompress ? '.' . $oFile->{strCompressExtension} : ''), $bDestinationCompress);
+            $oFile->hashSize(PATH_BACKUP_TMP, $strDestinationFileOp, $bDestinationCompress);
 
         $bCopy = !($strCopyChecksum eq $strChecksum && $lCopySize == $lSizeFile);
 
@@ -92,8 +96,7 @@ sub backupFile
         # Copy the file from the database to the backup (will return false if the source file is missing)
         ($bCopyResult, $strCopyChecksum, $lCopySize) =
             $oFile->copy(PATH_DB_ABSOLUTE, $strSourceFile,
-                         PATH_BACKUP_TMP, $strDestinationFile .
-                             ($bDestinationCompress ? '.' . $oFile->{strCompressExtension} : ''),
+                         PATH_BACKUP_TMP, $strDestinationFileOp,
                          false,                   # Source is not compressed since it is the db directory
                          $bDestinationCompress,   # Destination should be compressed based on backup settings
                          true,                    # Ignore missing files
@@ -101,11 +104,19 @@ sub backupFile
                          undef,                   # Do not set original mode
                          true);                   # Create the destination directory if it does not exist
 
+
+        # If source file is missing then assume the database removed it (else corruption and nothing we can do!)
         if (!$bCopyResult)
         {
-            # If file is missing assume the database removed it (else corruption and nothing we can do!)
             &log(INFO, "skip file removed by database: " . $strSourceFile);
         }
+    }
+
+    # If file was copied or checksummed then get size in repo.  This has to be checked after the file is at rest because filesystem
+    # compression may affect the actual repo size and this cannot be calculated in stream.
+    if ($bCopyResult)
+    {
+        $lRepoSize = (fileStat($oFile->pathGet(PATH_BACKUP_TMP, $strDestinationFileOp)))->size;
     }
 
     # Ouput log
@@ -124,7 +135,7 @@ sub backupFile
         {name => 'bCopyResult', value => $bCopyResult, trace => true},
         {name => 'lSizeCurrent', value => $lSizeCurrent, trace => true},
         {name => 'lCopySize', value => $lCopySize, trace => true},
-        {name => 'lRepoSize', value => 0, trace => true},
+        {name => 'lRepoSize', value => $lRepoSize, trace => true},
         {name => 'strCopyChecksum', value => $strCopyChecksum, trace => true}
     );
 }
@@ -157,9 +168,9 @@ sub backupManifestUpdate
             {name => 'strSection', trace => true},
             {name => 'strFile', trace => true},
             {name => 'bCopied', trace => true},
-            {name => 'lSize', trace => true},
-            {name => 'lRepoSize', trace => true},
-            {name => 'strChecksum', trace => true},
+            {name => 'lSize', required => false, trace => true},
+            {name => 'lRepoSize', required => false, trace => true},
+            {name => 'strChecksum', required => false, trace => true},
             {name => 'lManifestSaveSize', required => false, trace => true},
             {name => 'lManifestSaveCurrent', required => false, trace => true}
         );

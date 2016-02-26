@@ -1206,7 +1206,7 @@ sub BackRestTestBackup_Test
             #-----------------------------------------------------------------------------------------------------------------------
             $strType = 'incr';
 
-            if ($bNeutralTest)
+            if ($bNeutralTest & !$bRemote)
             {
                 my $strManifestPath = BackRestTestCommon_RepoPathGet() . "/backup/${strStanza}/" . PATH_MANIFEST;
 
