@@ -38,7 +38,9 @@ db-version="9.2"
 > ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-1].manifest
+[BACKUP-FULL-1].manifest.gz
 [BACKUP-INCR-1].manifest
+[BACKUP-INCR-1].manifest.gz
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -346,7 +348,9 @@ db-version="9.2"
 > ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-1].manifest
+[BACKUP-FULL-1].manifest.gz
 [BACKUP-INCR-1].manifest
+[BACKUP-INCR-1].manifest.gz
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -652,8 +656,11 @@ db-version="9.2"
 > ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
 [BACKUP-FULL-1].manifest
+[BACKUP-FULL-1].manifest.gz
 [BACKUP-INCR-1].manifest
+[BACKUP-INCR-1].manifest.gz
 [BACKUP-FULL-2].manifest
+[BACKUP-FULL-2].manifest.gz
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -971,7 +978,10 @@ db-version="9.2"
 
 > ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-1].manifest.gz
+[BACKUP-INCR-1].manifest.gz
 [BACKUP-FULL-2].manifest
+[BACKUP-FULL-2].manifest.gz
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -1030,9 +1040,14 @@ db-version="9.2"
 
 > ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-1].manifest.gz
+[BACKUP-INCR-1].manifest.gz
 [BACKUP-FULL-2].manifest
+[BACKUP-FULL-2].manifest.gz
 [BACKUP-DIFF-1].manifest
+[BACKUP-DIFF-1].manifest.gz
 [BACKUP-DIFF-2].manifest
+[BACKUP-DIFF-2].manifest.gz
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -1363,8 +1378,13 @@ db-version="9.2"
 
 > ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-1].manifest.gz
+[BACKUP-INCR-1].manifest.gz
 [BACKUP-FULL-2].manifest
+[BACKUP-FULL-2].manifest.gz
+[BACKUP-DIFF-1].manifest.gz
 [BACKUP-DIFF-2].manifest
+[BACKUP-DIFF-2].manifest.gz
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -1699,11 +1719,19 @@ db-version="9.2"
 
 > ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-1].manifest.gz
+[BACKUP-INCR-1].manifest.gz
 [BACKUP-FULL-2].manifest
+[BACKUP-FULL-2].manifest.gz
+[BACKUP-DIFF-1].manifest.gz
 [BACKUP-DIFF-2].manifest
+[BACKUP-DIFF-2].manifest.gz
 [BACKUP-FULL-3].manifest
+[BACKUP-FULL-3].manifest.gz
 [BACKUP-DIFF-3].manifest
+[BACKUP-DIFF-3].manifest.gz
 [BACKUP-INCR-2].manifest
+[BACKUP-INCR-2].manifest.gz
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -2056,9 +2084,17 @@ db-version="9.2"
 
 > ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-1].manifest.gz
+[BACKUP-INCR-1].manifest.gz
+[BACKUP-FULL-2].manifest.gz
+[BACKUP-DIFF-1].manifest.gz
+[BACKUP-DIFF-2].manifest.gz
 [BACKUP-FULL-3].manifest
+[BACKUP-FULL-3].manifest.gz
 [BACKUP-DIFF-3].manifest
+[BACKUP-DIFF-3].manifest.gz
 [BACKUP-INCR-2].manifest
+[BACKUP-INCR-2].manifest.gz
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -2127,10 +2163,19 @@ db-version="9.2"
 
 > ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-1].manifest.gz
+[BACKUP-INCR-1].manifest.gz
+[BACKUP-FULL-2].manifest.gz
+[BACKUP-DIFF-1].manifest.gz
+[BACKUP-DIFF-2].manifest.gz
 [BACKUP-FULL-3].manifest
+[BACKUP-FULL-3].manifest.gz
 [BACKUP-DIFF-3].manifest
+[BACKUP-DIFF-3].manifest.gz
 [BACKUP-INCR-2].manifest
+[BACKUP-INCR-2].manifest.gz
 [BACKUP-DIFF-4].manifest
+[BACKUP-DIFF-4].manifest.gz
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -2210,8 +2255,17 @@ db-version="9.2"
 
 > ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-1].manifest.gz
+[BACKUP-INCR-1].manifest.gz
+[BACKUP-FULL-2].manifest.gz
+[BACKUP-DIFF-1].manifest.gz
+[BACKUP-DIFF-2].manifest.gz
 [BACKUP-FULL-3].manifest
+[BACKUP-FULL-3].manifest.gz
+[BACKUP-DIFF-3].manifest.gz
+[BACKUP-INCR-2].manifest.gz
 [BACKUP-DIFF-4].manifest
+[BACKUP-DIFF-4].manifest.gz
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -2277,9 +2331,19 @@ db-version="9.2"
 
 > ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-1].manifest.gz
+[BACKUP-INCR-1].manifest.gz
+[BACKUP-FULL-2].manifest.gz
+[BACKUP-DIFF-1].manifest.gz
+[BACKUP-DIFF-2].manifest.gz
 [BACKUP-FULL-3].manifest
+[BACKUP-FULL-3].manifest.gz
+[BACKUP-DIFF-3].manifest.gz
+[BACKUP-INCR-2].manifest.gz
 [BACKUP-DIFF-4].manifest
+[BACKUP-DIFF-4].manifest.gz
 [BACKUP-INCR-3].manifest
+[BACKUP-INCR-3].manifest.gz
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -2358,9 +2422,19 @@ db-version="9.2"
 
 > ls [TEST_PATH]/backrest/backup/db/backup.manifest
 ------------------------------------------------------------------------------------------------------------------------------------
+[BACKUP-FULL-1].manifest.gz
+[BACKUP-INCR-1].manifest.gz
+[BACKUP-FULL-2].manifest.gz
+[BACKUP-DIFF-1].manifest.gz
+[BACKUP-DIFF-2].manifest.gz
 [BACKUP-FULL-3].manifest
+[BACKUP-FULL-3].manifest.gz
+[BACKUP-DIFF-3].manifest.gz
+[BACKUP-INCR-2].manifest.gz
 [BACKUP-DIFF-4].manifest
+[BACKUP-DIFF-4].manifest.gz
 [BACKUP-INCR-3].manifest
+[BACKUP-INCR-3].manifest.gz
 
 > ls -R [TEST_PATH]/backrest/archive/db | grep -v "archive.info"
 ------------------------------------------------------------------------------------------------------------------------------------

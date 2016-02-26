@@ -27,6 +27,7 @@ use BackRest::Common::String;
 use BackRest::Config::Config;
 use BackRest::Db;
 use BackRest::File;
+use BackRest::FileCommon;
 use BackRest::Manifest;
 
 ####################################################################################################################################
@@ -280,9 +281,7 @@ sub tmpClean
         else
         {
             logDebugMisc($strOperation, "remove file ${strDelete}");
-
-            unlink($strDelete)
-                or confess &log(ERROR, "unable to delete file ${strDelete}", ERROR_FILE_REMOVE);
+            fileRemove($strDelete);
         }
     }
 

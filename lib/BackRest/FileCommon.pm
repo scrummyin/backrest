@@ -11,6 +11,7 @@ use Exporter qw(import);
     our @EXPORT = qw();
 use Fcntl qw(:mode :flock O_RDONLY O_WRONLY O_CREAT O_TRUNC);
 use File::Basename qw(dirname);
+use File::Path qw(make_path);
 use File::stat;
 use IO::Handle;
 
@@ -25,11 +26,13 @@ use constant OP_FILE_COMMON                                         => 'FileComm
 
 use constant OP_FILE_COMMON_EXISTS                                  => OP_FILE_COMMON . '::fileExists';
 use constant OP_FILE_COMMON_LIST                                    => OP_FILE_COMMON . '::fileList';
+use constant OP_FILE_COMMON_MOVE                                    => OP_FILE_COMMON . '::fileMove';
 use constant OP_FILE_COMMON_PATH_SYNC                               => OP_FILE_COMMON . '::filePathSync';
 use constant OP_FILE_COMMON_REMOVE                                  => OP_FILE_COMMON . '::fileRemove';
 use constant OP_FILE_COMMON_STAT                                    => OP_FILE_COMMON . '::fileStat';
 use constant OP_FILE_COMMON_STRING_READ                             => OP_FILE_COMMON . '::fileStringRead';
 use constant OP_FILE_COMMON_STRING_WRITE                            => OP_FILE_COMMON . '::fileStringWrite';
+use constant OP_FILE_COMMON_PATH_CREATE                             => OP_FILE_COMMON . '::pathCreate';
 
 ####################################################################################################################################
 # fileExists
@@ -47,7 +50,7 @@ sub fileExists
         logDebugParam
         (
             OP_FILE_COMMON_EXISTS, \@_,
-            {name => 'strFile', required => true}
+            {name => 'strFile', required => true, trace => true}
         );
 
     # Working variables
@@ -74,7 +77,7 @@ sub fileExists
     return logDebugReturn
     (
         $strOperation,
-        {name => 'bExists', value => $bExists}
+        {name => 'bExists', value => $bExists, trace => true}
     );
 }
 
@@ -99,10 +102,10 @@ sub fileList
         logDebugParam
         (
             OP_FILE_COMMON_LIST, \@_,
-            {name => 'strPath'},
-            {name => 'strExpression', required => false},
-            {name => 'strSortOrder', default => 'forward'},
-            {name => 'bIgnoreMissing', default => false}
+            {name => 'strPath', trace => true},
+            {name => 'strExpression', required => false, trace => true},
+            {name => 'strSortOrder', default => 'forward', trace => true},
+            {name => 'bIgnoreMissing', default => false, trace => true}
         );
 
     # Working variables
@@ -153,11 +156,85 @@ sub fileList
     return logDebugReturn
     (
         $strOperation,
-        {name => 'stryFileList', value => \@stryFileList}
+        {name => 'stryFileList', value => \@stryFileList, trace => true}
     );
 }
 
 push @EXPORT, qw(fileList);
+
+####################################################################################################################################
+# fileMove
+#
+# Move a file.
+####################################################################################################################################
+sub fileMove
+{
+    # Assign function parameters, defaults, and log debug info
+    my
+    (
+        $strOperation,
+        $strSourceFile,
+        $strDestinationFile,
+        $bDestinationPathCreate
+    ) =
+        logDebugParam
+        (
+            OP_FILE_COMMON_MOVE, \@_,
+            {name => 'strSourceFile', trace => true},
+            {name => 'strDestinationFile', trace => true},
+            {name => 'bDestinationPathCreate', default => false, trace => true}
+        );
+
+    # Get source and destination paths
+    my $strSourcePath = dirname($strSourceFile);
+    my $strDestinationPath = dirname($strDestinationFile);
+
+    # Move the file
+    if (!rename($strSourceFile, $strDestinationFile))
+    {
+        my $strError = $!;
+        my $bError = true;
+
+        # If the destination path does not exist and can be created then create it
+        if ($bDestinationPathCreate && !fileExists($strDestinationPath))
+        {
+            $bError = false;
+
+            filePathCreate(dirname($strDestinationFile), undef, true);
+
+            # Try the rename again and store the error if it fails
+            if (!rename($strSourceFile, $strDestinationFile))
+            {
+                $strError = $!;
+                $bError = true;
+            }
+        }
+
+        # If there was an error then raise it
+        if ($bError)
+        {
+            confess &log(ERROR, "unable to move file ${strSourceFile} to ${strDestinationFile}" .
+                                (defined($strError) ? ": $strError" : ''), ERROR_FILE_MOVE);
+        }
+    }
+
+    # Always sync the destination directory
+    filePathSync(dirname($strDestinationFile));
+
+    # If the source and destination directories are not the same then sync the source directory
+    if (dirname($strSourceFile) ne dirname($strDestinationFile))
+    {
+        filePathSync(dirname($strSourceFile));
+    }
+
+    # Return from function and log return values if any
+    return logDebugReturn
+    (
+        $strOperation
+    );
+}
+
+push @EXPORT, qw(fileMove);
 
 ####################################################################################################################################
 # filePathSync
@@ -212,8 +289,8 @@ sub fileRemove
         logDebugParam
         (
             OP_FILE_COMMON_REMOVE, \@_,
-            {name => 'strPath'},
-            {name => 'bIgnoreMissing', default => false}
+            {name => 'strPath', trace => true},
+            {name => 'bIgnoreMissing', default => false, trace => true}
         );
 
     # Working variables
@@ -241,7 +318,7 @@ sub fileRemove
     return logDebugReturn
     (
         $strOperation,
-        {name => 'bRemoved', value => $bRemoved}
+        {name => 'bRemoved', value => $bRemoved, trace => true}
     );
 }
 
@@ -264,7 +341,7 @@ sub fileStat
         logDebugParam
         (
             OP_FILE_COMMON_STAT, \@_,
-            {name => 'strFile', required => true}
+            {name => 'strFile', required => true, trace => true}
         );
 
     # Stat the file/path to determine if it exists
@@ -281,7 +358,7 @@ sub fileStat
     return logDebugReturn
     (
         $strOperation,
-        {name => 'oStat', value => $oStat}
+        {name => 'oStat', value => $oStat, trace => true}
     );
 }
 
@@ -388,5 +465,51 @@ sub fileStringWrite
 }
 
 push @EXPORT, qw(fileStringWrite);
+
+####################################################################################################################################
+# filePathCreate
+#
+# Create a path.
+####################################################################################################################################
+sub filePathCreate
+{
+    # Assign function parameters, defaults, and log debug info
+    my
+    (
+        $strOperation,
+        $strPath,
+        $strMode,
+        $bIgnoreExists
+    ) =
+        logDebugParam
+        (
+            OP_FILE_COMMON_PATH_CREATE, \@_,
+            {name => 'strPath', trace => true},
+            {name => 'strMode', default => '0750', trace => true},
+            {name => 'bIgnoreExists', default => false, trace => true}
+        );
+
+    if (!($bIgnoreExists && fileExists($strPath)))
+    {
+        # Attempt to create the directory
+        my $stryError;
+
+        make_path($strPath, {mode => oct($strMode), error => \$stryError});
+
+        # Throw any errrors that were returned
+        if (@$stryError)
+        {
+            confess &log(ERROR, "${strPath} could not be created: " . join($stryError, ', '), ERROR_PATH_CREATE);
+        }
+    }
+
+    # Return from function and log return values if any
+    return logDebugReturn
+    (
+        $strOperation
+    );
+}
+
+push @EXPORT, qw(filePathCreate);
 
 1;

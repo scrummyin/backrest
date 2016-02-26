@@ -186,7 +186,8 @@ sub backupCreate
     my $strBackupClusterSetPath .= "$$oStanza{strBackupClusterPath}/${strBackupLabel}";
     BackRestTestCommon_PathCreate($strBackupClusterSetPath);
 
-    my $oManifest = new BackRest::Manifest("$$oStanza{strBackupClusterPath}/" . PATH_MANIFEST . "/${strBackupLabel}.manifest", false);
+    my $strManifestFile = "$$oStanza{strBackupClusterPath}/" . PATH_MANIFEST . "/${strBackupLabel}.manifest";
+    my $oManifest = new BackRest::Manifest($strManifestFile, false);
 
     # Store information about the backup into the backup section
     $oManifest->set(MANIFEST_SECTION_BACKUP, MANIFEST_KEY_LABEL, undef, $strBackupLabel);
@@ -218,11 +219,14 @@ sub backupCreate
     $oManifest->save();
     $$oStanza{oManifest} = $oManifest;
 
+    # Create the compressed history manifest
+    $self->{oFile}->compress(PATH_BACKUP_ABSOLUTE, $strManifestFile, false);
+
     # Add the backup to info
     my $oBackupInfo = new BackRest::BackupInfo($$oStanza{strBackupClusterPath});
 
     $oBackupInfo->check($$oStanza{strDbVersion}, $$oStanza{iControlVersion}, $$oStanza{iCatalogVersion}, $$oStanza{ullDbSysId});
-    $oBackupInfo->add($self->{oFile}, $oManifest);
+    $oBackupInfo->add($oManifest);
 
     # Create the backup description string
     if (defined($$oStanza{strBackupDescription}))
