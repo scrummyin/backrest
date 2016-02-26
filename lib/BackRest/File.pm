@@ -666,37 +666,7 @@ sub move
     # Run locally
     else
     {
-        if (!rename($strPathOpSource, $strPathOpDestination))
-        {
-            if ($bDestinationPathCreate)
-            {
-                $self->pathCreate(PATH_ABSOLUTE, dirname($strPathOpDestination), undef, true);
-            }
-
-            if (!$bDestinationPathCreate || !rename($strPathOpSource, $strPathOpDestination))
-            {
-                my $strError = "unable to move file ${strPathOpSource} to ${strPathOpDestination}: " . $!;
-                my $iErrorCode = COMMAND_ERR_FILE_READ;
-
-                if (!$self->exists(PATH_ABSOLUTE, dirname($strPathOpDestination)))
-                {
-                    $strError = dirname($strPathOpDestination) . " destination path does not exist";
-                    $iErrorCode = COMMAND_ERR_FILE_MISSING;
-                }
-
-                if (!($bDestinationPathCreate && $iErrorCode == COMMAND_ERR_FILE_MISSING))
-                {
-                    if ($strSourcePathType eq PATH_ABSOLUTE)
-                    {
-                        confess &log(ERROR, $strError, $iErrorCode);
-                    }
-
-                    confess &log(ERROR, $strError);
-                }
-            }
-        }
-
-        $self->pathSync($strDestinationPathType, dirname($strDestinationFile));
+        fileMove($strPathOpSource, $strPathOpDestination, $bDestinationPathCreate);
     }
 
     # Return from function and log return values if any
@@ -742,8 +712,7 @@ sub compress
         $self->copy($strPathType, $strFile, $strPathType, "${strFile}.gz", false, true);
 
         # Remove the old file
-        unlink($strPathOp)
-            or die &log(ERROR, "unable to remove ${strPathOp}");
+        fileRemove($strPathOp);
     }
 
     # Return from function and log return values if any
@@ -1649,7 +1618,7 @@ sub copy
         # Now lock the file to be sure nobody else is operating on it
         if (!flock($hDestinationFile, LOCK_EX | LOCK_NB))
         {
-            confess &log(ERROR, "unable to acquire exclusive lock on lock ${strDestinationTmpOp}", ERROR_LOCK_ACQUIRE);
+            confess &log(ERROR, "unable to acquire exclusive lock on ${strDestinationTmpOp}", ERROR_LOCK_ACQUIRE);
         }
     }
 
@@ -1824,8 +1793,9 @@ sub copy
                 if ($bIgnoreMissingSource && $strRemote eq 'in' && blessed($oMessage) && $oMessage->isa('BackRest::Common::Exception') &&
                     $oMessage->code() == COMMAND_ERR_FILE_MISSING)
                 {
-                    close($hDestinationFile) or confess &log(ERROR, "cannot close file ${strDestinationTmpOp}");
-                    unlink($strDestinationTmpOp) or confess &log(ERROR, "cannot remove file ${strDestinationTmpOp}");
+                    close($hDestinationFile)
+                        or confess &log(ERROR, "cannot close file ${strDestinationTmpOp}");
+                    fileRemove($strDestinationTmpOp);
 
                     return false, undef, undef;
                 }
@@ -1926,7 +1896,7 @@ sub copy
         }
 
         # Move the file from tmp to final destination
-        $self->move(PATH_ABSOLUTE, $strDestinationTmpOp, PATH_ABSOLUTE, $strDestinationOp, $bDestinationPathCreate);
+        fileMove($strDestinationTmpOp, $strDestinationOp, $bDestinationPathCreate);
     }
 
     # Return from function and log return values if any
