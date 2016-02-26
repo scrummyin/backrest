@@ -11,8 +11,6 @@ DEBUG:     Common:::Lock::lockStopTest(): strRepoPath = <[TEST_PATH]/backrest>
 DEBUG:     File->copy(): bAppendChecksum = true, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [undef], strDestinationFile = 000000010000000100000001, strDestinationPathType = backup:archive:out, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/db/common/pg_xlog/000000010000000100000001, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [TEST_PATH]/backrest/archive/db/out, strPathType = absolute
 DEBUG:     File->exists(): strPath = [TEST_PATH]/backrest/archive/db/out, strPathType = absolute
-DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/archive/db/out
-DEBUG:     FileCommon::fileExists=>: bExists = false
 DEBUG:     File->exists=>: bExists = false
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/archive/db/out/000000010000000100000001-1c7e00fd09b9dd11fc2966590b3e3274645dd031, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/archive/db/out/000000010000000100000001.tmp, strSourcePathType = absolute
 DEBUG:     Archive->pushProcess: no fork on archive local for TESTING
@@ -30,8 +28,6 @@ DEBUG:     Archive->walInfo(): strWalFile = [TEST_PATH]/backrest/archive/db/out/
 DEBUG:     Archive->walInfo=>: strDbVersion = 9.3, ullDbSysId = 5947969990501855219
 DEBUG:     Archive->pushCheck(): bPartial = false, oFile = [object], strDbVersion = 9.3, strWalFile = [TEST_PATH]/backrest/archive/db/out/000000010000000100000001-1c7e00fd09b9dd11fc2966590b3e3274645dd031, strWalSegment = 000000010000000100000001, ullDbSysId = 5947969990501855219
 DEBUG:     File->exists(): strPath = [undef], strPathType = backup:archive
-DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/archive/db
-DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     ArchiveInfo->new(): bRequired = <false>, strArchiveClusterPath = [TEST_PATH]/backrest/archive/db
 DEBUG:     ArchiveInfo->check(): strDbVersion = 9.3, ullDbSysId = 5947969990501855219
@@ -39,18 +35,12 @@ DEBUG:     ArchiveInfo->archiveId=>: strArchiveId = 9.3-1
 DEBUG:     ArchiveInfo->check=>: strArchiveId = 9.3-1
 DEBUG:     Archive->walFileName(): bPartial = false, iWaitSeconds = [undef], oFile = [object], strArchiveId = 9.3-1, strWalSegment = 000000010000000100000001
 DEBUG:     File->list(): bIgnoreMissing = true, strExpression = ^000000010000000100000001(-[0-f]+){0,1}(\.gz){0,1}$, strPath = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001, strPathType = backup:absolute, strSortOrder = <forward>
-DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = ^000000010000000100000001(-[0-f]+){0,1}(\.gz){0,1}$, strPath = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001, strSortOrder = forward
-DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001
-DEBUG:     FileCommon::fileExists=>: bExists = false
-DEBUG:     FileCommon::fileList=>: stryFileList = ()
 DEBUG:     File->list=>: stryFileList = ()
 DEBUG:     Archive->walFileName=>: strWalFileName = [undef]
 DEBUG:     Archive->pushCheck=>: strArchiveId = 9.3-1, strChecksum = [undef]
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = true, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [undef], strDestinationFile = 9.3-1/000000010000000100000001-1c7e00fd09b9dd11fc2966590b3e3274645dd031, strDestinationPathType = backup:archive, strGroup = [undef], strMode = <0640>, strSourceFile = [TEST_PATH]/backrest/archive/db/out/000000010000000100000001-1c7e00fd09b9dd11fc2966590b3e3274645dd031, strSourcePathType = db:absolute, strUser = [undef]
 DEBUG:     File->pathCreate(): bIgnoreExists = true, strMode = <0750>, strPath = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001, strPathType = absolute
 DEBUG:     File->exists(): strPath = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001, strPathType = absolute
-DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001
-DEBUG:     FileCommon::fileExists=>: bExists = false
 DEBUG:     File->exists=>: bExists = false
 DEBUG:     File->move(): bDestinationPathCreate = true, strDestinationFile = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001/000000010000000100000001-1c7e00fd09b9dd11fc2966590b3e3274645dd031, strDestinationPathType = absolute, strSourceFile = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001/000000010000000100000001-1c7e00fd09b9dd11fc2966590b3e3274645dd031.tmp, strSourcePathType = absolute
 DEBUG:     Archive->xfer=>: lFileTotal = 1
@@ -90,8 +80,6 @@ DEBUG:     Archive->walInfo(): strWalFile = [TEST_PATH]/backrest/archive/db/out/
 DEBUG:     Archive->walInfo=>: strDbVersion = 9.3, ullDbSysId = 5947969990501855219
 DEBUG:     Archive->pushCheck(): bPartial = false, oFile = [object], strDbVersion = 9.3, strWalFile = [TEST_PATH]/backrest/archive/db/out/000000010000000100000002-1c7e00fd09b9dd11fc2966590b3e3274645dd031, strWalSegment = 000000010000000100000002, ullDbSysId = 5947969990501855219
 DEBUG:     File->exists(): strPath = [undef], strPathType = backup:archive
-DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/archive/db
-DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     ArchiveInfo->new(): bRequired = <false>, strArchiveClusterPath = [TEST_PATH]/backrest/archive/db
 DEBUG:     ArchiveInfo->check(): strDbVersion = 9.3, ullDbSysId = 5947969990501855219
@@ -125,8 +113,6 @@ DEBUG:     Archive->walInfo(): strWalFile = [TEST_PATH]/backrest/archive/db/out/
 DEBUG:     Archive->walInfo=>: strDbVersion = 9.3, ullDbSysId = 5947969990501855219
 DEBUG:     Archive->pushCheck(): bPartial = false, oFile = [object], strDbVersion = 9.3, strWalFile = [TEST_PATH]/backrest/archive/db/out/000000010000000100000002-1c7e00fd09b9dd11fc2966590b3e3274645dd031, strWalSegment = 000000010000000100000002, ullDbSysId = 5947969990501855219
 DEBUG:     File->exists(): strPath = [undef], strPathType = backup:archive
-DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/archive/db
-DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     ArchiveInfo->new(): bRequired = <false>, strArchiveClusterPath = [TEST_PATH]/backrest/archive/db
 DEBUG:     ArchiveInfo->check(): strDbVersion = 9.3, ullDbSysId = 5947969990501855219
@@ -169,8 +155,6 @@ DEBUG:     Archive->walInfo(): strWalFile = [TEST_PATH]/backrest/archive/db/out/
 DEBUG:     Archive->walInfo=>: strDbVersion = 9.3, ullDbSysId = 5947969990501855219
 DEBUG:     Archive->pushCheck(): bPartial = false, oFile = [object], strDbVersion = 9.3, strWalFile = [TEST_PATH]/backrest/archive/db/out/000000010000000100000002-1c7e00fd09b9dd11fc2966590b3e3274645dd031, strWalSegment = 000000010000000100000002, ullDbSysId = 5947969990501855219
 DEBUG:     File->exists(): strPath = [undef], strPathType = backup:archive
-DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/archive/db
-DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     ArchiveInfo->new(): bRequired = <false>, strArchiveClusterPath = [TEST_PATH]/backrest/archive/db
 DEBUG:     ArchiveInfo->check(): strDbVersion = 9.3, ullDbSysId = 5947969990501855219
@@ -178,8 +162,6 @@ DEBUG:     ArchiveInfo->archiveId=>: strArchiveId = 9.3-1
 DEBUG:     ArchiveInfo->check=>: strArchiveId = 9.3-1
 DEBUG:     Archive->walFileName(): bPartial = false, iWaitSeconds = [undef], oFile = [object], strArchiveId = 9.3-1, strWalSegment = 000000010000000100000002
 DEBUG:     File->list(): bIgnoreMissing = true, strExpression = ^000000010000000100000002(-[0-f]+){0,1}(\.gz){0,1}$, strPath = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001, strPathType = backup:absolute, strSortOrder = <forward>
-DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = ^000000010000000100000002(-[0-f]+){0,1}(\.gz){0,1}$, strPath = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001, strSortOrder = forward
-DEBUG:     FileCommon::fileList=>: stryFileList = ()
 DEBUG:     File->list=>: stryFileList = ()
 DEBUG:     Archive->walFileName=>: strWalFileName = [undef]
 DEBUG:     Archive->pushCheck=>: strArchiveId = 9.3-1, strChecksum = [undef]
@@ -190,8 +172,6 @@ DEBUG:     Archive->walInfo(): strWalFile = [TEST_PATH]/backrest/archive/db/out/
 DEBUG:     Archive->walInfo=>: strDbVersion = 9.3, ullDbSysId = 5947969990501855219
 DEBUG:     Archive->pushCheck(): bPartial = false, oFile = [object], strDbVersion = 9.3, strWalFile = [TEST_PATH]/backrest/archive/db/out/000000010000000100000003-1c7e00fd09b9dd11fc2966590b3e3274645dd031, strWalSegment = 000000010000000100000003, ullDbSysId = 5947969990501855219
 DEBUG:     File->exists(): strPath = [undef], strPathType = backup:archive
-DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/archive/db
-DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     ArchiveInfo->new(): bRequired = <false>, strArchiveClusterPath = [TEST_PATH]/backrest/archive/db
 DEBUG:     ArchiveInfo->check(): strDbVersion = 9.3, ullDbSysId = 5947969990501855219
@@ -199,8 +179,6 @@ DEBUG:     ArchiveInfo->archiveId=>: strArchiveId = 9.3-1
 DEBUG:     ArchiveInfo->check=>: strArchiveId = 9.3-1
 DEBUG:     Archive->walFileName(): bPartial = false, iWaitSeconds = [undef], oFile = [object], strArchiveId = 9.3-1, strWalSegment = 000000010000000100000003
 DEBUG:     File->list(): bIgnoreMissing = true, strExpression = ^000000010000000100000003(-[0-f]+){0,1}(\.gz){0,1}$, strPath = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001, strPathType = backup:absolute, strSortOrder = <forward>
-DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = ^000000010000000100000003(-[0-f]+){0,1}(\.gz){0,1}$, strPath = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001, strSortOrder = forward
-DEBUG:     FileCommon::fileList=>: stryFileList = ()
 DEBUG:     File->list=>: stryFileList = ()
 DEBUG:     Archive->walFileName=>: strWalFileName = [undef]
 DEBUG:     Archive->pushCheck=>: strArchiveId = 9.3-1, strChecksum = [undef]
@@ -211,8 +189,6 @@ DEBUG:     Archive->walInfo(): strWalFile = [TEST_PATH]/backrest/archive/db/out/
 DEBUG:     Archive->walInfo=>: strDbVersion = 9.3, ullDbSysId = 5947969990501855219
 DEBUG:     Archive->pushCheck(): bPartial = false, oFile = [object], strDbVersion = 9.3, strWalFile = [TEST_PATH]/backrest/archive/db/out/000000010000000100000005-1c7e00fd09b9dd11fc2966590b3e3274645dd031, strWalSegment = 000000010000000100000005, ullDbSysId = 5947969990501855219
 DEBUG:     File->exists(): strPath = [undef], strPathType = backup:archive
-DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/archive/db
-DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     ArchiveInfo->new(): bRequired = <false>, strArchiveClusterPath = [TEST_PATH]/backrest/archive/db
 DEBUG:     ArchiveInfo->check(): strDbVersion = 9.3, ullDbSysId = 5947969990501855219
@@ -220,8 +196,6 @@ DEBUG:     ArchiveInfo->archiveId=>: strArchiveId = 9.3-1
 DEBUG:     ArchiveInfo->check=>: strArchiveId = 9.3-1
 DEBUG:     Archive->walFileName(): bPartial = false, iWaitSeconds = [undef], oFile = [object], strArchiveId = 9.3-1, strWalSegment = 000000010000000100000005
 DEBUG:     File->list(): bIgnoreMissing = true, strExpression = ^000000010000000100000005(-[0-f]+){0,1}(\.gz){0,1}$, strPath = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001, strPathType = backup:absolute, strSortOrder = <forward>
-DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = ^000000010000000100000005(-[0-f]+){0,1}(\.gz){0,1}$, strPath = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001, strSortOrder = forward
-DEBUG:     FileCommon::fileList=>: stryFileList = ()
 DEBUG:     File->list=>: stryFileList = ()
 DEBUG:     Archive->walFileName=>: strWalFileName = [undef]
 DEBUG:     Archive->pushCheck=>: strArchiveId = 9.3-1, strChecksum = [undef]
@@ -264,8 +238,6 @@ DEBUG:     Archive->walInfo(): strWalFile = [TEST_PATH]/backrest/archive/db/out/
 DEBUG:     Archive->walInfo=>: strDbVersion = 9.3, ullDbSysId = 5947969990501855219
 DEBUG:     Archive->pushCheck(): bPartial = false, oFile = [object], strDbVersion = 9.3, strWalFile = [TEST_PATH]/backrest/archive/db/out/000000010000000100000006-1c7e00fd09b9dd11fc2966590b3e3274645dd031, strWalSegment = 000000010000000100000006, ullDbSysId = 5947969990501855219
 DEBUG:     File->exists(): strPath = [undef], strPathType = backup:archive
-DEBUG:     FileCommon::fileExists(): strFile = [TEST_PATH]/backrest/archive/db
-DEBUG:     FileCommon::fileExists=>: bExists = true
 DEBUG:     File->exists=>: bExists = true
 DEBUG:     ArchiveInfo->new(): bRequired = <false>, strArchiveClusterPath = [TEST_PATH]/backrest/archive/db
 DEBUG:     ArchiveInfo->check(): strDbVersion = 9.3, ullDbSysId = 5947969990501855219
@@ -273,8 +245,6 @@ DEBUG:     ArchiveInfo->archiveId=>: strArchiveId = 9.3-1
 DEBUG:     ArchiveInfo->check=>: strArchiveId = 9.3-1
 DEBUG:     Archive->walFileName(): bPartial = false, iWaitSeconds = [undef], oFile = [object], strArchiveId = 9.3-1, strWalSegment = 000000010000000100000006
 DEBUG:     File->list(): bIgnoreMissing = true, strExpression = ^000000010000000100000006(-[0-f]+){0,1}(\.gz){0,1}$, strPath = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001, strPathType = backup:absolute, strSortOrder = <forward>
-DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = ^000000010000000100000006(-[0-f]+){0,1}(\.gz){0,1}$, strPath = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001, strSortOrder = forward
-DEBUG:     FileCommon::fileList=>: stryFileList = ()
 DEBUG:     File->list=>: stryFileList = ()
 DEBUG:     Archive->walFileName=>: strWalFileName = [undef]
 DEBUG:     Archive->pushCheck=>: strArchiveId = 9.3-1, strChecksum = [undef]

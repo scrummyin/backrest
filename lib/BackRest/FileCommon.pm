@@ -26,7 +26,8 @@ use constant OP_FILE_COMMON                                         => 'FileComm
 use constant OP_FILE_COMMON_EXISTS                                  => OP_FILE_COMMON . '::fileExists';
 use constant OP_FILE_COMMON_LIST                                    => OP_FILE_COMMON . '::fileList';
 use constant OP_FILE_COMMON_PATH_SYNC                               => OP_FILE_COMMON . '::filePathSync';
-use constant OP_FILE_COMMON_REMOVE                                  => OP_FILE_COMMON . '::fileCommonRemove';
+use constant OP_FILE_COMMON_REMOVE                                  => OP_FILE_COMMON . '::fileRemove';
+use constant OP_FILE_COMMON_STAT                                    => OP_FILE_COMMON . '::fileStat';
 use constant OP_FILE_COMMON_STRING_READ                             => OP_FILE_COMMON . '::fileStringRead';
 use constant OP_FILE_COMMON_STRING_WRITE                            => OP_FILE_COMMON . '::fileStringWrite';
 
@@ -46,7 +47,7 @@ sub fileExists
         logDebugParam
         (
             OP_FILE_COMMON_EXISTS, \@_,
-            {name => 'strFile', required => true}
+            {name => 'strFile', required => true, trace => true}
         );
 
     # Working variables
@@ -73,7 +74,7 @@ sub fileExists
     return logDebugReturn
     (
         $strOperation,
-        {name => 'bExists', value => $bExists}
+        {name => 'bExists', value => $bExists, trace => true}
     );
 }
 
@@ -98,10 +99,10 @@ sub fileList
         logDebugParam
         (
             OP_FILE_COMMON_LIST, \@_,
-            {name => 'strPath'},
-            {name => 'strExpression', required => false},
-            {name => 'strSortOrder', default => 'forward'},
-            {name => 'bIgnoreMissing', default => false}
+            {name => 'strPath', trace => true},
+            {name => 'strExpression', required => false, trace => true},
+            {name => 'strSortOrder', default => 'forward', trace => true},
+            {name => 'bIgnoreMissing', default => false, trace => true}
         );
 
     # Working variables
@@ -152,7 +153,7 @@ sub fileList
     return logDebugReturn
     (
         $strOperation,
-        {name => 'stryFileList', value => \@stryFileList}
+        {name => 'stryFileList', value => \@stryFileList, trace => true}
     );
 }
 
@@ -211,8 +212,8 @@ sub fileRemove
         logDebugParam
         (
             OP_FILE_COMMON_REMOVE, \@_,
-            {name => 'strPath'},
-            {name => 'bIgnoreMissing', default => false}
+            {name => 'strPath', trace => true},
+            {name => 'bIgnoreMissing', default => false, trace => true}
         );
 
     # Working variables
@@ -240,11 +241,51 @@ sub fileRemove
     return logDebugReturn
     (
         $strOperation,
-        {name => 'bRemoved', value => $bRemoved}
+        {name => 'bRemoved', value => $bRemoved, trace => true}
     );
 }
 
 push @EXPORT, qw(fileRemove);
+
+
+####################################################################################################################################
+# fileStat
+#
+# Stat a file.
+####################################################################################################################################
+sub fileStat
+{
+    # Assign function parameters, defaults, and log debug info
+    my
+    (
+        $strOperation,
+        $strFile
+    ) =
+        logDebugParam
+        (
+            OP_FILE_COMMON_STAT, \@_,
+            {name => 'strFile', required => true, trace => true}
+        );
+
+    # Stat the file/path to determine if it exists
+    my $oStat = lstat($strFile);
+
+    # Evaluate error
+    if (!defined($oStat))
+    {
+        my $strError = $!;
+        confess &log(ERROR, "unable to read ${strFile}" . (defined($strError) ? ": $strError" : ''), ERROR_FILE_OPEN);
+    }
+
+    # Return from function and log return values if any
+    return logDebugReturn
+    (
+        $strOperation,
+        {name => 'oStat', value => $oStat, trace => true}
+    );
+}
+
+push @EXPORT, qw(fileStat);
 
 ####################################################################################################################################
 # fileStringRead

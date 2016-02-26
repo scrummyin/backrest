@@ -42,8 +42,6 @@ DEBUG:     ArchiveInfo->new(): bRequired = true, strArchiveClusterPath = [TEST_P
 DEBUG:     ArchiveInfo->archiveId=>: strArchiveId = 9.3-1
 DEBUG:     Archive->walFileName(): bPartial = false, iWaitSeconds = [undef], oFile = [object], strArchiveId = 9.3-1, strWalSegment = 000000010000000100000001
 DEBUG:     File->list(): bIgnoreMissing = true, strExpression = ^000000010000000100000001(-[0-f]+){0,1}(\.gz){0,1}$, strPath = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001, strPathType = backup:absolute, strSortOrder = <forward>
-DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = ^000000010000000100000001(-[0-f]+){0,1}(\.gz){0,1}$, strPath = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001, strSortOrder = forward
-DEBUG:     FileCommon::fileList=>: stryFileList = (000000010000000100000001-1c7e00fd09b9dd11fc2966590b3e3274645dd031)
 DEBUG:     File->list=>: stryFileList = (000000010000000100000001-1c7e00fd09b9dd11fc2966590b3e3274645dd031)
 DEBUG:     Archive->walFileName=>: strWalFileName = 000000010000000100000001-1c7e00fd09b9dd11fc2966590b3e3274645dd031
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [undef], strDestinationFile = [TEST_PATH]/db/common/pg_xlog/000000010000000100000001, strDestinationPathType = db:absolute, strGroup = [undef], strMode = <0640>, strSourceFile = 9.3-1/000000010000000100000001-1c7e00fd09b9dd11fc2966590b3e3274645dd031, strSourcePathType = backup:archive, strUser = [undef]
@@ -64,8 +62,6 @@ DEBUG:     ArchiveInfo->new(): bRequired = true, strArchiveClusterPath = [TEST_P
 DEBUG:     ArchiveInfo->archiveId=>: strArchiveId = 9.3-1
 DEBUG:     Archive->walFileName(): bPartial = false, iWaitSeconds = [undef], oFile = [object], strArchiveId = 9.3-1, strWalSegment = 000000010000000100000002
 DEBUG:     File->list(): bIgnoreMissing = true, strExpression = ^000000010000000100000002(-[0-f]+){0,1}(\.gz){0,1}$, strPath = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001, strPathType = backup:absolute, strSortOrder = <forward>
-DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = ^000000010000000100000002(-[0-f]+){0,1}(\.gz){0,1}$, strPath = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001, strSortOrder = forward
-DEBUG:     FileCommon::fileList=>: stryFileList = (000000010000000100000002-1c7e00fd09b9dd11fc2966590b3e3274645dd031)
 DEBUG:     File->list=>: stryFileList = (000000010000000100000002-1c7e00fd09b9dd11fc2966590b3e3274645dd031)
 DEBUG:     Archive->walFileName=>: strWalFileName = 000000010000000100000002-1c7e00fd09b9dd11fc2966590b3e3274645dd031
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [undef], strDestinationFile = [TEST_PATH]/db/common/pg_xlog/000000010000000100000002, strDestinationPathType = db:absolute, strGroup = [undef], strMode = <0640>, strSourceFile = 9.3-1/000000010000000100000002-1c7e00fd09b9dd11fc2966590b3e3274645dd031, strSourcePathType = backup:archive, strUser = [undef]
@@ -86,8 +82,6 @@ DEBUG:     ArchiveInfo->new(): bRequired = true, strArchiveClusterPath = [TEST_P
 DEBUG:     ArchiveInfo->archiveId=>: strArchiveId = 9.3-1
 DEBUG:     Archive->walFileName(): bPartial = false, iWaitSeconds = [undef], oFile = [object], strArchiveId = 9.3-1, strWalSegment = 000000010000000100000003
 DEBUG:     File->list(): bIgnoreMissing = true, strExpression = ^000000010000000100000003(-[0-f]+){0,1}(\.gz){0,1}$, strPath = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001, strPathType = backup:absolute, strSortOrder = <forward>
-DEBUG:     FileCommon::fileList(): bIgnoreMissing = true, strExpression = ^000000010000000100000003(-[0-f]+){0,1}(\.gz){0,1}$, strPath = [TEST_PATH]/backrest/archive/db/9.3-1/0000000100000001, strSortOrder = forward
-DEBUG:     FileCommon::fileList=>: stryFileList = (000000010000000100000003-1c7e00fd09b9dd11fc2966590b3e3274645dd031)
 DEBUG:     File->list=>: stryFileList = (000000010000000100000003-1c7e00fd09b9dd11fc2966590b3e3274645dd031)
 DEBUG:     Archive->walFileName=>: strWalFileName = 000000010000000100000003-1c7e00fd09b9dd11fc2966590b3e3274645dd031
 DEBUG:     File->copy(): bAppendChecksum = <false>, bDestinationCompress = false, bDestinationPathCreate = <false>, bIgnoreMissingSource = <false>, bSourceCompressed = false, lModificationTime = [undef], strDestinationFile = [TEST_PATH]/db/common/pg_xlog/000000010000000100000003, strDestinationPathType = db:absolute, strGroup = [undef], strMode = <0640>, strSourceFile = 9.3-1/000000010000000100000003-1c7e00fd09b9dd11fc2966590b3e3274645dd031, strSourcePathType = backup:archive, strUser = [undef]
