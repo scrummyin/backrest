@@ -56,8 +56,6 @@ use constant OP_FILE_OWNER                                          => OP_FILE .
 use constant OP_FILE_PATH_CREATE                                    => OP_FILE . '->pathCreate';
     push @EXPORT, qw(OP_FILE_PATH_CREATE);
 use constant OP_FILE_PATH_GET                                       => OP_FILE . '->pathGet';
-use constant OP_FILE_PATH_SYNC                                      => OP_FILE . '->pathSync';
-use constant OP_FILE_PATH_SYNC_STATIC                               => OP_FILE . '::filePathSync';
 use constant OP_FILE_PATH_TYPE_GET                                  => OP_FILE . '->pathTypeGet';
 use constant OP_FILE_REMOVE                                         => OP_FILE . '->remove';
 use constant OP_FILE_STANZA                                         => OP_FILE . '->stanza';
@@ -579,38 +577,6 @@ sub linkCreate
                 or confess &log(ERROR, "unable to create symlink from ${strSource} to ${strDestination}");
         }
     }
-
-    # Return from function and log return values if any
-    return logDebugReturn
-    (
-        $strOperation
-    );
-}
-
-####################################################################################################################################
-# pathSync
-#
-# Sync a directory.
-####################################################################################################################################
-sub pathSync
-{
-    my $self = shift;
-
-    # Assign function parameters, defaults, and log debug info
-    my
-    (
-        $strOperation,
-        $strPathType,
-        $strPath,
-    ) =
-        logDebugParam
-        (
-            OP_FILE_PATH_SYNC, \@_,
-            {name => 'strPathType', trace => true},
-            {name => 'strPath', trace => true}
-        );
-
-    filePathSync($self->pathGet($strPathType, $strPath eq '.' ? undef : $strPath));
 
     # Return from function and log return values if any
     return logDebugReturn
