@@ -181,13 +181,13 @@ sub validate
         my $strBackup = (split('\.', $strFile))[0];
 
         # All valid manifests should match this pattern
-        if ($strFile =~ "^${strPattern}(\\.gz){0,1}\$")
+        if ($strFile =~ "^${strPattern}\$")
         {
             # Now check if this is a current manifest.
             if ($strFile =~ "^${strPattern}\$")
             {
                 # A compressed history file for the manifest must exist
-                if (fileExists("${strFilePath}.gz"))
+                if (fileExists("${strManifestPath}/" . substr($strBackup, 0, 4) . "/${strFile}.gz"))
                 {
                     # Make sure the manifest is in backup.info
                     if (!$self->current($strBackup))
@@ -205,8 +205,8 @@ sub validate
                 }
             }
         }
-        # Otherwise the file is junk or a leftover temp file and should be removed
-        else
+        # Else if not a history directory then file is junk or a leftover temp file and should be removed
+        elsif ($strFile !~ /^[0-9]{4}$/)
         {
             &log(WARN, "remove invalid file in manifest path: ${strFilePath}");
             fileRemove($strFilePath);

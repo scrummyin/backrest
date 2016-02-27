@@ -956,14 +956,14 @@ sub process
                          PATH_BACKUP_TMP, FILE_MANIFEST . '.gz',
                          undef, true);
 
-    $self->{oFile}->move(PATH_BACKUP_TMP, FILE_MANIFEST . '.gz',
-                         PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strBackupLabel}.manifest.gz", true);
-
     # Move the backup tmp path to complete the backup
     logDebugMisc($strOperation, "move ${strBackupTmpPath} to " . $self->{oFile}->pathGet(PATH_BACKUP_CLUSTER, $strBackupLabel));
     $self->{oFile}->move(PATH_BACKUP_TMP, undef, PATH_BACKUP_CLUSTER, $strBackupLabel);
     $self->{oFile}->move(PATH_BACKUP_CLUSTER, "${strBackupLabel}/" . FILE_MANIFEST,
-                         PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strBackupLabel}.manifest");
+                         PATH_BACKUP_CLUSTER, PATH_MANIFEST . "/${strBackupLabel}.manifest", true);
+    $self->{oFile}->move(PATH_BACKUP_CLUSTER, "${strBackupLabel}/" . FILE_MANIFEST . '.gz',
+                         PATH_BACKUP_CLUSTER, PATH_MANIFEST . qw{/} . substr($strBackupLabel, 0, 4) .
+                         "/${strBackupLabel}.manifest.gz", true);
 
     # Create a link to the most recent backup
     $self->{oFile}->remove(PATH_BACKUP_CLUSTER, "latest");
