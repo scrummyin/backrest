@@ -1051,7 +1051,6 @@ sub BackRestTestBackup_Test
             my $strManifestFile = PATH_MANIFEST . "/${strFullBackup}.manifest";
             $oFile->copy(PATH_BACKUP_CLUSTER, "${strManifestFile}.gz", PATH_BACKUP_TMP, FILE_MANIFEST, true);
             BackRestTestCommon_PathRemove($oFile->pathGet(PATH_BACKUP_CLUSTER, "${strManifestFile}.gz"), $bRemote);
-            BackRestTestCommon_PathRemove($oFile->pathGet(PATH_BACKUP_CLUSTER, "${strManifestFile}"), $bRemote);
 
             my $oMungeManifest = BackRestTestCommon_manifestLoad("$strTmpPath/backup.manifest", $bRemote);
             $oMungeManifest->remove('base:file', 'PG_VERSION', 'checksum');
@@ -1240,9 +1239,6 @@ sub BackRestTestBackup_Test
             $strManifestFile = PATH_MANIFEST . "/${strBackup}.manifest";
             $oFile->copy(PATH_BACKUP_CLUSTER, "${strManifestFile}.gz", PATH_BACKUP_TMP, FILE_MANIFEST, true);
 
-            # Remove only the history file - the main manifest file will be removed in the code
-            BackRestTestCommon_PathRemove($oFile->pathGet(PATH_BACKUP_CLUSTER, "${strManifestFile}.gz"), $bRemote);
-
             $oMungeManifest = BackRestTestCommon_manifestLoad("$strTmpPath/backup.manifest", $bRemote);
             $oMungeManifest->set('base:file', 'badchecksum.txt', 'checksum', 'bogus');
             BackRestTestCommon_manifestSave("$strTmpPath/backup.manifest", $oMungeManifest, $bRemote);
@@ -1268,7 +1264,6 @@ sub BackRestTestBackup_Test
             $strManifestFile = PATH_MANIFEST . "/${strBackup}.manifest";
             $oFile->copy(PATH_BACKUP_CLUSTER, "${strManifestFile}.gz", PATH_BACKUP_TMP, FILE_MANIFEST, true);
             BackRestTestCommon_PathRemove($oFile->pathGet(PATH_BACKUP_CLUSTER, "${strManifestFile}.gz"), $bRemote);
-            BackRestTestCommon_PathRemove($oFile->pathGet(PATH_BACKUP_CLUSTER, "${strManifestFile}"), $bRemote);
 
             $strBackup = BackRestTestBackup_BackupSynthetic($strType, $strStanza, \%oManifest, 'cannot resume - new diff',
                                                             {strTest => TEST_BACKUP_NORESUME});
@@ -1362,6 +1357,12 @@ sub BackRestTestBackup_Test
             #-----------------------------------------------------------------------------------------------------------------------
             $strType = 'incr';
             BackRestTestBackup_ManifestReference(\%oManifest, $strBackup);
+
+            # Delete the backup.info and make sure it gets reconstructed correctly
+            if ($bNeutralTest)
+            {
+                executeTest('rm ' . BackRestTestCommon_RepoPathGet() . "/backup/${strStanza}/backup.info", {bRemote => $bRemote});
+            }
 
             BackRestTestBackup_ManifestFileCreate(\%oManifest, 'base', 'base/base1.txt', 'BASEUPDT',
                                                   '9a53d532e27785e681766c98516a5e93f096a501', $lTime);

@@ -49,8 +49,8 @@ use constant INFO_BACKUP_SECTION_BACKUP                             => MANIFEST_
     push @EXPORT, qw(INFO_BACKUP_SECTION_BACKUP);
 use constant INFO_BACKUP_SECTION_BACKUP_CURRENT                     => INFO_BACKUP_SECTION_BACKUP . ':current';
     push @EXPORT, qw(INFO_BACKUP_SECTION_BACKUP_CURRENT);
-use constant INFO_BACKUP_SECTION_BACKUP_HISTORY                     => INFO_BACKUP_SECTION_BACKUP . ':history';
-    push @EXPORT, qw(INFO_BACKUP_SECTION_BACKUP_HISTORY);
+# use constant INFO_BACKUP_SECTION_BACKUP_HISTORY                     => INFO_BACKUP_SECTION_BACKUP . ':history';
+#     push @EXPORT, qw(INFO_BACKUP_SECTION_BACKUP_HISTORY);
 use constant INFO_BACKUP_SECTION_DB                                 => 'db';
     push @EXPORT, qw(INFO_BACKUP_SECTION_DB);
 use constant INFO_BACKUP_SECTION_DB_HISTORY                         => INFO_BACKUP_SECTION_DB . ':history';
@@ -192,8 +192,8 @@ sub validate
                     # Make sure the manifest is in backup.info
                     if (!$self->current($strBackup))
                     {
-                        my $oManifest = BackRest::Manifest->new($strFilePath)
-                        # $self->add($oManifest);
+                        my $oManifest = BackRest::Manifest->new($strFilePath);
+                        $self->add($oManifest);
                     }
                 }
                 else
@@ -216,10 +216,19 @@ sub validate
     # Remove backups that no longer exist on disk
     foreach my $strBackup ($self->keys(INFO_BACKUP_SECTION_BACKUP_CURRENT))
     {
-        if (!fileExists("$self->{strBackupClusterPath}/${strBackup}"))
+        my $strManifestFile = "${strManifestPath}/${strBackup}.manifest";
+        my $strBackupPath = "$self->{strBackupClusterPath}/${strBackup}";
+
+        if (!fileExists($strManifestFile))
         {
-            &log(WARN, "backup ${strBackup} is missing from the repository - removed from " . FILE_BACKUP_INFO);
+            &log(WARN, "manifest ${strManifestFile} is missing from the repository - removed from " . FILE_BACKUP_INFO);
             $self->delete($strBackup);
+        }
+        elsif (!fileExists($strBackupPath))
+        {
+            &log(WARN, "backup ${strBackupPath} is missing from the repository - removed from " . FILE_BACKUP_INFO);
+            $self->delete($strBackup);
+            fileRemove($strManifestFile, true);
         }
     }
 
@@ -328,6 +337,15 @@ sub add
     # Get the backup label
     my $strBackupLabel = $oBackupManifest->get(MANIFEST_SECTION_BACKUP, MANIFEST_KEY_LABEL);
 
+    # If the db section has not been created then create it
+    if (!$self->test(INFO_BACKUP_SECTION_DB))
+    {
+        $self->check($oBackupManifest->get(MANIFEST_SECTION_BACKUP_DB, MANIFEST_KEY_DB_VERSION),
+                     $oBackupManifest->get(MANIFEST_SECTION_BACKUP_DB, MANIFEST_KEY_CONTROL),
+                     $oBackupManifest->get(MANIFEST_SECTION_BACKUP_DB, MANIFEST_KEY_CATALOG),
+                     $oBackupManifest->get(MANIFEST_SECTION_BACKUP_DB, MANIFEST_KEY_SYSTEM_ID));
+    }
+
     # Calculate backup sizes and references
     my $lBackupSize = 0;
     my $lBackupSizeDelta = 0;
@@ -408,9 +426,9 @@ sub add
                    \@stryReference);
     }
 
-    # Copy backup info to the history
-    $self->set(INFO_BACKUP_SECTION_BACKUP_HISTORY, $strBackupLabel, undef,
-        $self->get(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel));
+    # # Copy backup info to the history
+    # $self->set(INFO_BACKUP_SECTION_BACKUP_HISTORY, $strBackupLabel, undef,
+    #     $self->get(INFO_BACKUP_SECTION_BACKUP_CURRENT, $strBackupLabel));
 
     $self->save();
 
