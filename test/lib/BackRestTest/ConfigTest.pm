@@ -606,7 +606,7 @@ sub BackRestTestConfig_Test
             configLoadExpect($oOption, CMD_BACKUP, ERROR_FILE_INVALID, BackRestTestCommon_TestPathGet());
         }
 
-        if (BackRestTestCommon_Run(++$iRun, 'load from config stanza section - option ' . OPTION_THREAD_MAX))
+        if (BackRestTestCommon_Run(++$iRun, 'load from config stanza command section - option ' . OPTION_THREAD_MAX))
         {
             $oConfig = {};
             $$oConfig{"${strStanza}:" . &CMD_BACKUP}{&OPTION_THREAD_MAX} = 2;
@@ -620,10 +620,10 @@ sub BackRestTestConfig_Test
             optionTestExpect(OPTION_THREAD_MAX, 2);
         }
 
-        if (BackRestTestCommon_Run(++$iRun, 'load from config stanza inherited section - option ' . OPTION_THREAD_MAX))
+        if (BackRestTestCommon_Run(++$iRun, 'load from config stanza section - option ' . OPTION_THREAD_MAX))
         {
             $oConfig = {};
-            $$oConfig{"$strStanza:" . &CONFIG_SECTION_GENERAL}{&OPTION_THREAD_MAX} = 3;
+            $$oConfig{$strStanza}{&OPTION_THREAD_MAX} = 3;
             iniSave($strConfigFile, $oConfig, true);
 
             optionSetTest($oOption, OPTION_STANZA, $strStanza);
@@ -635,10 +635,10 @@ sub BackRestTestConfig_Test
         }
 
 
-        if (BackRestTestCommon_Run(++$iRun, 'load from config global section - option ' . OPTION_THREAD_MAX))
+        if (BackRestTestCommon_Run(++$iRun, 'load from config global command section - option ' . OPTION_THREAD_MAX))
         {
             $oConfig = {};
-            $$oConfig{&CONFIG_GLOBAL . ':' . &CMD_BACKUP}{&OPTION_THREAD_MAX} = 2;
+            $$oConfig{&CONFIG_SECTION_GLOBAL . ':' . &CMD_BACKUP}{&OPTION_THREAD_MAX} = 2;
             iniSave($strConfigFile, $oConfig, true);
 
             optionSetTest($oOption, OPTION_STANZA, $strStanza);
@@ -649,10 +649,10 @@ sub BackRestTestConfig_Test
             optionTestExpect(OPTION_THREAD_MAX, 2);
         }
 
-        if (BackRestTestCommon_Run(++$iRun, 'load from config global inherited section - option ' . OPTION_THREAD_MAX))
+        if (BackRestTestCommon_Run(++$iRun, 'load from config global section - option ' . OPTION_THREAD_MAX))
         {
             $oConfig = {};
-            $$oConfig{&CONFIG_GLOBAL . ':' . &CONFIG_SECTION_GENERAL}{&OPTION_THREAD_MAX} = 5;
+            $$oConfig{&CONFIG_SECTION_GLOBAL}{&OPTION_THREAD_MAX} = 5;
             iniSave($strConfigFile, $oConfig, true);
 
             optionSetTest($oOption, OPTION_STANZA, $strStanza);
@@ -679,7 +679,7 @@ sub BackRestTestConfig_Test
         if (BackRestTestCommon_Run(++$iRun, 'command-line override - option ' . OPTION_THREAD_MAX))
         {
             $oConfig = {};
-            $$oConfig{&CONFIG_GLOBAL . ':' . &CONFIG_SECTION_GENERAL}{&OPTION_THREAD_MAX} = 9;
+            $$oConfig{&CONFIG_SECTION_GLOBAL}{&OPTION_THREAD_MAX} = 9;
             iniSave($strConfigFile, $oConfig, true);
 
             optionSetTest($oOption, OPTION_STANZA, $strStanza);
@@ -694,7 +694,7 @@ sub BackRestTestConfig_Test
         if (BackRestTestCommon_Run(++$iRun, 'invalid boolean - option ' . OPTION_HARDLINK))
         {
             $oConfig = {};
-            $$oConfig{&CONFIG_GLOBAL . ':' . &CMD_BACKUP}{&OPTION_HARDLINK} = 'Y';
+            $$oConfig{&CONFIG_SECTION_GLOBAL . ':' . &CMD_BACKUP}{&OPTION_HARDLINK} = 'Y';
             iniSave($strConfigFile, $oConfig, true);
 
             optionSetTest($oOption, OPTION_STANZA, $strStanza);
@@ -707,7 +707,7 @@ sub BackRestTestConfig_Test
         if (BackRestTestCommon_Run(++$iRun, 'invalid value - option ' . OPTION_LOG_LEVEL_CONSOLE))
         {
             $oConfig = {};
-            $$oConfig{&CONFIG_GLOBAL . ':' . &CONFIG_SECTION_LOG}{&OPTION_LOG_LEVEL_CONSOLE} = BOGUS;
+            $$oConfig{&CONFIG_SECTION_GLOBAL}{&OPTION_LOG_LEVEL_CONSOLE} = BOGUS;
             iniSave($strConfigFile, $oConfig, true);
 
             optionSetTest($oOption, OPTION_STANZA, $strStanza);
@@ -720,7 +720,7 @@ sub BackRestTestConfig_Test
         if (BackRestTestCommon_Run(++$iRun, 'valid value - option ' . OPTION_LOG_LEVEL_CONSOLE))
         {
             $oConfig = {};
-            $$oConfig{&CONFIG_GLOBAL . ':' . &CONFIG_SECTION_LOG}{&OPTION_LOG_LEVEL_CONSOLE} = lc(INFO);
+            $$oConfig{&CONFIG_SECTION_GLOBAL}{&OPTION_LOG_LEVEL_CONSOLE} = lc(INFO);
             iniSave($strConfigFile, $oConfig, true);
 
             optionSetTest($oOption, OPTION_STANZA, $strStanza);
@@ -740,7 +740,7 @@ sub BackRestTestConfig_Test
         if (BackRestTestCommon_Run(++$iRun, CMD_EXPIRE . ' ' . OPTION_RETENTION_FULL))
         {
             $oConfig = {};
-            $$oConfig{&CONFIG_GLOBAL . ':' . &CONFIG_SECTION_EXPIRE}{&OPTION_RETENTION_FULL} = 2;
+            $$oConfig{"${strStanza}:" . &CMD_EXPIRE}{&OPTION_RETENTION_FULL} = 2;
             iniSave($strConfigFile, $oConfig, true);
 
             optionSetTest($oOption, OPTION_STANZA, $strStanza);
@@ -753,7 +753,7 @@ sub BackRestTestConfig_Test
         if (BackRestTestCommon_Run(++$iRun, CMD_BACKUP . ' option ' . OPTION_COMPRESS))
         {
             $oConfig = {};
-            $$oConfig{&CONFIG_GLOBAL . ':' . &CONFIG_SECTION_BACKUP}{&OPTION_COMPRESS} = 'n';
+            $$oConfig{&CONFIG_SECTION_GLOBAL . ':' . &CMD_BACKUP}{&OPTION_COMPRESS} = 'n';
             iniSave($strConfigFile, $oConfig, true);
 
             optionSetTest($oOption, OPTION_STANZA, $strStanza);
@@ -764,10 +764,11 @@ sub BackRestTestConfig_Test
             optionTestExpect(OPTION_COMPRESS, false);
         }
 
-        if (BackRestTestCommon_Run(++$iRun, CMD_RESTORE . ' option ' . OPTION_RESTORE_RECOVERY_OPTION))
+        if (BackRestTestCommon_Run(++$iRun, CMD_RESTORE . ' global option ' . OPTION_RESTORE_RECOVERY_OPTION))
         {
             $oConfig = {};
-            $$oConfig{&CONFIG_GLOBAL . ':' . &CONFIG_SECTION_RESTORE_RECOVERY_OPTION}{'archive-command'} = '/path/to/pg_backrest';
+            $$oConfig{&CONFIG_SECTION_GLOBAL . ':' . &CMD_RESTORE}{&OPTION_RESTORE_RECOVERY_OPTION} =
+                'archive-command=/path/to/pg_backrest';
             iniSave($strConfigFile, $oConfig, true);
 
             optionSetTest($oOption, OPTION_STANZA, $strStanza);
@@ -777,10 +778,10 @@ sub BackRestTestConfig_Test
             optionTestExpect(OPTION_RESTORE_RECOVERY_OPTION, '/path/to/pg_backrest', 'archive-command');
         }
 
-        if (BackRestTestCommon_Run(++$iRun, CMD_RESTORE . ' option ' . OPTION_RESTORE_RECOVERY_OPTION))
+        if (BackRestTestCommon_Run(++$iRun, CMD_RESTORE . ' stanza option ' . OPTION_RESTORE_RECOVERY_OPTION))
         {
             $oConfig = {};
-            $$oConfig{$strStanza . ':' . &CONFIG_SECTION_RESTORE_RECOVERY_OPTION}{'standby-mode'} = 'on';
+            $$oConfig{$strStanza}{&OPTION_RESTORE_RECOVERY_OPTION} = 'standby-mode=on';
             iniSave($strConfigFile, $oConfig, true);
 
             optionSetTest($oOption, OPTION_STANZA, $strStanza);
@@ -833,7 +834,7 @@ sub BackRestTestConfig_Test
         if (BackRestTestCommon_Run(++$iRun, CMD_BACKUP . ' option ' . OPTION_REPO_PATH))
         {
             $oConfig = {};
-            $$oConfig{&CONFIG_GLOBAL . ':' . &CONFIG_SECTION_GENERAL}{&OPTION_REPO_PATH} = '/repo';
+            $$oConfig{&CONFIG_SECTION_GLOBAL}{&OPTION_REPO_PATH} = '/repo';
             iniSave($strConfigFile, $oConfig, true);
 
             optionSetTest($oOption, OPTION_STANZA, $strStanza);

@@ -160,8 +160,6 @@ use constant OPTION_RULE_REQUIRED                                   => 'required
     push @EXPORT, qw(OPTION_RULE_REQUIRED);
 use constant OPTION_RULE_SECTION                                    => 'section';
     push @EXPORT, qw(OPTION_RULE_SECTION);
-use constant OPTION_RULE_SECTION_INHERIT                            => 'section-inherit';
-    push @EXPORT, qw(OPTION_RULE_SECTION_INHERIT);
 use constant OPTION_RULE_TYPE                                       => 'type';
     push @EXPORT, qw(OPTION_RULE_TYPE);
 
@@ -182,25 +180,8 @@ use constant OPTION_TYPE_STRING                                     => 'string';
 ####################################################################################################################################
 # Configuration section constants
 ####################################################################################################################################
-use constant CONFIG_GLOBAL                                          => 'global';
-    push @EXPORT, qw(CONFIG_GLOBAL);
-
-use constant CONFIG_SECTION_ARCHIVE                                 => 'archive';
-    push @EXPORT, qw(CONFIG_SECTION_ARCHIVE);
-use constant CONFIG_SECTION_BACKUP                                  => 'backup';
-    push @EXPORT, qw(CONFIG_SECTION_BACKUP);
-use constant CONFIG_SECTION_COMMAND                                 => 'command';
-    push @EXPORT, qw(CONFIG_SECTION_COMMAND);
-use constant CONFIG_SECTION_GENERAL                                 => 'general';
-    push @EXPORT, qw(CONFIG_SECTION_GENERAL);
-use constant CONFIG_SECTION_LOG                                     => 'log';
-    push @EXPORT, qw(CONFIG_SECTION_LOG);
-use constant CONFIG_SECTION_RESTORE_RECOVERY_OPTION                 => 'restore:recovery-option';
-    push @EXPORT, qw(CONFIG_SECTION_RESTORE_RECOVERY_OPTION);
-use constant CONFIG_SECTION_RESTORE_TABLESPACE_MAP                  => 'restore:tablespace-map';
-    push @EXPORT, qw(CONFIG_SECTION_RESTORE_TABLESPACE_MAP);
-use constant CONFIG_SECTION_EXPIRE                                  => 'expire';
-    push @EXPORT, qw(CONFIG_SECTION_EXPIRE);
+use constant CONFIG_SECTION_GLOBAL                                  => 'global';
+    push @EXPORT, qw(CONFIG_SECTION_GLOBAL);
 use constant CONFIG_SECTION_STANZA                                  => 'stanza';
     push @EXPORT, qw(CONFIG_SECTION_STANZA);
 
@@ -781,7 +762,7 @@ my %oOptionRule =
         }
     },
 
-    # Command-line only test
+    # Command-line only remote
     #-------------------------------------------------------------------------------------------------------------------------------
     &OPTION_COMMAND =>
     {
@@ -862,10 +843,9 @@ my %oOptionRule =
     #-------------------------------------------------------------------------------------------------------------------------------
     &OPTION_BUFFER_SIZE =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_INTEGER,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_BUFFER_SIZE,
-        &OPTION_RULE_SECTION => true,
-        &OPTION_RULE_SECTION_INHERIT => CONFIG_SECTION_GENERAL,
         &OPTION_RULE_ALLOW_RANGE => [OPTION_DEFAULT_BUFFER_SIZE_MIN, OPTION_DEFAULT_BUFFER_SIZE_MAX],
         &OPTION_RULE_COMMAND =>
         {
@@ -881,10 +861,9 @@ my %oOptionRule =
 
     &OPTION_DB_TIMEOUT =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_INTEGER,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_DB_TIMEOUT,
-        &OPTION_RULE_SECTION => true,
-        &OPTION_RULE_SECTION_INHERIT => CONFIG_SECTION_GENERAL,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_ARCHIVE_GET => true,
@@ -899,10 +878,9 @@ my %oOptionRule =
 
     &OPTION_COMPRESS =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_BOOLEAN,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_COMPRESS,
-        &OPTION_RULE_SECTION => true,
-        &OPTION_RULE_SECTION_INHERIT => CONFIG_SECTION_GENERAL,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_ARCHIVE_GET => true,
@@ -915,10 +893,9 @@ my %oOptionRule =
 
     &OPTION_COMPRESS_LEVEL =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_INTEGER,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_COMPRESS_LEVEL,
-        &OPTION_RULE_SECTION => true,
-        &OPTION_RULE_SECTION_INHERIT => CONFIG_SECTION_GENERAL,
         &OPTION_RULE_ALLOW_RANGE => [OPTION_DEFAULT_COMPRESS_LEVEL_MIN, OPTION_DEFAULT_COMPRESS_LEVEL_MAX],
         &OPTION_RULE_COMMAND =>
         {
@@ -934,10 +911,9 @@ my %oOptionRule =
 
     &OPTION_COMPRESS_LEVEL_NETWORK =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_INTEGER,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_COMPRESS_LEVEL_NETWORK,
-        &OPTION_RULE_SECTION => true,
-        &OPTION_RULE_SECTION_INHERIT => CONFIG_SECTION_GENERAL,
         &OPTION_RULE_ALLOW_RANGE => [OPTION_DEFAULT_COMPRESS_LEVEL_NETWORK_MIN, OPTION_DEFAULT_COMPRESS_LEVEL_NETWORK_MAX],
         &OPTION_RULE_COMMAND =>
         {
@@ -953,9 +929,9 @@ my %oOptionRule =
 
     &OPTION_CONFIG_REMOTE =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_CONFIG,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_GENERAL,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_ARCHIVE_GET => true,
@@ -968,9 +944,9 @@ my %oOptionRule =
 
     &OPTION_NEUTRAL_UMASK =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_BOOLEAN,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_NEUTRAL_UMASK,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_GENERAL,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_ARCHIVE_GET => true,
@@ -987,9 +963,9 @@ my %oOptionRule =
 
     &OPTION_REPO_PATH =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_REPO_PATH,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_GENERAL,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_ARCHIVE_GET => true,
@@ -1006,9 +982,9 @@ my %oOptionRule =
 
     &OPTION_REPO_REMOTE_PATH =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
         &OPTION_RULE_REQUIRED => false,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_GENERAL,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_ARCHIVE_GET => true,
@@ -1022,11 +998,10 @@ my %oOptionRule =
 
     &OPTION_THREAD_MAX =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_INTEGER,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_THREAD_MAX,
         &OPTION_RULE_ALLOW_RANGE => [OPTION_DEFAULT_THREAD_MAX_MIN, OPTION_DEFAULT_THREAD_MAX_MAX],
-        &OPTION_RULE_SECTION => true,
-        &OPTION_RULE_SECTION_INHERIT => CONFIG_SECTION_GENERAL,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_BACKUP => true,
@@ -1036,10 +1011,9 @@ my %oOptionRule =
 
     &OPTION_THREAD_TIMEOUT =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_INTEGER,
         &OPTION_RULE_REQUIRED => false,
-        &OPTION_RULE_SECTION => true,
-        &OPTION_RULE_SECTION_INHERIT => CONFIG_SECTION_GENERAL,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_BACKUP => true,
@@ -1051,9 +1025,9 @@ my %oOptionRule =
     #-------------------------------------------------------------------------------------------------------------------------------
     &OPTION_COMMAND_REMOTE =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_COMMAND_REMOTE,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_COMMAND,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_ARCHIVE_GET => true,
@@ -1068,10 +1042,9 @@ my %oOptionRule =
     #-------------------------------------------------------------------------------------------------------------------------------
     &OPTION_LOG_LEVEL_CONSOLE =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_LOG_LEVEL_CONSOLE,
-        &OPTION_RULE_SECTION => true,
-        &OPTION_RULE_SECTION_INHERIT => CONFIG_SECTION_LOG,
         &OPTION_RULE_ALLOW_LIST =>
         {
             lc(OFF)    => true,
@@ -1097,9 +1070,9 @@ my %oOptionRule =
 
     &OPTION_LOG_LEVEL_FILE =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_LOG_LEVEL_FILE,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_LOG,
         &OPTION_RULE_ALLOW_LIST =>
         {
             lc(OFF)    => true,
@@ -1126,9 +1099,9 @@ my %oOptionRule =
     #-------------------------------------------------------------------------------------------------------------------------------
     &OPTION_ARCHIVE_ASYNC =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_BOOLEAN,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_ARCHIVE_ASYNC,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_ARCHIVE,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_ARCHIVE_PUSH => true
@@ -1137,9 +1110,9 @@ my %oOptionRule =
 
     &OPTION_ARCHIVE_MAX_MB =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_INTEGER,
         &OPTION_RULE_REQUIRED => false,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_ARCHIVE,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_ARCHIVE_PUSH => true
@@ -1150,9 +1123,9 @@ my %oOptionRule =
     #-------------------------------------------------------------------------------------------------------------------------------
     &OPTION_BACKUP_ARCHIVE_CHECK =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_BOOLEAN,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_BACKUP_ARCHIVE_CHECK,
-        &OPTION_RULE_SECTION => true,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_BACKUP =>
@@ -1168,9 +1141,9 @@ my %oOptionRule =
 
     &OPTION_BACKUP_ARCHIVE_COPY =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_BOOLEAN,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_BACKUP_ARCHIVE_COPY,
-        &OPTION_RULE_SECTION => true,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_BACKUP =>
@@ -1186,9 +1159,9 @@ my %oOptionRule =
 
     &OPTION_BACKUP_HOST =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
         &OPTION_RULE_REQUIRED => false,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_BACKUP,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_ARCHIVE_GET => true,
@@ -1200,9 +1173,9 @@ my %oOptionRule =
 
     &OPTION_BACKUP_USER =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_BACKUP_USER,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_BACKUP,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_ARCHIVE_GET => true,
@@ -1219,9 +1192,9 @@ my %oOptionRule =
 
     &OPTION_HARDLINK =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_BOOLEAN,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_BACKUP_HARDLINK,
-        &OPTION_RULE_SECTION => true,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_BACKUP => true
@@ -1230,9 +1203,9 @@ my %oOptionRule =
 
     &OPTION_MANIFEST_SAVE_THRESHOLD =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_INTEGER,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_BACKUP_MANIFEST_SAVE_THRESHOLD,
-        &OPTION_RULE_SECTION => true,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_BACKUP => true
@@ -1241,9 +1214,9 @@ my %oOptionRule =
 
     &OPTION_RESUME =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_BOOLEAN,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_BACKUP_RESUME,
-        &OPTION_RULE_SECTION => true,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_BACKUP => true
@@ -1252,9 +1225,9 @@ my %oOptionRule =
 
     &OPTION_START_FAST =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_BOOLEAN,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_BACKUP_START_FAST,
-        &OPTION_RULE_SECTION => true,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_BACKUP => true
@@ -1263,9 +1236,9 @@ my %oOptionRule =
 
     &OPTION_STOP_AUTO =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_BOOLEAN,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_BACKUP_STOP_AUTO,
-        &OPTION_RULE_SECTION => true,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_BACKUP => true
@@ -1276,9 +1249,9 @@ my %oOptionRule =
     #-------------------------------------------------------------------------------------------------------------------------------
     &OPTION_RETENTION_ARCHIVE =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_INTEGER,
         &OPTION_RULE_REQUIRED => false,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_EXPIRE,
         &OPTION_RULE_ALLOW_RANGE => [OPTION_DEFAULT_RETENTION_MIN, OPTION_DEFAULT_RETENTION_MAX],
         &OPTION_RULE_COMMAND =>
         {
@@ -1289,10 +1262,10 @@ my %oOptionRule =
 
     &OPTION_RETENTION_ARCHIVE_TYPE =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
         &OPTION_RULE_REQUIRED => true,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_RETENTION_ARCHIVE_TYPE,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_EXPIRE,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_BACKUP => true,
@@ -1312,9 +1285,9 @@ my %oOptionRule =
 
     &OPTION_RETENTION_DIFF =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_INTEGER,
         &OPTION_RULE_REQUIRED => false,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_EXPIRE,
         &OPTION_RULE_ALLOW_RANGE => [OPTION_DEFAULT_RETENTION_MIN, OPTION_DEFAULT_RETENTION_MAX],
         &OPTION_RULE_COMMAND =>
         {
@@ -1325,9 +1298,9 @@ my %oOptionRule =
 
     &OPTION_RETENTION_FULL =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_INTEGER,
         &OPTION_RULE_REQUIRED => false,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_EXPIRE,
         &OPTION_RULE_ALLOW_RANGE => [OPTION_DEFAULT_RETENTION_MIN, OPTION_DEFAULT_RETENTION_MAX],
         &OPTION_RULE_COMMAND =>
         {
@@ -1340,9 +1313,9 @@ my %oOptionRule =
     #-------------------------------------------------------------------------------------------------------------------------------
     &OPTION_TABLESPACE =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_BOOLEAN,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_RESTORE_TABLESPACE,
-        &OPTION_RULE_SECTION => true,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_RESTORE => true
@@ -1351,9 +1324,9 @@ my %oOptionRule =
 
     &OPTION_RESTORE_TABLESPACE_MAP =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_STANZA,
         &OPTION_RULE_TYPE => OPTION_TYPE_HASH,
         &OPTION_RULE_REQUIRED => false,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_RESTORE_TABLESPACE_MAP,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_RESTORE => 1
@@ -1362,9 +1335,9 @@ my %oOptionRule =
 
     &OPTION_RESTORE_RECOVERY_OPTION =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_GLOBAL,
         &OPTION_RULE_TYPE => OPTION_TYPE_HASH,
         &OPTION_RULE_REQUIRED => false,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_RESTORE_RECOVERY_OPTION,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_RESTORE => 1
@@ -1386,9 +1359,9 @@ my %oOptionRule =
     #-------------------------------------------------------------------------------------------------------------------------------
     &OPTION_DB_HOST =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_STANZA,
         &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
         &OPTION_RULE_REQUIRED => false,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_STANZA,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_BACKUP => true
@@ -1397,8 +1370,8 @@ my %oOptionRule =
 
     &OPTION_DB_PATH =>
     {
-        &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
         &OPTION_RULE_SECTION => CONFIG_SECTION_STANZA,
+        &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
         &OPTION_RULE_HINT => "Does this stanza exist?",
         &OPTION_RULE_COMMAND =>
         {
@@ -1416,9 +1389,9 @@ my %oOptionRule =
 
     &OPTION_DB_PORT =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_STANZA,
         &OPTION_RULE_TYPE => OPTION_TYPE_INTEGER,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_DB_PORT,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_STANZA,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_BACKUP => true,
@@ -1428,9 +1401,9 @@ my %oOptionRule =
 
     &OPTION_DB_SOCKET_PATH =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_STANZA,
         &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
         &OPTION_RULE_REQUIRED => false,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_STANZA,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_BACKUP => true,
@@ -1440,9 +1413,9 @@ my %oOptionRule =
 
     &OPTION_DB_USER =>
     {
+        &OPTION_RULE_SECTION => CONFIG_SECTION_STANZA,
         &OPTION_RULE_TYPE => OPTION_TYPE_STRING,
         &OPTION_RULE_DEFAULT => OPTION_DEFAULT_DB_USER,
-        &OPTION_RULE_SECTION => CONFIG_SECTION_STANZA,
         &OPTION_RULE_COMMAND =>
         {
             &CMD_BACKUP => true
@@ -1612,18 +1585,6 @@ sub optionValid
         confess &log(ERROR, "invalid command ${strCommand}", ERROR_COMMAND_INVALID);
     }
 
-    # Set the command section - because of the various archive commands this is not always the command
-    my $strCommandSection;
-
-    if (commandTest(CMD_ARCHIVE_GET) || commandTest(CMD_ARCHIVE_PUSH))
-    {
-        $strCommandSection = CONFIG_SECTION_ARCHIVE;
-    }
-    else
-    {
-        $strCommandSection = $strCommand;
-    }
-
     # Hash to store contents of the config file.  The file will be loaded once the config dependency is resolved unless all options
     # are set on the command line or --no-config is specified.
     my $oConfig;
@@ -1747,57 +1708,40 @@ sub optionValid
                     }
 
                     # Get the section that the value should be in
-                    my $strSection = defined($oOptionRule{$strOption}{&OPTION_RULE_SECTION}) ?
-                                         ($oOptionRule{$strOption}{&OPTION_RULE_SECTION} eq '1' ?
-                                             $strCommandSection : $oOptionRule{$strOption}{&OPTION_RULE_SECTION}) : undef;
+                    my $strSection = $oOptionRule{$strOption}{&OPTION_RULE_SECTION};
 
-                    # Only look in the stanza section when $strSection = true
-                    if ($strSection eq CONFIG_SECTION_STANZA)
+                    # Always search the stanza section when it exists
+                    if (optionTest(OPTION_STANZA))
                     {
-                        if (optionTest(OPTION_STANZA))
-                        {
-                            $strValue = $$oConfig{optionGet(OPTION_STANZA)}{$strOption};
-                        }
+                        $strValue = $$oConfig{optionGet(OPTION_STANZA)}{$strOption};
                     }
-                    # Else do a full search
-                    else
+
+                    # Only continue searching when strSection != CONFIG_SECTION_STANZA.  Some options (e.g. db-path) can only be
+                    # configured in the stanza section.
+                    if (!defined($strValue) && $strSection ne CONFIG_SECTION_STANZA)
                     {
-                        # First check in the stanza section
-                        if (optionTest(OPTION_STANZA))
+                        # Check command sections for a value.  This allows options (e.g. compress-level) to be set on a per-command
+                        # basis.
+                        if (defined($oOptionRule{$strOption}{&OPTION_RULE_COMMAND}{$strCommand}) &&
+                            $oOptionRule{$strOption}{&OPTION_RULE_COMMAND}{$strCommand} != false)
                         {
-                            $strValue = $oOptionRule{$strOption}{&OPTION_RULE_TYPE} eq OPTION_TYPE_HASH ?
-                                        $$oConfig{optionGet(OPTION_STANZA) . ":${strSection}"} :
-                                        $$oConfig{optionGet(OPTION_STANZA) . ":${strSection}"}{$strOption};
-                        }
-
-                        # Else check for an inherited stanza section
-                        if (!defined($strValue))
-                        {
-                            my $strInheritedSection = undef;
-
-                            $strInheritedSection = $oOptionRule{$strOption}{&OPTION_RULE_SECTION_INHERIT};
-
-                            if (defined($strInheritedSection))
+                            # Check the stanza command section
+                            if (optionTest(OPTION_STANZA))
                             {
-                                if (optionTest(OPTION_STANZA))
-                                {
-                                    $strValue = $$oConfig{optionGet(OPTION_STANZA) . ":${strInheritedSection}"}{$strOption};
-                                }
+                                $strValue = $$oConfig{optionGet(OPTION_STANZA) . ":${strCommand}"}{$strOption};
                             }
 
-                            # Else check the global section
+                            # Check the global command section
                             if (!defined($strValue))
                             {
-                                $strValue = $oOptionRule{$strOption}{&OPTION_RULE_TYPE} eq OPTION_TYPE_HASH ?
-                                            $$oConfig{&CONFIG_GLOBAL . ":${strSection}"} :
-                                            $$oConfig{&CONFIG_GLOBAL . ":${strSection}"}{$strOption};
-
-                                # Else check the global inherited section
-                                if (!defined($strValue) && defined($strInheritedSection))
-                                {
-                                    $strValue = $$oConfig{&CONFIG_GLOBAL . ":${strInheritedSection}"}{$strOption};
-                                }
+                                $strValue = $$oConfig{&CONFIG_SECTION_GLOBAL . ":${strCommand}"}{$strOption};
                             }
+                        }
+
+                        # Finally check the global section
+                        if (!defined($strValue))
+                        {
+                            $strValue = $$oConfig{&CONFIG_SECTION_GLOBAL}{$strOption};
                         }
                     }
 
