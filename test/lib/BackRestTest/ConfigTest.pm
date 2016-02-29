@@ -210,10 +210,6 @@ sub optionTestExpect
 
         if (defined($strExpectedKey))
         {
-            # use Data::Dumper;
-            # &log(INFO, Dumper($strActualValue));
-            # exit 0;
-
             $strActualValue = $$strActualValue{$strExpectedKey};
         }
 
@@ -762,6 +758,30 @@ sub BackRestTestConfig_Test
 
             configLoadExpect($oOption, CMD_BACKUP);
             optionTestExpect(OPTION_COMPRESS, false);
+        }
+
+        if (BackRestTestCommon_Run(++$iRun, CMD_RESTORE . ' global option ' . OPTION_RESTORE_RECOVERY_OPTION . ' error'))
+        {
+            $oConfig = {};
+            $$oConfig{&CONFIG_SECTION_GLOBAL . ':' . &CMD_RESTORE}{&OPTION_RESTORE_RECOVERY_OPTION} = 'bogus=';
+            iniSave($strConfigFile, $oConfig, true);
+
+            optionSetTest($oOption, OPTION_STANZA, $strStanza);
+            optionSetTest($oOption, OPTION_CONFIG, $strConfigFile);
+
+            configLoadExpect($oOption, CMD_RESTORE, ERROR_OPTION_INVALID_VALUE, 'bogus=', OPTION_RESTORE_RECOVERY_OPTION);
+        }
+
+        if (BackRestTestCommon_Run(++$iRun, CMD_RESTORE . ' global option ' . OPTION_RESTORE_RECOVERY_OPTION . ' error'))
+        {
+            $oConfig = {};
+            $$oConfig{&CONFIG_SECTION_GLOBAL . ':' . &CMD_RESTORE}{&OPTION_RESTORE_RECOVERY_OPTION} = '=bogus';
+            iniSave($strConfigFile, $oConfig, true);
+
+            optionSetTest($oOption, OPTION_STANZA, $strStanza);
+            optionSetTest($oOption, OPTION_CONFIG, $strConfigFile);
+
+            configLoadExpect($oOption, CMD_RESTORE, ERROR_OPTION_INVALID_VALUE, '=bogus', OPTION_RESTORE_RECOVERY_OPTION);
         }
 
         if (BackRestTestCommon_Run(++$iRun, CMD_RESTORE . ' global option ' . OPTION_RESTORE_RECOVERY_OPTION))

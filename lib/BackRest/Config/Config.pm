@@ -1748,10 +1748,12 @@ sub optionValid
                     # Fix up data types
                     if (defined($strValue))
                     {
+                        # The empty string is undefined
                         if ($strValue eq '')
                         {
                             $strValue = undef;
                         }
+                        # Convert Y or N to boolean
                         elsif ($oOptionRule{$strOption}{&OPTION_RULE_TYPE} eq OPTION_TYPE_BOOLEAN)
                         {
                             if ($strValue eq 'y')
@@ -1766,6 +1768,42 @@ sub optionValid
                             {
                                 confess &log(ERROR, "'${strValue}' is not valid for '${strOption}' option",
                                              ERROR_OPTION_INVALID_VALUE);
+                            }
+                        }
+                        # Convert a list of key/value pairs to a hash
+                        elsif ($oOptionRule{$strOption}{&OPTION_RULE_TYPE} eq OPTION_TYPE_HASH)
+                        {
+                            my @oValue = ();
+
+                            # If there is only one key/value
+                            if (ref(\$strValue) eq 'SCALAR')
+                            {
+                                push(@oValue, $strValue);
+                            }
+                            # Else if there is an array of values
+                            else
+                            {
+                                @oValue = @{$strValue};
+                            }
+
+                            # Reset the value hash
+                            $strValue = {};
+
+                            # Iterate and parse each key/value pair
+                            foreach my $strHash (@oValue)
+                            {
+                                my $iEqualIdx = index($strHash, '=');
+
+                                if ($iEqualIdx < 1 || $iEqualIdx == length($strHash) - 1)
+                                {
+                                    confess &log(ERROR, "'${strHash}' is not valid for '${strOption}' option",
+                                                 ERROR_OPTION_INVALID_VALUE);
+                                }
+
+                                my $strHashKey = substr($strHash, 0, $iEqualIdx);
+                                my $strHashValue = substr($strHash, length($strHashKey) + 1);
+
+                                $$strValue{$strHashKey} = $strHashValue;
                             }
                         }
 
