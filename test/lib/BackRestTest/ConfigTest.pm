@@ -801,13 +801,15 @@ sub BackRestTestConfig_Test
         if (BackRestTestCommon_Run(++$iRun, CMD_RESTORE . ' stanza option ' . OPTION_RESTORE_RECOVERY_OPTION))
         {
             $oConfig = {};
-            $$oConfig{$strStanza}{&OPTION_RESTORE_RECOVERY_OPTION} = 'standby-mode=on';
+            $$oConfig{$strStanza}{&OPTION_RESTORE_RECOVERY_OPTION} = ['standby-mode=on', 'a=b'];
             iniSave($strConfigFile, $oConfig, true);
 
             optionSetTest($oOption, OPTION_STANZA, $strStanza);
             optionSetTest($oOption, OPTION_CONFIG, $strConfigFile);
 
-            configLoadExpect($oOption, CMD_ARCHIVE_GET);
+            configLoadExpect($oOption, CMD_RESTORE);
+            optionTestExpect(OPTION_RESTORE_RECOVERY_OPTION, 'b', 'a');
+            optionTestExpect(OPTION_RESTORE_RECOVERY_OPTION, 'on', 'standby-mode');
         }
 
         if (BackRestTestCommon_Run(++$iRun, CMD_BACKUP . ' option ' . OPTION_DB_PATH))

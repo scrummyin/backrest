@@ -101,35 +101,23 @@ DEBUG:     Common:::Lock::lockRelease(): bFailOnNoLock = false
 
 + supplemental file: [TEST_PATH]/db/pg_backrest.conf
 ----------------------------------------------------
-# cluster-specific settings
 [db]
 db-path=[TEST_PATH]/db/common
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 
-# backup settings
-[global:backup]
+[global]
 backup-host=127.0.0.1
 backup-user=backrest
-
-# backrest command
-[global:command]
 cmd-remote=[BACKREST_BIN]
-
-# general settings for all operations
-[global:general]
 config-remote=[TEST_PATH]/backrest/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
 repo-path=[TEST_PATH]/local
 repo-remote-path=[TEST_PATH]/backrest
 
-# file and console log settings
-[global:log]
-log-level-console=debug
-log-level-file=trace
-
 + supplemental file: [TEST_PATH]/backrest/pg_backrest.conf
 ----------------------------------------------------------
-# cluster-specific settings
 [db]
 db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common
@@ -137,25 +125,17 @@ db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 db-user=[USER-2]
 
-# backup settings
+[global]
+cmd-remote=[BACKREST_BIN]
+config-remote=[TEST_PATH]/db/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
+repo-path=[TEST_PATH]/backrest
+
 [global:backup]
 archive-copy=y
 hardlink=y
 start-fast=y
-
-# backrest command
-[global:command]
-cmd-remote=[BACKREST_BIN]
-
-# general settings for all operations
-[global:general]
-config-remote=[TEST_PATH]/db/pg_backrest.conf
-repo-path=[TEST_PATH]/backrest
-
-# file and console log settings
-[global:log]
-log-level-console=debug
-log-level-file=trace
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-1].manifest
 --------------------------------------------------------------------------------------------
@@ -385,35 +365,23 @@ DEBUG:     Common:::Lock::lockRelease(): bFailOnNoLock = false
 
 + supplemental file: [TEST_PATH]/db/pg_backrest.conf
 ----------------------------------------------------
-# cluster-specific settings
 [db]
 db-path=[TEST_PATH]/db/common
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 
-# backup settings
-[global:backup]
+[global]
 backup-host=127.0.0.1
 backup-user=backrest
-
-# backrest command
-[global:command]
 cmd-remote=[BACKREST_BIN]
-
-# general settings for all operations
-[global:general]
 config-remote=[TEST_PATH]/backrest/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
 repo-path=[TEST_PATH]/local
 repo-remote-path=[TEST_PATH]/backrest
 
-# file and console log settings
-[global:log]
-log-level-console=debug
-log-level-file=trace
-
 + supplemental file: [TEST_PATH]/backrest/pg_backrest.conf
 ----------------------------------------------------------
-# cluster-specific settings
 [db]
 db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common
@@ -421,25 +389,17 @@ db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 db-user=[USER-2]
 
-# backup settings
+[global]
+cmd-remote=[BACKREST_BIN]
+config-remote=[TEST_PATH]/db/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
+repo-path=[TEST_PATH]/backrest
+
 [global:backup]
 archive-copy=y
 hardlink=y
 start-fast=y
-
-# backrest command
-[global:command]
-cmd-remote=[BACKREST_BIN]
-
-# general settings for all operations
-[global:general]
-config-remote=[TEST_PATH]/db/pg_backrest.conf
-repo-path=[TEST_PATH]/backrest
-
-# file and console log settings
-[global:log]
-log-level-console=debug
-log-level-file=trace
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-2].manifest
 --------------------------------------------------------------------------------------------
@@ -872,35 +832,23 @@ DEBUG:     Common:::Lock::lockRelease(): bFailOnNoLock = false
 
 + supplemental file: [TEST_PATH]/db/pg_backrest.conf
 ----------------------------------------------------
-# cluster-specific settings
 [db]
 db-path=[TEST_PATH]/db/common
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 
-# backup settings
-[global:backup]
+[global]
 backup-host=127.0.0.1
 backup-user=backrest
-
-# backrest command
-[global:command]
 cmd-remote=[BACKREST_BIN]
-
-# general settings for all operations
-[global:general]
 config-remote=[TEST_PATH]/backrest/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
 repo-path=[TEST_PATH]/local
 repo-remote-path=[TEST_PATH]/backrest
 
-# file and console log settings
-[global:log]
-log-level-console=debug
-log-level-file=trace
-
 + supplemental file: [TEST_PATH]/backrest/pg_backrest.conf
 ----------------------------------------------------------
-# cluster-specific settings
 [db]
 db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common
@@ -908,25 +856,17 @@ db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 db-user=[USER-2]
 
-# backup settings
+[global]
+cmd-remote=[BACKREST_BIN]
+config-remote=[TEST_PATH]/db/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
+repo-path=[TEST_PATH]/backrest
+
 [global:backup]
 archive-copy=y
 hardlink=y
 start-fast=y
-
-# backrest command
-[global:command]
-cmd-remote=[BACKREST_BIN]
-
-# general settings for all operations
-[global:general]
-config-remote=[TEST_PATH]/db/pg_backrest.conf
-repo-path=[TEST_PATH]/backrest
-
-# file and console log settings
-[global:log]
-log-level-console=debug
-log-level-file=trace
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-1].manifest
 --------------------------------------------------------------------------------------------
@@ -1124,35 +1064,23 @@ DEBUG:     Common:::Lock::lockRelease(): bFailOnNoLock = false
 
 + supplemental file: [TEST_PATH]/db/pg_backrest.conf
 ----------------------------------------------------
-# cluster-specific settings
 [db]
 db-path=[TEST_PATH]/db/common
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 
-# backup settings
-[global:backup]
+[global]
 backup-host=127.0.0.1
 backup-user=backrest
-
-# backrest command
-[global:command]
 cmd-remote=[BACKREST_BIN]
-
-# general settings for all operations
-[global:general]
 config-remote=[TEST_PATH]/backrest/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
 repo-path=[TEST_PATH]/local
 repo-remote-path=[TEST_PATH]/backrest
 
-# file and console log settings
-[global:log]
-log-level-console=debug
-log-level-file=trace
-
 + supplemental file: [TEST_PATH]/backrest/pg_backrest.conf
 ----------------------------------------------------------
-# cluster-specific settings
 [db]
 db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common
@@ -1160,25 +1088,17 @@ db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 db-user=[USER-2]
 
-# backup settings
+[global]
+cmd-remote=[BACKREST_BIN]
+config-remote=[TEST_PATH]/db/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
+repo-path=[TEST_PATH]/backrest
+
 [global:backup]
 archive-copy=y
 hardlink=y
 start-fast=y
-
-# backrest command
-[global:command]
-cmd-remote=[BACKREST_BIN]
-
-# general settings for all operations
-[global:general]
-config-remote=[TEST_PATH]/db/pg_backrest.conf
-repo-path=[TEST_PATH]/backrest
-
-# file and console log settings
-[global:log]
-log-level-console=debug
-log-level-file=trace
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-2].manifest
 --------------------------------------------------------------------------------------------
@@ -1367,35 +1287,23 @@ DEBUG:     Common:::Lock::lockRelease(): bFailOnNoLock = false
 
 + supplemental file: [TEST_PATH]/db/pg_backrest.conf
 ----------------------------------------------------
-# cluster-specific settings
 [db]
 db-path=[TEST_PATH]/db/common
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 
-# backup settings
-[global:backup]
+[global]
 backup-host=127.0.0.1
 backup-user=backrest
-
-# backrest command
-[global:command]
 cmd-remote=[BACKREST_BIN]
-
-# general settings for all operations
-[global:general]
 config-remote=[TEST_PATH]/backrest/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
 repo-path=[TEST_PATH]/local
 repo-remote-path=[TEST_PATH]/backrest
 
-# file and console log settings
-[global:log]
-log-level-console=debug
-log-level-file=trace
-
 + supplemental file: [TEST_PATH]/backrest/pg_backrest.conf
 ----------------------------------------------------------
-# cluster-specific settings
 [db]
 db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common
@@ -1403,25 +1311,17 @@ db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 db-user=[USER-2]
 
-# backup settings
+[global]
+cmd-remote=[BACKREST_BIN]
+config-remote=[TEST_PATH]/db/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
+repo-path=[TEST_PATH]/backrest
+
 [global:backup]
 archive-copy=y
 hardlink=y
 start-fast=y
-
-# backrest command
-[global:command]
-cmd-remote=[BACKREST_BIN]
-
-# general settings for all operations
-[global:general]
-config-remote=[TEST_PATH]/db/pg_backrest.conf
-repo-path=[TEST_PATH]/backrest
-
-# file and console log settings
-[global:log]
-log-level-console=debug
-log-level-file=trace
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-1].manifest
 --------------------------------------------------------------------------------------------
@@ -1610,35 +1510,23 @@ DEBUG:     Common:::Lock::lockRelease(): bFailOnNoLock = false
 
 + supplemental file: [TEST_PATH]/db/pg_backrest.conf
 ----------------------------------------------------
-# cluster-specific settings
 [db]
 db-path=[TEST_PATH]/db/common
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 
-# backup settings
-[global:backup]
+[global]
 backup-host=127.0.0.1
 backup-user=backrest
-
-# backrest command
-[global:command]
 cmd-remote=[BACKREST_BIN]
-
-# general settings for all operations
-[global:general]
 config-remote=[TEST_PATH]/backrest/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
 repo-path=[TEST_PATH]/local
 repo-remote-path=[TEST_PATH]/backrest
 
-# file and console log settings
-[global:log]
-log-level-console=debug
-log-level-file=trace
-
 + supplemental file: [TEST_PATH]/backrest/pg_backrest.conf
 ----------------------------------------------------------
-# cluster-specific settings
 [db]
 db-host=127.0.0.1
 db-path=[TEST_PATH]/db/common
@@ -1646,25 +1534,17 @@ db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 db-user=[USER-2]
 
-# backup settings
+[global]
+cmd-remote=[BACKREST_BIN]
+config-remote=[TEST_PATH]/db/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
+repo-path=[TEST_PATH]/backrest
+
 [global:backup]
 archive-copy=y
 hardlink=y
 start-fast=y
-
-# backrest command
-[global:command]
-cmd-remote=[BACKREST_BIN]
-
-# general settings for all operations
-[global:general]
-config-remote=[TEST_PATH]/db/pg_backrest.conf
-repo-path=[TEST_PATH]/backrest
-
-# file and console log settings
-[global:log]
-log-level-console=debug
-log-level-file=trace
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-2].manifest
 --------------------------------------------------------------------------------------------
@@ -2105,25 +1985,19 @@ db-path=[TEST_PATH]/db/common-2
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 
-[db:restore:tablespace-map]
-1=[TEST_PATH]/db/tablespace/ts1-2
-2=[TEST_PATH]/db/tablespace/ts2-2
+[db:restore]
+tablespace-map=1=[TEST_PATH]/db/tablespace/ts1-2
+tablespace-map=2=[TEST_PATH]/db/tablespace/ts2-2
 
-[global:backup]
+[global]
 backup-host=127.0.0.1
 backup-user=backrest
-
-[global:command]
 cmd-remote=[BACKREST_BIN]
-
-[global:general]
 config-remote=[TEST_PATH]/backrest/pg_backrest.conf
-repo-path=[TEST_PATH]/local
-repo-remote-path=[TEST_PATH]/backrest
-
-[global:log]
 log-level-console=debug
 log-level-file=trace
+repo-path=[TEST_PATH]/local
+repo-remote-path=[TEST_PATH]/backrest
 
 + supplemental file: [TEST_PATH]/backrest/pg_backrest.conf
 ----------------------------------------------------------
@@ -2134,21 +2008,17 @@ db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 db-user=[USER-2]
 
+[global]
+cmd-remote=[BACKREST_BIN]
+config-remote=[TEST_PATH]/db/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
+repo-path=[TEST_PATH]/backrest
+
 [global:backup]
 archive-copy=y
 hardlink=y
 start-fast=y
-
-[global:command]
-cmd-remote=[BACKREST_BIN]
-
-[global:general]
-config-remote=[TEST_PATH]/db/pg_backrest.conf
-repo-path=[TEST_PATH]/backrest
-
-[global:log]
-log-level-console=debug
-log-level-file=trace
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-3].manifest
 --------------------------------------------------------------------------------------------
@@ -2349,25 +2219,19 @@ db-path=[TEST_PATH]/db/common-2
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 
-[db:restore:tablespace-map]
-1=[TEST_PATH]/db/tablespace/ts1-2
-2=[TEST_PATH]/db/tablespace/ts2-2
+[db:restore]
+tablespace-map=1=[TEST_PATH]/db/tablespace/ts1-2
+tablespace-map=2=[TEST_PATH]/db/tablespace/ts2-2
 
-[global:backup]
+[global]
 backup-host=127.0.0.1
 backup-user=backrest
-
-[global:command]
 cmd-remote=[BACKREST_BIN]
-
-[global:general]
 config-remote=[TEST_PATH]/backrest/pg_backrest.conf
-repo-path=[TEST_PATH]/local
-repo-remote-path=[TEST_PATH]/backrest
-
-[global:log]
 log-level-console=debug
 log-level-file=trace
+repo-path=[TEST_PATH]/local
+repo-remote-path=[TEST_PATH]/backrest
 
 + supplemental file: [TEST_PATH]/backrest/pg_backrest.conf
 ----------------------------------------------------------
@@ -2378,21 +2242,17 @@ db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 db-user=[USER-2]
 
+[global]
+cmd-remote=[BACKREST_BIN]
+config-remote=[TEST_PATH]/db/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
+repo-path=[TEST_PATH]/backrest
+
 [global:backup]
 archive-copy=y
 hardlink=y
 start-fast=y
-
-[global:command]
-cmd-remote=[BACKREST_BIN]
-
-[global:general]
-config-remote=[TEST_PATH]/db/pg_backrest.conf
-repo-path=[TEST_PATH]/backrest
-
-[global:log]
-log-level-console=debug
-log-level-file=trace
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-4].manifest
 --------------------------------------------------------------------------------------------
@@ -2596,25 +2456,19 @@ db-path=[TEST_PATH]/db/common-2
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 
-[db:restore:tablespace-map]
-1=[TEST_PATH]/db/tablespace/ts1-2
-2=[TEST_PATH]/db/tablespace/ts2-2
+[db:restore]
+tablespace-map=1=[TEST_PATH]/db/tablespace/ts1-2
+tablespace-map=2=[TEST_PATH]/db/tablespace/ts2-2
 
-[global:backup]
+[global]
 backup-host=127.0.0.1
 backup-user=backrest
-
-[global:command]
 cmd-remote=[BACKREST_BIN]
-
-[global:general]
 config-remote=[TEST_PATH]/backrest/pg_backrest.conf
-repo-path=[TEST_PATH]/local
-repo-remote-path=[TEST_PATH]/backrest
-
-[global:log]
 log-level-console=debug
 log-level-file=trace
+repo-path=[TEST_PATH]/local
+repo-remote-path=[TEST_PATH]/backrest
 
 + supplemental file: [TEST_PATH]/backrest/pg_backrest.conf
 ----------------------------------------------------------
@@ -2625,21 +2479,17 @@ db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 db-user=[USER-2]
 
+[global]
+cmd-remote=[BACKREST_BIN]
+config-remote=[TEST_PATH]/db/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
+repo-path=[TEST_PATH]/backrest
+
 [global:backup]
 archive-copy=y
 hardlink=y
 start-fast=y
-
-[global:command]
-cmd-remote=[BACKREST_BIN]
-
-[global:general]
-config-remote=[TEST_PATH]/db/pg_backrest.conf
-repo-path=[TEST_PATH]/backrest
-
-[global:log]
-log-level-console=debug
-log-level-file=trace
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-3].manifest
 --------------------------------------------------------------------------------------------
@@ -2855,25 +2705,19 @@ db-path=[TEST_PATH]/db/common-2
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 
-[db:restore:tablespace-map]
-1=[TEST_PATH]/db/tablespace/ts1-2
-2=[TEST_PATH]/db/tablespace/ts2-2
+[db:restore]
+tablespace-map=1=[TEST_PATH]/db/tablespace/ts1-2
+tablespace-map=2=[TEST_PATH]/db/tablespace/ts2-2
 
-[global:backup]
+[global]
 backup-host=127.0.0.1
 backup-user=backrest
-
-[global:command]
 cmd-remote=[BACKREST_BIN]
-
-[global:general]
 config-remote=[TEST_PATH]/backrest/pg_backrest.conf
-repo-path=[TEST_PATH]/local
-repo-remote-path=[TEST_PATH]/backrest
-
-[global:log]
 log-level-console=debug
 log-level-file=trace
+repo-path=[TEST_PATH]/local
+repo-remote-path=[TEST_PATH]/backrest
 
 + supplemental file: [TEST_PATH]/backrest/pg_backrest.conf
 ----------------------------------------------------------
@@ -2884,21 +2728,17 @@ db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 db-user=[USER-2]
 
+[global]
+cmd-remote=[BACKREST_BIN]
+config-remote=[TEST_PATH]/db/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
+repo-path=[TEST_PATH]/backrest
+
 [global:backup]
 archive-copy=y
 hardlink=y
 start-fast=y
-
-[global:command]
-cmd-remote=[BACKREST_BIN]
-
-[global:general]
-config-remote=[TEST_PATH]/db/pg_backrest.conf
-repo-path=[TEST_PATH]/backrest
-
-[global:log]
-log-level-console=debug
-log-level-file=trace
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-INCR-5].manifest
 --------------------------------------------------------------------------------------------
@@ -3114,25 +2954,19 @@ db-path=[TEST_PATH]/db/common-2
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 
-[db:restore:tablespace-map]
-1=[TEST_PATH]/db/tablespace/ts1-2
-2=[TEST_PATH]/db/tablespace/ts2-2
+[db:restore]
+tablespace-map=1=[TEST_PATH]/db/tablespace/ts1-2
+tablespace-map=2=[TEST_PATH]/db/tablespace/ts2-2
 
-[global:backup]
+[global]
 backup-host=127.0.0.1
 backup-user=backrest
-
-[global:command]
 cmd-remote=[BACKREST_BIN]
-
-[global:general]
 config-remote=[TEST_PATH]/backrest/pg_backrest.conf
-repo-path=[TEST_PATH]/local
-repo-remote-path=[TEST_PATH]/backrest
-
-[global:log]
 log-level-console=debug
 log-level-file=trace
+repo-path=[TEST_PATH]/local
+repo-remote-path=[TEST_PATH]/backrest
 
 + supplemental file: [TEST_PATH]/backrest/pg_backrest.conf
 ----------------------------------------------------------
@@ -3143,21 +2977,17 @@ db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 db-user=[USER-2]
 
+[global]
+cmd-remote=[BACKREST_BIN]
+config-remote=[TEST_PATH]/db/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
+repo-path=[TEST_PATH]/backrest
+
 [global:backup]
 archive-copy=y
 hardlink=y
 start-fast=y
-
-[global:command]
-cmd-remote=[BACKREST_BIN]
-
-[global:general]
-config-remote=[TEST_PATH]/db/pg_backrest.conf
-repo-path=[TEST_PATH]/backrest
-
-[global:log]
-log-level-console=debug
-log-level-file=trace
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-4].manifest
 --------------------------------------------------------------------------------------------
@@ -3369,25 +3199,19 @@ db-path=[TEST_PATH]/db/common-2
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 
-[db:restore:tablespace-map]
-1=[TEST_PATH]/db/tablespace/ts1-2
-2=[TEST_PATH]/db/tablespace/ts2-2
+[db:restore]
+tablespace-map=1=[TEST_PATH]/db/tablespace/ts1-2
+tablespace-map=2=[TEST_PATH]/db/tablespace/ts2-2
 
-[global:backup]
+[global]
 backup-host=127.0.0.1
 backup-user=backrest
-
-[global:command]
 cmd-remote=[BACKREST_BIN]
-
-[global:general]
 config-remote=[TEST_PATH]/backrest/pg_backrest.conf
-repo-path=[TEST_PATH]/local
-repo-remote-path=[TEST_PATH]/backrest
-
-[global:log]
 log-level-console=debug
 log-level-file=trace
+repo-path=[TEST_PATH]/local
+repo-remote-path=[TEST_PATH]/backrest
 
 + supplemental file: [TEST_PATH]/backrest/pg_backrest.conf
 ----------------------------------------------------------
@@ -3398,21 +3222,17 @@ db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 db-user=[USER-2]
 
+[global]
+cmd-remote=[BACKREST_BIN]
+config-remote=[TEST_PATH]/db/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
+repo-path=[TEST_PATH]/backrest
+
 [global:backup]
 archive-copy=y
 hardlink=y
 start-fast=y
-
-[global:command]
-cmd-remote=[BACKREST_BIN]
-
-[global:general]
-config-remote=[TEST_PATH]/db/pg_backrest.conf
-repo-path=[TEST_PATH]/backrest
-
-[global:log]
-log-level-console=debug
-log-level-file=trace
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-FULL-3].manifest
 --------------------------------------------------------------------------------------------
@@ -3652,25 +3472,19 @@ db-path=[TEST_PATH]/db/common-2
 db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 
-[db:restore:tablespace-map]
-1=[TEST_PATH]/db/tablespace/ts1-2
-2=[TEST_PATH]/db/tablespace/ts2-2
+[db:restore]
+tablespace-map=1=[TEST_PATH]/db/tablespace/ts1-2
+tablespace-map=2=[TEST_PATH]/db/tablespace/ts2-2
 
-[global:backup]
+[global]
 backup-host=127.0.0.1
 backup-user=backrest
-
-[global:command]
 cmd-remote=[BACKREST_BIN]
-
-[global:general]
 config-remote=[TEST_PATH]/backrest/pg_backrest.conf
-repo-path=[TEST_PATH]/local
-repo-remote-path=[TEST_PATH]/backrest
-
-[global:log]
 log-level-console=debug
 log-level-file=trace
+repo-path=[TEST_PATH]/local
+repo-remote-path=[TEST_PATH]/backrest
 
 + supplemental file: [TEST_PATH]/backrest/pg_backrest.conf
 ----------------------------------------------------------
@@ -3681,21 +3495,17 @@ db-port=[PORT-1]
 db-socket-path=[TEST_PATH]/db
 db-user=[USER-2]
 
+[global]
+cmd-remote=[BACKREST_BIN]
+config-remote=[TEST_PATH]/db/pg_backrest.conf
+log-level-console=debug
+log-level-file=trace
+repo-path=[TEST_PATH]/backrest
+
 [global:backup]
 archive-copy=y
 hardlink=y
 start-fast=y
-
-[global:command]
-cmd-remote=[BACKREST_BIN]
-
-[global:general]
-config-remote=[TEST_PATH]/db/pg_backrest.conf
-repo-path=[TEST_PATH]/backrest
-
-[global:log]
-log-level-console=debug
-log-level-file=trace
 
 + supplemental file: [TEST_PATH]/backrest/backup/db/backup.manifest/[BACKUP-DIFF-5].manifest
 --------------------------------------------------------------------------------------------

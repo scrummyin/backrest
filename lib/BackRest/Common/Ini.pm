@@ -185,7 +185,19 @@ sub iniLoad
                 # If relaxed then read the value directly
                 if ($bRelaxed)
                 {
-                    ${$oContent}{$strSection}{$strKey} = $strValue;
+                    if (defined($$oContent{$strSection}{$strKey}))
+                    {
+                        if (ref($$oContent{$strSection}{$strKey}) ne 'ARRAY')
+                        {
+                            $$oContent{$strSection}{$strKey} = [$$oContent{$strSection}{$strKey}];
+                        }
+
+                        push(@{$$oContent{$strSection}{$strKey}}, $strValue);
+                    }
+                    else
+                    {
+                        $$oContent{$strSection}{$strKey} = $strValue;
+                    }
                 }
                 # Else read the value as stricter JSON
                 else
@@ -236,8 +248,8 @@ sub iniSave
             OP_INI_INI_SAVE, \@_,
             {name => 'strFileName', trace => true},
             {name => 'oContent', trace => true},
-            {name => 'bRelaxed', required => false, trace => true},
-            {name => 'bTemp', required => false, trace => true}
+            {name => 'bRelaxed', default => false, trace => true},
+            {name => 'bTemp', default => false, trace => true}
         );
 
     # Open the ini file for writing
@@ -250,7 +262,6 @@ sub iniSave
 
     # Create the JSON object canonical so that fields are alpha ordered to pass unit tests
     my $oJSON = JSON::PP->new()->canonical()->allow_nonref();
-    $bRelaxed = defined($bRelaxed) ? $bRelaxed : false;
 
     # Write the INI file
     foreach my $strSection (sort(keys(%$oContent)))
@@ -293,8 +304,21 @@ sub iniSave
             # If relaxed then store as old-style config
             if ($bRelaxed)
             {
-                syswrite($hFile, "${strKey}=${strValue}\n")
-                    or confess "unable to write relaxed key ${strKey}: $!";
+                # If the value is an array then save each element to a separate key/value pair
+                if (ref($strValue) eq 'ARRAY')
+                {
+                    foreach my $strArrayValue (@{$strValue})
+                    {
+                        syswrite($hFile, "${strKey}=${strArrayValue}\n")
+                            or confess "unable to write relaxed key array ${strKey}: $!";
+                    }
+                }
+                # Else write a standard key/value pair
+                else
+                {
+                    syswrite($hFile, "${strKey}=${strValue}\n")
+                        or confess "unable to write relaxed key ${strKey}: $!";
+                }
             }
             # Else write as stricter JSON
             else

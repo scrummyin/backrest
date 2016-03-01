@@ -610,8 +610,9 @@ sub BackRestTestCommon_ConfigRemap
         iniLoad($strRemoteConfigFile, \%oRemoteConfig, true);
     }
 
-    # Rewrite remap section
-    delete($oConfig{"${strStanza}:restore:tablespace-map"});
+    # Rewrite recovery section
+    delete($oConfig{"${strStanza}:restore"}{&OPTION_RESTORE_TABLESPACE_MAP});
+    my @stryTablespaceMap;
 
     foreach my $strRemap (sort(keys(%$oRemapHashRef)))
     {
@@ -629,11 +630,16 @@ sub BackRestTestCommon_ConfigRemap
         }
         else
         {
-            $oConfig{"${strStanza}:restore:tablespace-map"}{$strRemap} = $strRemapPath;
+            push (@stryTablespaceMap, "${strRemap}=${strRemapPath}");
 
             ${$oManifestRef}{'backup:path'}{"tablespace/${strRemap}"}{&MANIFEST_SUBKEY_PATH} = $strRemapPath;
             ${$oManifestRef}{'base:link'}{"pg_tblspc/${strRemap}"}{destination} = $strRemapPath;
         }
+    }
+
+    if (@stryTablespaceMap)
+    {
+        $oConfig{"${strStanza}:restore"}{&OPTION_RESTORE_TABLESPACE_MAP} = \@stryTablespaceMap;
     }
 
     # Resave the config file
@@ -675,12 +681,17 @@ sub BackRestTestCommon_ConfigRecovery
         iniLoad($strRemoteConfigFile, \%oRemoteConfig, true);
     }
 
-    # Rewrite remap section
-    delete($oConfig{"${strStanza}:restore:recovery-setting"});
+    # Rewrite recovery options
+    my @stryRecoveryOption;
 
     foreach my $strOption (sort(keys(%$oRecoveryHashRef)))
     {
-        $oConfig{"${strStanza}:restore:recovery-setting"}{$strOption} = ${$oRecoveryHashRef}{$strOption};
+        push (@stryRecoveryOption, "${strOption}=${$oRecoveryHashRef}{$strOption}");
+    }
+
+    if (@stryRecoveryOption)
+    {
+        $oConfig{$strStanza}{&OPTION_RESTORE_RECOVERY_OPTION} = \@stryRecoveryOption;
     }
 
     # Resave the config file
@@ -713,14 +724,13 @@ sub BackRestTestCommon_ConfigCreate
 
     if (defined($strRemote))
     {
-        $oParamHash{'global:command'}{'[comment]'} = 'backrest command';
-        $oParamHash{'global:command'}{'cmd-remote'} = $strCommonCommandRemote;
+        $oParamHash{'global'}{'cmd-remote'} = $strCommonCommandRemote;
     }
 
     if (defined($strRemote) && $strRemote eq BACKUP)
     {
-        $oParamHash{'global:backup'}{'backup-host'} = $strCommonHost;
-        $oParamHash{'global:backup'}{'backup-user'} = $strCommonUserBackRest;
+        $oParamHash{'global'}{'backup-host'} = $strCommonHost;
+        $oParamHash{'global'}{'backup-user'} = $strCommonUserBackRest;
     }
     elsif (defined($strRemote) && $strRemote eq DB)
     {
@@ -728,35 +738,31 @@ sub BackRestTestCommon_ConfigCreate
         $oParamHash{$strCommonStanza}{'db-user'} = $strCommonUser;
     }
 
-    $oParamHash{'global:log'}{'[comment]'} = 'file and console log settings';
-    $oParamHash{'global:log'}{'log-level-console'} = 'debug';
-    $oParamHash{'global:log'}{'log-level-file'} = 'trace';
-
-    $oParamHash{'global:general'}{'[comment]'} = 'general settings for all operations';
+    $oParamHash{'global'}{'log-level-console'} = 'debug';
+    $oParamHash{'global'}{'log-level-file'} = 'trace';
 
     if ($strLocal eq BACKUP)
     {
-        $oParamHash{'global:general'}{'repo-path'} = $strCommonRepoPath;
-        $oParamHash{'global:general'}{'config-remote'} = "${strCommonDbPath}/pg_backrest.conf";
+        $oParamHash{'global'}{'repo-path'} = $strCommonRepoPath;
+        $oParamHash{'global'}{'config-remote'} = "${strCommonDbPath}/pg_backrest.conf";
     }
     elsif ($strLocal eq DB)
     {
-        $oParamHash{'global:general'}{'repo-path'} = $strCommonLocalPath;
-        $oParamHash{'global:general'}{'config-remote'} = "${strCommonRepoPath}/pg_backrest.conf";
+        $oParamHash{'global'}{'repo-path'} = $strCommonLocalPath;
+        $oParamHash{'global'}{'config-remote'} = "${strCommonRepoPath}/pg_backrest.conf";
 
         if (defined($strRemote))
         {
-            $oParamHash{'global:general'}{'repo-remote-path'} = $strCommonRepoPath;
+            $oParamHash{'global'}{'repo-remote-path'} = $strCommonRepoPath;
         }
         else
         {
-            $oParamHash{'global:general'}{'repo-path'} = $strCommonRepoPath;
+            $oParamHash{'global'}{'repo-path'} = $strCommonRepoPath;
         }
 
         if ($bArchiveAsync)
         {
-            $oParamHash{'global:archive'}{'[comment]'} = 'WAL archive settings';
-            $oParamHash{'global:archive'}{'archive-async'} = 'y';
+            $oParamHash{'global:archive-push'}{'archive-async'} = 'y';
         }
     }
     else
@@ -766,14 +772,11 @@ sub BackRestTestCommon_ConfigCreate
 
     if (defined($iThreadMax) && $iThreadMax > 1)
     {
-        $oParamHash{'global:general'}{'thread-max'} = $iThreadMax;
+        $oParamHash{'global'}{'thread-max'} = $iThreadMax;
     }
 
     if (($strLocal eq BACKUP) || ($strLocal eq DB && !defined($strRemote)))
     {
-        # $oParamHash{"${strCommonStanza}:command"}{'[comment]'} = 'cluster-specific command options';
-        # $oParamHash{"${strCommonStanza}:command"}{'cmd-psql-option'} = "--port=${iCommonDbPort}";
-
         if (defined($bHardlink) && $bHardlink)
         {
             $oParamHash{'global:backup'}{'hardlink'} = 'y';
@@ -785,20 +788,13 @@ sub BackRestTestCommon_ConfigCreate
 
     if (defined($bCompress) && !$bCompress)
     {
-        $oParamHash{'global:general'}{'compress'} = 'n';
+        $oParamHash{'global'}{'compress'} = 'n';
     }
 
     # Stanza settings
-    $oParamHash{$strCommonStanza}{'[comment]'} = "cluster-specific settings";
     $oParamHash{$strCommonStanza}{'db-path'} = $strCommonDbCommonPath;
     $oParamHash{$strCommonStanza}{'db-port'} = $iCommonDbPort;
     $oParamHash{$strCommonStanza}{'db-socket-path'} = BackRestTestCommon_DbPathGet();
-
-    # Comments
-    if (defined($oParamHash{'global:backup'}))
-    {
-        $oParamHash{'global:backup'}{'[comment]'} = "backup settings";
-    }
 
     # Write out the configuration file
     my $strFile = BackRestTestCommon_TestPathGet() . '/pg_backrest.conf';
