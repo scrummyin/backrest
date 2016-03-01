@@ -149,27 +149,24 @@ sub process
                 # Next see if it's documented in the section
                 if (defined($$oOptionRule{$strOption}{&OPTION_RULE_SECTION}))
                 {
-                    $strSection = $$oOptionRule{$strOption}{&OPTION_RULE_SECTION};
-
-                    if ($strSection eq '1')
+                    # &log(INFO, "        trying section ${strSection}");
+                    foreach my $oSectionNode ($oDoc->nodeGet('config')->nodeGet('config-section-list')->nodeList())
                     {
-                        if (defined($$oOptionRule{$strOption}{&OPTION_RULE_SECTION_INHERIT}))
+                        my $oOptionDocCheck = $oSectionNode->nodeGetById('config-key-list')
+                                                           ->nodeGetById('config-key', $strOption, false);
+
+                        if ($oOptionDocCheck)
                         {
-                            $strSection = $$oOptionRule{$strOption}{&OPTION_RULE_SECTION_INHERIT};
-                        }
-                        else
-                        {
-                            $strSection = $strCommand;
+                            if (defined($oOptionDoc))
+                            {
+                                confess 'option exists in more than one section';
+                            }
+
+                            $oOptionDoc = $oOptionDocCheck;
+                            $strOptionSource = CONFIG_HELP_SOURCE_SECTION;
+                            $strSection = $oSectionNode->paramGet('id');
                         }
                     }
-
-                    # &log(INFO, "        trying section ${strSection}");
-
-                    $oOptionDoc = $oDoc->nodeGet('config')->nodeGet('config-section-list')
-                                       ->nodeGetById('config-section', $strSection)->nodeGetById('config-key-list')
-                                       ->nodeGetById('config-key', $strOption, false);
-
-                    $strOptionSource = CONFIG_HELP_SOURCE_SECTION if (defined($oOptionDoc));
                 }
                 # If no section is defined then look in the default command option list
                 else
@@ -526,7 +523,7 @@ sub helpConfigDocGet
         $oSectionElement->
             nodeAdd('title')->textSet(
                 {name => 'text',
-                 children=> [$oSectionDoc->paramGet('name') . ' Section (', {name => 'id', value => $strSection}, ')']});
+                 children=> [$oSectionDoc->paramGet('name') . ' Options (', {name => 'id', value => $strSection}, ')']});
 
         foreach my $strOption (sort(keys($$oSectionHash{$strSection})))
         {

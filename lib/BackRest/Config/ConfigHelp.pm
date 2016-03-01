@@ -46,6 +46,26 @@ use constant CONFIG_HELP_SOURCE_COMMAND                             => CONFIG_HE
      push @EXPORT, qw(CONFIG_HELP_SOURCE_COMMAND);
 
 ####################################################################################################################################
+# Config Section Types
+####################################################################################################################################
+use constant CONFIG_SECTION_ARCHIVE                                 => 'archive';
+    push @EXPORT, qw(CONFIG_SECTION_ARCHIVE);
+use constant CONFIG_SECTION_BACKUP                                  => 'backup';
+    push @EXPORT, qw(CONFIG_SECTION_BACKUP);
+use constant CONFIG_SECTION_COMMAND                                 => 'command';
+    push @EXPORT, qw(CONFIG_SECTION_COMMAND);
+use constant CONFIG_SECTION_GENERAL                                 => 'general';
+    push @EXPORT, qw(CONFIG_SECTION_GENERAL);
+use constant CONFIG_SECTION_LOG                                     => 'log';
+    push @EXPORT, qw(CONFIG_SECTION_LOG);
+use constant CONFIG_SECTION_RESTORE_RECOVERY_OPTION                 => 'restore:recovery-option';
+    push @EXPORT, qw(CONFIG_SECTION_RESTORE_RECOVERY_OPTION);
+use constant CONFIG_SECTION_RESTORE_TABLESPACE_MAP                  => 'restore:tablespace-map';
+    push @EXPORT, qw(CONFIG_SECTION_RESTORE_TABLESPACE_MAP);
+use constant CONFIG_SECTION_EXPIRE                                  => 'expire';
+    push @EXPORT, qw(CONFIG_SECTION_EXPIRE);
+
+####################################################################################################################################
 # configHelp
 #
 # Display command-line help.
