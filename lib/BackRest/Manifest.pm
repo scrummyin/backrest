@@ -465,11 +465,13 @@ sub build
 
     # !!! NOTES ON SYMLINK-HANDLING
     #
-* All symlinked files and directories (with their contents) in $PGDATA or a tablespace will be copied with the backup - no exceptions
-* When restoring always restore symlinked files and directories within $PGDATA or a tablespace by default
-* Warn when something originally symlinked is restored to $PDATA or a tablespace
-* Allow symlink warnings to be suppressed individually
-* Allow options to 1) restore the link only 2) restore the link and contents (whether file or directory)
+    # * All symlinked files and directories (with their contents) in $PGDATA or a tablespace will be copied with the backup -
+    #   NO EXCEPTIONS!
+    # * When restoring always restore symlinked files and directories within $PGDATA or a tablespace by default
+    # * Warn when something originally symlinked is restored to $PDATA or a tablespace
+    # * Allow symlink warnings to be suppressed individually
+    # * Allow options to 1) restore the link only 2) restore the link and contents (whether file or directory)
+    # * The directory referenced by a symlink will never be created automatically.
 
     # Get the manifest for this level
     my %oManifestHash;
