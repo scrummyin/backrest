@@ -473,7 +473,7 @@ sub build
     # * Allow options to 1) restore the link only 2) restore the link and contents (whether file or directory)
     # * The directory referenced by a symlink will never be created automatically.
     #
-    # Links are stored as now
+    # Links are stored in the same way they are now
     # Files behind links are stored in the file section
     # Linked directories are stored in the path section so permissions can be preserved
 
